@@ -19,43 +19,9 @@
 -->
 <html>
     <head>
-        <title>Hello World</title>
-        <script type="text/javascript">
-        
-        function goToLogIn() {
-            window.location.href = 'logIn.html';
-        }
-
-        var mysql = require('mysql');
-
-        var connection = mysql.createConnection({
-          host     : 'keepup.cw8gzyaihfxq.us-east-1.rds.amazonaws.com:3306',
-          user     : 'gldr',
-          password : 'keepup2014',
-          port     : '3306'
-        });
-
-        connection.connect();
-
-        connection.query('SELECT 1 + 1 AS solution', function(err, rows, fields) {
-            console.log("here")
-          if (err) 
-            throw err;
-
-          console.log('The solution is: ', rows[0].solution);
-        });
-
-connection.end();
-
-        </script>
+       <title>Log In</title>
     </head>
     <body>
-       Welcome To KeepUp!
-       <button onclick = "goToLogIn()">
-        Log in
-       </button>
-       <button>
-        Sign up
-       </button>
+       Welcome To The Log In Page
     </body>
 </html>
