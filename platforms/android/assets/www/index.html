@@ -20,32 +20,29 @@
 <html>
     <head>
         <title>Hello World</title>
+        <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
         <script type="text/javascript">
+
         function goToLogIn() {
             window.location.href = 'logIn.html';
         }
-
-        var mysql = require('mysql');
-
-        var connection = mysql.createConnection({
-          host     : 'keepup.cw8gzyaihfxq.us-east-1.rds.amazonaws.com:3306',
-          user     : 'gldr',
-          password : 'keepup2014',
-          port     : '3306'
+        function goToSignUp() {
+            window.location.href = 'signUp.html';
+        }
+        $( document ).ready(function() {
+            $.ajax({
+                type: 'post',
+                data: {action:'test'},
+                url: "http://localhost:8000/webService.php",
+                success:function(data){
+                    alert(data.items[0])
+                    console.log(data);
+                }, error:function(err){
+                    console.log("FAiled!")
+                    console.log(err);
+                }
+            });
         });
-
-        connection.connect();
-
-        connection.query('SELECT 1 + 1 AS solution', function(err, rows, fields) {
-            console.log("here")
-          if (err) 
-            throw err;
-
-          console.log('The solution is: ', rows[0].solution);
-        });
-
-connection.end();
-
         </script>
     </head>
     <body>
@@ -53,7 +50,7 @@ connection.end();
        <button onclick = "goToLogIn()">
         Log in
        </button>
-       <button>
+       <button onclick = "goToSignUp()">
         Sign up
        </button>
     </body>
