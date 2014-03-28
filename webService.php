@@ -1,4 +1,5 @@
 <?php
+
   header('Access-Control-Allow-Origin: *');
   header('Content-Type: application/json');
 
@@ -6,6 +7,7 @@
     $action = $_POST['action'];
     switch($action) {
       case 'test' : test();break; 
+      case 'logIn' : logIn();break; 
     }
   }
 
@@ -28,5 +30,9 @@
 
     echo json_encode(array('status' => 'success', 'items' => $output));
     mysqli_close($link);
+  }
+
+  function logIn() {
+    echo json_encode(array('status' => 'success', 'logIn' => $_POST['logInData']));
   }
 ?>
