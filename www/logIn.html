@@ -12,7 +12,7 @@
                 // let's select and cache all the fields
                 var $inputs = $form.find("input, select, button, textarea");
                 // serialize the data in the form
-                var serializedData = $form.serialize();
+                var postData = {'username': $form.find('input[name="username"]').val(), 'password' : $form.find('input[name="password"]').val()}
 
                 // let's disable the inputs for the duration of the ajax request
                 // Note: we disable elements AFTER the form data has been serialized.
@@ -21,25 +21,20 @@
                 request = $.ajax({
                     url: "http://localhost:8000/webService.php",
                     type: "post",
-                    data: {action:'logIn', logInData: serializedData}
+                    data: {action:'logIn', logInData: JSON.stringify(postData)},
+                    success:function(data){
+                        //alert(data.items[0])
+                        console.log(data);
+                        var jsonData = (JSON.parse(data.logIn));
+                        localStorage.setItem("current_user", jsonData.username);
+                        window.location.href = 'home.html';
+                    }, error:function(err){
+                        console.log("Failed!")
+                        console.log(err);
+                    }
                 });
-                
-                // callback handler that will be called on success
-                request.done(function (response, textStatus, jqXHR){
-                    // log a message to the console
-                    console.log("Hooray, it worked!");
-                    console.log(response);
-                }); 
-                /*
-                // callback handler that will be called on failure
-                request.fail(function (jqXHR, textStatus, errorThrown){
-                    // log the error to the console
-                    console.error("The following error occured: " + textStatus, errorThrown);
-                });
-
                 // callback handler that will be called regardless
                 // if the request failed or succeeded
-                */
                 request.always(function () {
                     // reenable the inputs
                     $inputs.prop("disabled", false);
@@ -52,13 +47,12 @@
     </head>
     <body>
        Welcome To The Log In Page
+        <form onsubmit="logIn()" id="logInForm">
+            <fieldset>
+                Username: <input type="text" name="username" required><br>
+                Password: <input type="password" name="password" required>
+                <input type="submit">
+            </fieldset>
+        </form>
     </body>
-
-    <form onsubmit="logIn()" id="logInForm">
-        <fieldset>
-            Username: <input type="text" name="username" required><br>
-            Password: <input type="password" name="password" required>
-            <input type="submit">
-        </fieldset>
-    </form>
 </html>
