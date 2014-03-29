@@ -9,7 +9,7 @@
     switch($action) {
       case 'test' : test();break; 
       case 'logIn' : logIn();break; 
-      //case 'signUp' : signUp();break; 
+      case 'signUp' : signUp();break; 
     }
   }
 
@@ -44,6 +44,7 @@
     if (mysqli_connect_errno()) {
       trigger_error('Database connection failed: '  . mysqli_connect_error(), E_USER_ERROR);
     }
+
     $query = "SELECT * FROM user where username = '$user'";
     $rs=$link->query($query);
     if (mysqli_num_rows($rs) != 0) {
@@ -60,6 +61,28 @@
     else
       die(json_encode(array('stat' => 'error', 'code' => "user does not exist!")));
     mysqli_close($link);
+  }
+
+  function signUp() {
+    $decoded = json_decode($_POST['signUpData'],true);
+    $fn = $decoded['firstname'];
+    $ln = $decoded['lastname'];
+    $un = $decoded['username'];
+    $pw = $decoded['password'];
+    
+    $link = mysqli_connect('keepup.cw8gzyaihfxq.us-east-1.rds.amazonaws.com:3306', 'gldr','keepup2014', 'keepup');            
+            
+    if (mysqli_connect_errno()) {
+      trigger_error('Database connection failed: '  . mysqli_connect_error(), E_USER_ERROR);
+    }
+    
+    $query = "INSERT into user (username,password,loggedin,firstname,lastname) values ('$un', '$pw', 1, '$fn', '$ln')";
+    $rs=$link->query($query);
+    if($rs) {
+      echo json_encode(array('stat' => 'success', 'signUp' => $_POST['signUpData']));
+    } else {
+       die(json_encode(array('stat' => 'error', 'code' => "error on sign up, try again!")));
+    }
   }
 
 ?>
