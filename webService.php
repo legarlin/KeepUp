@@ -9,7 +9,9 @@
     switch($action) {
       case 'test' : test();break; 
       case 'logIn' : logIn();break; 
-      case 'signUp' : signUp();break; 
+      case 'signUp' : signUp();break;
+      case 'logOut' : logOut();break;
+      case 'newComp' : newComp();break; 
     }
   }
 
@@ -52,8 +54,11 @@
       $db_pass = $row['password'];
       if($db_pass == $pass) {
         $log_in = "UPDATE user SET loggedin = (1) where username = '$user'";
-        $ex=$link->query($log_in);
-        echo json_encode(array('stat' => 'success', 'logIn' => $_POST['logInData']));
+        $exec=$link->query($log_in);
+        //get user's unique id
+        $user_id = $row['id'];
+        $username = $row['username'];
+        echo json_encode(array('stat' => 'success', 'logIn' => array('username' => $username, 'id'=> $user_id)));
       }
       else
         die(json_encode(array('stat' => 'error', 'code' => "incorrect username/password!")));
@@ -69,7 +74,7 @@
     $ln = $decoded['lastname'];
     $un = $decoded['username'];
     $pw = $decoded['password'];
-    
+
     $link = mysqli_connect('keepup.cw8gzyaihfxq.us-east-1.rds.amazonaws.com:3306', 'gldr','keepup2014', 'keepup');            
             
     if (mysqli_connect_errno()) {
@@ -79,10 +84,33 @@
     $query = "INSERT into user (username,password,loggedin,firstname,lastname) values ('$un', '$pw', 1, '$fn', '$ln')";
     $rs=$link->query($query);
     if($rs) {
-      echo json_encode(array('stat' => 'success', 'signUp' => $_POST['signUpData']));
+      echo json_encode(array('stat' => 'success', 'signUp' => array('username' => $un, 'id'=> mysqli_insert_id($link))));
     } else {
        die(json_encode(array('stat' => 'error', 'code' => "error on sign up, try again!")));
     }
+  }
+
+  function logOut() {
+    $user = $_POST['user'];
+
+    $link = mysqli_connect('keepup.cw8gzyaihfxq.us-east-1.rds.amazonaws.com:3306', 'gldr','keepup2014', 'keepup');            
+            
+    if (mysqli_connect_errno()) {
+      trigger_error('Database connection failed: '  . mysqli_connect_error(), E_USER_ERROR);
+    }
+
+    $query = "UPDATE user set loggedin = (0) where username = '$user'";
+    $rs=$link->query($query);
+    if($rs) {
+      echo json_encode(array('stat' => 'success', 'logOut' => $_POST['user']));
+    } else {
+       die(json_encode(array('stat' => 'error', 'code' => "error on log out, try again!")));
+    }
+
+  }
+
+  function newComp() {
+    
   }
 
 ?>

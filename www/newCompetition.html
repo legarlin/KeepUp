@@ -2,39 +2,37 @@
 <html>
     <head>
         <title>
-            Sign Up 
+            New Competition
         </title>
         <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
         <script type="text/javascript">
-            function signUp() {
-                var $form = $('#signUpForm');
-
-                var pass1=$form.find('input[name="password"]').val();
-                var pass2=$form.find('input[name="confirmpassword"]').val();
-                if(pass1 != pass2){
-                    alert("Passwords do not match!");
-                    event.preventDefault();
-                    return;
-                }
+            function new_comp() {
+                
+                var $form = $('#newCompForm');
 
                 // let's select and cache all the fields
                 var $inputs = $form.find("input, select, button, textarea");
                 // serialize the data in the form
                 var postData = 
                 {
-                    'firstname': $form.find('input[name="firstname"]').val(), 
-                    'lastname' : $form.find('input[name="lastname"]').val(),
-                    'username' : $form.find('input[name="username"]').val(),
-                    'password' : $form.find('input[name="password"]').val()
+                    'title': $form.find('input[name="title"]').val(), 
+                    'description' : $form.find('textarea[name="description"]').val(),
+                    'Expiration' : $form.find('input[name="expiration"]').val(),
+                    'required_evidence' : $form.find('input[name="required_evidence"]').val()
                 }
 
+                if ($('#privacy_checkbox').prop("checked")) {
+                    postData['prv'] = 1;
+                }
+
+                /*
                 // let's disable the inputs for the duration of the ajax request
                 // Note: we disable elements AFTER the form data has been serialized.
                 $inputs.prop("disabled", true);
                 request = $.ajax({
                     url: "http://localhost:8000/webService.php",
                     type: "post",
-                    data: {action:'signUp', signUpData: JSON.stringify(postData)},
+                    data: {action:'newComp', signUpData: JSON.stringify(postData)},
                     success:function(data){
                         if(data.stat == "success") {
                             console.log(data);
@@ -56,22 +54,23 @@
                     // reenable the inputs
                     $inputs.prop("disabled", false);
                 });
-
+                */
                 // prevent default posting of form
                 event.preventDefault();
+               
             }
         </script>
 
     </head>
     <body>
-       Welcome To The Sign Up Page
-        <form onsubmit="signUp()" id="signUpForm">
+       Welcome To The New Competition Page
+        <form onsubmit="new_comp()" id="newCompForm">
             <fieldset>
-                First Name: <input type="text" name="firstname" required><br>
-                Last Name: <input type="text" name="lastname" required><br>
-                Username: <input type="text" name="username" required><br>
-                Password: <input type="password" name="password" required><br>
-                Confirm Password: <input type="password" name="confirmpassword" required><br>
+                Title <input type="text" name="title" required><br>
+                Description <textarea name="description" required> </textarea><br>
+                Expiration: <input type="datetime-local" name="expiration" required><br>
+                Amount of Evidence Required: <input type="number" name="required_evidence" min="1" required><br>
+                Private: <input type="checkbox" name="privacy" id = "privacy_checkbox">
                 <input type="submit">
             </fieldset>
         </form>

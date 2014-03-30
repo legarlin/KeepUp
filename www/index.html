@@ -30,18 +30,20 @@
             window.location.href = 'signUp.html';
         }
         $( document ).ready(function() {
+            localStorage.clear();
+            /*
             $.ajax({
                 type: 'post',
                 data: {action:'test'},
                 url: "http://localhost:8000/webService.php",
                 success:function(data){
-                    //alert(data.items[0])
                     console.log(data);
                 }, error:function(err){
                     console.log("Failed!")
                     console.log(err);
                 }
             });
+            */
         });
         </script>
     </head>

@@ -16,7 +16,6 @@
 
                 // let's disable the inputs for the duration of the ajax request
                 // Note: we disable elements AFTER the form data has been serialized.
-                // Disabled form elements will not be serialized.
                 $inputs.prop("disabled", true);
                 request = $.ajax({
                     url: "http://localhost:8000/webService.php",
@@ -25,8 +24,8 @@
                     success:function(data){
                         //alert(data.items[0])
                         console.log(data);
-                        var jsonData = (JSON.parse(data.logIn));
-                        localStorage.setItem("current_user", jsonData.username);
+                        localStorage.setItem("current_username", data.logIn.username);
+                        localStorage.setItem("current_userid", data.logIn.id);
                         window.location.href = 'home.html';
                     }, error:function(err){
                         console.log("Failed!")

@@ -25,7 +25,7 @@
                     'firstname': $form.find('input[name="firstname"]').val(), 
                     'lastname' : $form.find('input[name="lastname"]').val(),
                     'username' : $form.find('input[name="username"]').val(),
-                    'password' : $form.find('input[name="password"]').val(),
+                    'password' : $form.find('input[name="password"]').val()
                 }
 
                 // let's disable the inputs for the duration of the ajax request
@@ -38,8 +38,8 @@
                     success:function(data){
                         if(data.stat == "success") {
                             console.log(data);
-                            var jsonData = (JSON.parse(data.signUp));
-                            localStorage.setItem("current_user", jsonData.username);
+                            localStorage.setItem("current_username", data.signUp.username);
+                            localStorage.setItem("current_userid", data.signUp.id);
                             window.location.href = 'home.html'; 
                         } else {
                             console.log("Failed!")
