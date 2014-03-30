@@ -7,13 +7,26 @@
         <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
         <script type="text/javascript">
             $( document ).ready(function() {
-                document.getElementById("result").innerHTML=localStorage.getItem("current_user");
+                var curr_user = localStorage.getItem("current_user")
+                $("#result").append(curr_user);
             });
         </script>
         </head>
     <body>
-       Welcome To Your Home Page!
+        <button style = "float:right">
+            New Competition
+        </button>
+        <h3 id = "result">
+            Welcome
+        </h3>
+        <button>
+            My Competitions
+        </button>
+        <button>
+            Observing
+        </button>
+        <button>
+            Settings
+        </button>
     </body>
-    <div id="result">
-    </div>
 </html>

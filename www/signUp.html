@@ -36,11 +36,15 @@
                     type: "post",
                     data: {action:'signUp', signUpData: JSON.stringify(postData)},
                     success:function(data){
-                        //alert(data.items[0])
-                        console.log(data);
-                        var jsonData = (JSON.parse(data.signUp));
-                        localStorage.setItem("current_user", jsonData.username);
-                        window.location.href = 'home.html';
+                        if(data.stat == "success") {
+                            console.log(data);
+                            var jsonData = (JSON.parse(data.signUp));
+                            localStorage.setItem("current_user", jsonData.username);
+                            window.location.href = 'home.html'; 
+                        } else {
+                            console.log("Failed!")
+                            console.log(data.code);
+                        }
                     }, error:function(err){
                         console.log("Failed!")
                         console.log(err);
