@@ -11,7 +11,8 @@
       case 'logIn' : logIn();break; 
       case 'signUp' : signUp();break;
       case 'logOut' : logOut();break;
-      case 'newComp' : newComp();break; 
+      case 'newComp' : newComp();break;
+      case 'getFriends' : getFriends();break; 
     }
   }
 
@@ -110,7 +111,41 @@
   }
 
   function newComp() {
-    
+
+  }
+
+  function getFriends() {
+    $user = $_POST['user_id'];
+    $link = mysqli_connect('keepup.cw8gzyaihfxq.us-east-1.rds.amazonaws.com:3306', 'gldr','keepup2014', 'keepup');            
+            
+    if (mysqli_connect_errno()) {
+      trigger_error('Database connection failed: '  . mysqli_connect_error(), E_USER_ERROR);
+    }
+
+    $query = "SELECT ID FROM (SELECT user1 AS ID FROM friends WHERE user2 = '$user' UNION ALL SELECT user2 FROM friends WHERE user1 = '$user') t GROUP BY ID HAVING COUNT(ID) > 1";
+    $rs=$link->query($query);
+
+    $get_ids = array();
+
+    $rs->data_seek(0);
+    while($row = $rs->fetch_assoc()){
+        $get_ids[] = $row['ID'];
+    }
+
+    $ids = join(',', $get_ids);
+
+    $name_query = "SELECT id as id, username as name from user where id in($ids)";
+    $exec=$link->query($name_query);
+
+    $rows = array();
+    $exec->data_seek(0);
+    if(mysqli_num_rows($exec) != 0) {
+      while($row = $exec->fetch_assoc()){
+          $rows[] = $row;
+      }
+       echo json_encode(array('stat' => 'success', 'friends' =>json_encode($rows)));
+    }
+   
   }
 
 ?>
