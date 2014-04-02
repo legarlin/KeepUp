@@ -49,6 +49,7 @@
     }
 
     $query = "SELECT * FROM user where username = '$user'";
+
     $rs=$link->query($query);
     if (mysqli_num_rows($rs) != 0) {
       $row = $rs->fetch_assoc();
@@ -122,7 +123,7 @@
       trigger_error('Database connection failed: '  . mysqli_connect_error(), E_USER_ERROR);
     }
 
-    $query = "SELECT ID FROM (SELECT user1 AS ID FROM friends WHERE user2 = '$user' UNION ALL SELECT user2 FROM friends WHERE user1 = '$user') t GROUP BY ID HAVING COUNT(ID) > 1";
+    $query = "SELECT ID FROM (SELECT user1 AS ID FROM friend WHERE user2 = '$user' UNION ALL SELECT user2 FROM friend WHERE user1 = '$user') t GROUP BY ID HAVING COUNT(ID) > 1";
     $rs=$link->query($query);
 
     $get_ids = array();
