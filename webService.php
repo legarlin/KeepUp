@@ -112,8 +112,35 @@
   }
 
   function newComp() {
+    $decoded = json_decode($_POST['newCompData'],true);
+    $title = $decoded['title'];
+    $creator = $decoded['creator'];
+    $description = $decoded['description'];
+    $expiration = $decoded['expiration'];
+    $required_evidence = $decoded['required_evidence'];
+    $challengers = explode(",", $decoded['challengers']);
+    $prv = $decoded['prv'];
 
-  }
+    $link = mysqli_connect('keepup.cw8gzyaihfxq.us-east-1.rds.amazonaws.com:3306', 'gldr','keepup2014', 'keepup');            
+            
+    if (mysqli_connect_errno()) {
+      trigger_error('Database connection failed: '  . mysqli_connect_error(), E_USER_ERROR);
+    }
+
+    $insert = "INSERT into competition (title, description, creator, expiration, public, required_evidence) VALUES ('$title', '$description', '$creator', '$expiration', $prv, '$required_evidence')";
+
+     $rs=$link->query($insert);
+     $comp_id = mysqli_insert_id($link);
+     if($rs) {
+        foreach ($challengers as $chal) {
+          $insert_query = "INSERT into challenger values ($chal, $comp_id)";
+          $link->query($insert_query);
+        }
+        echo json_encode(array('stat' => 'success', 'newComp' => $comp_id));
+      } else {
+         die(json_encode(array('stat' => 'error', 'code' => "error on comp creation")));
+      }
+    }
 
   function getFriends() {
     $user = $_POST['user_id'];
