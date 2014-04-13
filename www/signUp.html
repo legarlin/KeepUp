@@ -16,7 +16,7 @@
                 var pass1=$form.find('input[name="password"]').val();
                 var pass2=$form.find('input[name="confirmpassword"]').val();
                 if(pass1 != pass2){
-                    alert("Passwords do not match!");
+                    $("#error").html("Passwords do not match!");
                     event.preventDefault();
                     return;
                 }
@@ -48,6 +48,7 @@
                         } else {
                             console.log("Failed!")
                             console.log(data.code);
+                            $("#error").html(data.code);
                         }
                     }, error:function(err){
                         console.log("Failed!")

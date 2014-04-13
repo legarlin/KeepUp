@@ -33,8 +33,16 @@
 
             }
 
+            function goToFriendsPage() {
+                 window.location.href = 'friends.html';
+            }
+
             function goToNewCompetition() {
                 window.location.href = 'newCompetition.html';
+            }
+            
+            function myComps() { 
+            	window.location.href = 'myCompetitions.html';
             }
         </script>
         </head>
@@ -50,13 +58,13 @@
             
         </div>
 
-        <button>
+        <button onclick = "myComps()">
             My Comps
         </button>
         <button>
             Observing
         </button>
-        <button>
+        <button onclick = "goToFriendsPage()">
             Friends
         </button>
         <button onclick = "logOut()">

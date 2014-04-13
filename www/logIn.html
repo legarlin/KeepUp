@@ -1,11 +1,16 @@
 <!DOCTYPE html>
 <html>
     <head>
+
         <title>Log In</title>
 
         <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+<<<<<<< HEAD
         <link href="css/style.css" rel="stylesheet" media="screen">
         
+=======
+
+>>>>>>> b6071bfde5435c1e95973f4c5be6aad40c7ff32e
         <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
 
         <script type="text/javascript">
@@ -28,12 +33,20 @@
                     success:function(data){
                         //alert(data.items[0])
                         console.log(data);
-                        localStorage.setItem("current_username", data.logIn.username);
-                        localStorage.setItem("current_userid", data.logIn.id);
-                        window.location.href = 'home.html';
+                        if(data.stat == "error") {  
+                            console.log("Failed!")
+                            console.log(data.code);
+                            $("#error").html(data.code);
+                             $inputs.prop("disabled", false);
+                        } else {
+                            localStorage.setItem("current_username", data.logIn.username);
+                            localStorage.setItem("current_userid", data.logIn.id);
+                            window.location.href = 'home.html';
+                        }
                     }, error:function(err){
                         console.log("Failed!")
                         console.log(err);
+                        $("error").html(err);
                     }
                 });
                 // callback handler that will be called regardless
@@ -76,5 +89,6 @@
                 </form>
             </div>
         </div>
+
     </body>
 </html>
