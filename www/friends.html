@@ -12,7 +12,7 @@
         $.ajax({
           url: "http://localhost:8000/webService.php",
           type: "post",
-          data: {action:'getAllUsers'},
+          data: {action:'getAllUsers', user_id: localStorage.getItem("current_userid")},
           success:function(data){
               console.log(data);
               if(data.stat == "success") {
@@ -81,11 +81,52 @@
       });
 
       function addFriends() {
+        var requests = $("#friend_search").val();
+        $.ajax({
+          url: "http://localhost:8000/webService.php",
+          type: "post",
+          data: {action:'addFriends', requests: JSON.stringify(requests), user_id: localStorage.getItem("current_userid")},
+          success:function(data){
+              console.log(data);
+              if(data.stat == "success") {
+                console.log(data.addFriends);
+                window.location.href = 'friends.html'; 
+                  
+              } else {
+                  console.log("Failed!")
+                  console.log(data.code);
+              }
+              
+          }, error:function(err){
+              console.log("Failed!")
+              console.log(err);
+          }
+        });
 
       }
 
       function acceptRequest(pending_id) {
-        alert(pending_id);
+        $.ajax({
+          url: "http://localhost:8000/webService.php",
+          type: "post",
+          data: {action:'acceptRequest', pending_id: pending_id, user_id: localStorage.getItem("current_userid")},
+          success:function(data){
+              console.log(data);
+              if(data.stat == "success") {
+                console.log(data.code);
+                window.location.href = 'friends.html'; 
+                  
+              } else {
+                  console.log("Failed!")
+                  console.log(data.code);
+              }
+              
+          }, error:function(err){
+              console.log("Failed!")
+              console.log(err);
+          }
+        });
+        
       }
 
       </script>
