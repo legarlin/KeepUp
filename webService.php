@@ -17,6 +17,7 @@
       case 'getPending' : getPending();break;
       case 'acceptRequest' : acceptRequest();break;
       case 'addFriends' : addFriends();break;
+      case 'getComps' : getComps(); break;
     }
   }
 
@@ -294,5 +295,30 @@
     }
     echo json_encode(array('stat' => 'success', 'addFriends' => array('user' => $user, 'requests'=> $requests)));
   }
+
+function getComps() {
+    $user = $_POST['user_id'];
+    $link = mysqli_connect('keepup.cw8gzyaihfxq.us-east-1.rds.amazonaws.com:3306', 'gldr','keepup2014', 'keepup');            
+            
+    if (mysqli_connect_errno()) {
+      trigger_error('Database connection failed: '  . mysqli_connect_error(), E_USER_ERROR);
+    }
+
+    $query = "select id, title, expiration from competition where id in (select competition_id from challenger where user_id= '$user' ) or id in (select id from competition where creator = '$user' )";
+    $rs=$link->query($query);
+
+    $get_comp = array();
+
+    $rs->data_seek(0);
+    if(mysqli_num_rows($rs) != 0) {
+    while($row = $rs->fetch_assoc()){
+        $get_comp[] = $row;
+    }
+    }
+       echo json_encode(array('stat' => 'success', 'competitions' =>json_encode($get_comp)));
+   
+}
+   
+  
 
 ?>
