@@ -4,6 +4,10 @@
         <title>
             Sign Up 
         </title>
+
+        <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+        <link href="css/style.css" rel="stylesheet" media="screen">
+        
         <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
         <script type="text/javascript">
             function signUp() {
@@ -64,16 +68,54 @@
 
     </head>
     <body>
-       Welcome To The Sign Up Page
-        <form onsubmit="signUp()" id="signUpForm">
-            <fieldset>
-                First Name: <input type="text" name="firstname" required><br>
-                Last Name: <input type="text" name="lastname" required><br>
-                Username: <input type="text" name="username" required><br>
-                Password: <input type="password" name="password" required><br>
-                Confirm Password: <input type="password" name="confirmpassword" required><br>
-                <input type="submit">
-            </fieldset>
-        </form>
+        <div class="container page">
+            <div class="header">
+                <h3>Sign Up</h3>
+            </div>
+            <div class="container page-inner" style="margin-left: -90px;">
+                <form class="form-horizontal" onsubmit="signUp()" id="signUpForm">
+                    <div class="control-group">
+                        <label class="control-label form-label" for="firstname">First Name:</label>
+                        <div class="controls">
+                            <input class="input" style="background-color: transparent;" type="text" id="firstname" name="firstname" required>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label form-label" for="lastname">Last Name:</label>
+                        <div class="controls">
+                            <input class="input" style="background-color: transparent;" type="text" id="lastname" name="lastname" required>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label form-label" for="username">Username:</label>
+                        <div class="controls">
+                            <input class="input" style="background-color: transparent;" type="text" id="username" name="username" required>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label form-label" for="password">Password:</label>
+                        <div class="controls">
+                            <input type="password" style="background-color: transparent;" id="password" name="password" required>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label form-label" for="confirmpassword" style="line-height: 12px; margin-top: -3px;">Confirm <br>Password:</label>
+                        <div class="controls">
+                            <input type="password" style="background-color: transparent;" id="confirmpassword" name="confirmpassword" required>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <div class="controls">
+                            <button class="btn btn-info btn-main" type="submit">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
     </body>
 </html>
