@@ -15,7 +15,7 @@
                 // let's select and cache all the fields
                 //var $inputs = $form.find("input, select, button, textarea");
                 // serialize the data in the form
-                //var postData = {'username': $form.find('input[name="username"]').val(), 'password' : $form.find('input[name="password"]').val()}
+                //var postData = {'user_id': localStorage.getItem("current_userid")}
 
                 // let's disable the inputs for the duration of the ajax request
                 // Note: we disable elements AFTER the form data has been serialized.
@@ -23,31 +23,33 @@
                 request = $.ajax({
                     url: "http://localhost:8000/webService.php",
                     type: "post",
-                    data: {action:'myComps', myCompsData: JSON.stringify(postData)},
+                    data: {action:'getComps', user_id: localStorage.getItem("current_userid")},
                     success:function(data){
-                        //alert(data.items[0])
                         console.log(data);
-                       // localStorage.setItem("current_username", data.logIn.username);
-                        localStorage.setItem("current_userid", data.getComps.id);
-                        //window.location.href = 'myCompetitions.html';
+                        var compArray = JSON.parse(data.competitions);
+                        for(var i = 0; i < compArray.length; i++) {
+                        	var compName = compArray[i].title;
+                        	var compExp = compArray[i].expiration;
+                        	$("#competitionsDiv").append("<div style='border-style:solid;border-width:1px' onclick=goToComp(" +compArray[i].id + ")>" + "Name: "+ compName + "<br>" + "Expires: " + compExp + "</div>");
+                        }
+
                     }, error:function(err){
                         console.log("Failed!")
                         console.log(err);
                     }
                 });
-                // callback handler that will be called regardless
-                // if the request failed or succeeded
-                request.always(function () {
-                    // reenable the inputs
-                    $inputs.prop("disabled", false);
-                });
-
-                // prevent default posting of form
-                event.preventDefault();
             }
+            
+            function goToComp(id){
+            	window.location.href = 'competition.html';
+            }
+            
         </script>
     </head>
-    <body>
+    <body onload = "getComps()">
        My Competions
+       <div id = "competitionsDiv">
+       	
+       </div>
     </body>
 </html>
