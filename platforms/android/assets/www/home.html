@@ -4,6 +4,9 @@
         <title>
             Sign Up 
         </title>
+
+        <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+        
         <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
         <script type="text/javascript">
             $( document ).ready(function() {
@@ -33,6 +36,10 @@
             function goToNewCompetition() {
                 window.location.href = 'newCompetition.html';
             }
+            
+            function myComps() { 
+            	window.location.href = 'myCompetitions.html';
+            }
         </script>
         </head>
     <body>
@@ -47,7 +54,7 @@
             
         </div>
 
-        <button>
+        <button onclick = "myComps()">
             My Comps
         </button>
         <button>
