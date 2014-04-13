@@ -4,6 +4,9 @@
         <title>
             Sign Up 
         </title>
+
+        <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+        
         <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
         <script type="text/javascript">
             function signUp() {
@@ -12,7 +15,7 @@
                 var pass1=$form.find('input[name="password"]').val();
                 var pass2=$form.find('input[name="confirmpassword"]').val();
                 if(pass1 != pass2){
-                    alert("Passwords do not match!");
+                    $("#error").html("Passwords do not match!");
                     event.preventDefault();
                     return;
                 }
@@ -44,6 +47,7 @@
                         } else {
                             console.log("Failed!")
                             console.log(data.code);
+                            $("#error").html(data.code);
                         }
                     }, error:function(err){
                         console.log("Failed!")
@@ -65,6 +69,7 @@
     </head>
     <body>
        Welcome To The Sign Up Page
+       <div id = "error"></div>
         <form onsubmit="signUp()" id="signUpForm">
             <fieldset>
                 First Name: <input type="text" name="firstname" required><br>
