@@ -5,7 +5,12 @@
         <title>Log In</title>
 
         <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+<<<<<<< HEAD
+        <link href="css/style.css" rel="stylesheet" media="screen">
+        
+=======
 
+>>>>>>> b6071bfde5435c1e95973f4c5be6aad40c7ff32e
         <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
 
         <script type="text/javascript">
@@ -57,14 +62,33 @@
         </script>
     </head>
     <body>
-       Welcome To The Log In Page
-       <div id = "error"></div>
-        <form onsubmit="logIn()" id="logInForm">
-            <fieldset>
-                Username: <input type="text" name="username" required><br>
-                Password: <input type="password" name="password" required>
-                <input type="submit">
-            </fieldset>
-        </form>
+        <div class="container page">
+            <div class="header">
+                <h3>Log in</h3>
+            </div>
+            <div class="container page-inner" style="margin-left: -90px;">
+                <form class="form-horizontal" onsubmit="logIn()" id="logInForm" style="display: inline">
+                    <div class="control-group">
+                        <label class="control-label form-label" for="username">Username:</label>
+                        <div class="controls">
+                            <input class="input" style="background-color: transparent;" type="text" id="username" name="username" required> 
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label form-label" for="password">Password: </label>
+                        <div class="controls">
+                            <input class="input" style="background-color: transparent;" type="password" id="password" name="password" required>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <div class="controls">
+                            <button class="btn btn-info btn-main" type="submit">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
     </body>
 </html>
