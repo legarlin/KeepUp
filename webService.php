@@ -35,7 +35,6 @@
     $rs->data_seek(0);
     while($row = $rs->fetch_assoc()){
         $output[] = $row['testcol'];
-        
     }
 
     echo json_encode(array('stat' => 'success', 'items' => $output));
