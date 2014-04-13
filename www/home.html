@@ -33,6 +33,10 @@
 
             }
 
+            function goToFriendsPage() {
+                 window.location.href = 'friends.html';
+            }
+
             function goToNewCompetition() {
                 window.location.href = 'newCompetition.html';
             }
@@ -56,7 +60,7 @@
         <button>
             Observing
         </button>
-        <button>
+        <button onclick = "goToFriendsPage()">
             Friends
         </button>
         <button onclick = "logOut()">
