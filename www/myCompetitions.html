@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>My Competitions</title>
+
+        <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+        
+        <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+
+        <script type="text/javascript">
+            var request;
+            function getComps() {
+
+                //var $form = $('#logInForm');
+                // let's select and cache all the fields
+                //var $inputs = $form.find("input, select, button, textarea");
+                // serialize the data in the form
+                //var postData = {'username': $form.find('input[name="username"]').val(), 'password' : $form.find('input[name="password"]').val()}
+
+                // let's disable the inputs for the duration of the ajax request
+                // Note: we disable elements AFTER the form data has been serialized.
+                //$inputs.prop("disabled", true);
+                request = $.ajax({
+                    url: "http://localhost:8000/webService.php",
+                    type: "post",
+                    data: {action:'myComps', myCompsData: JSON.stringify(postData)},
+                    success:function(data){
+                        //alert(data.items[0])
+                        console.log(data);
+                       // localStorage.setItem("current_username", data.logIn.username);
+                        localStorage.setItem("current_userid", data.getComps.id);
+                        //window.location.href = 'myCompetitions.html';
+                    }, error:function(err){
+                        console.log("Failed!")
+                        console.log(err);
+                    }
+                });
+                // callback handler that will be called regardless
+                // if the request failed or succeeded
+                request.always(function () {
+                    // reenable the inputs
+                    $inputs.prop("disabled", false);
+                });
+
+                // prevent default posting of form
+                event.preventDefault();
+            }
+        </script>
+    </head>
+    <body>
+       My Competions
+    </body>
+</html>
