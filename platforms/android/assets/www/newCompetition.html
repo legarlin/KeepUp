@@ -15,7 +15,8 @@
 
             $(document).ready(function() {
 
-                 $.ajax({
+                document.getElementById('comp_expiration').setAttribute("min", currentDateTime());
+                $.ajax({
                     url: "http://localhost:8000/webService.php",
                     type: "post",
                     data: {action:'getFriends', user_id: localStorage.getItem("current_userid")},
@@ -38,6 +39,30 @@
                
             });
 
+            function currentDateTime() {
+                var today = new Date();
+                var dd = today.getDate();
+                if(dd<10)
+                    dd = '0' + dd;
+                var mm = today.getMonth()+1; //January is 0!
+                if(mm<10)
+                    mm = '0' + mm;
+                var yyyy = today.getFullYear();
+                var hour = today.getHours();
+                if(hour<10)
+                    hour = '0' + hour;
+                var minute = today.getMinutes();
+                if(minute<10)
+                    minute = '0' + minute;
+                var second = today.getSeconds();
+                if(second<10)
+                    second = '0' + second;
+
+
+                var full_dateTime = yyyy + "-" + mm + "-" + dd + "T" + hour + ":" + minute + ":" + second;
+                return full_dateTime;
+            }
+
             function new_comp() {
                 
                 var $form = $('#newCompForm');
@@ -45,32 +70,34 @@
                 // let's select and cache all the fields
                 var $inputs = $form.find("input, select, button, textarea");
                 // serialize the data in the form
+    
                 var postData = 
                 {
-                    'title': $form.find('input[name="title"]').val(), 
+                    'title': $form.find('input[name="title"]').val(),
+                    'creator' : localStorage.getItem("current_userid"),
                     'description' : $form.find('textarea[name="description"]').val(),
-                    'Expiration' : $form.find('input[name="expiration"]').val(),
-                    'required_evidence' : $form.find('input[name="required_evidence"]').val()
+                    'expiration' : $form.find('input[name="expiration"]').val().slice(0, 19).replace('T', ' '),
+                    'required_evidence' : $form.find('input[name="required_evidence"]').val(),
+                    'challengers' : $form.find("input[id=challenger_input]").val()
                 }
 
                 if ($('#privacy_checkbox').prop("checked")) {
-                    postData['prv'] = 1;
-                }
-
-                /*
+                    postData['prv'] = 0;
+                } else 
+                     postData['prv'] = 1;
+                
+                console.log(postData);
                 // let's disable the inputs for the duration of the ajax request
                 // Note: we disable elements AFTER the form data has been serialized.
                 $inputs.prop("disabled", true);
                 request = $.ajax({
                     url: "http://localhost:8000/webService.php",
                     type: "post",
-                    data: {action:'newComp', signUpData: JSON.stringify(postData)},
+                    data: {action:'newComp', newCompData: JSON.stringify(postData)},
                     success:function(data){
                         if(data.stat == "success") {
                             console.log(data);
-                            localStorage.setItem("current_username", data.signUp.username);
-                            localStorage.setItem("current_userid", data.signUp.id);
-                            window.location.href = 'home.html'; 
+                            //window.location.href = 'home.html'; 
                         } else {
                             console.log("Failed!")
                             console.log(data.code);
@@ -86,7 +113,7 @@
                     // reenable the inputs
                     $inputs.prop("disabled", false);
                 });
-                */
+                
                 // prevent default posting of form
                 event.preventDefault();
                
@@ -100,7 +127,7 @@
             <fieldset>
                 Title <input type="text" name="title" required><br>
                 Description <textarea name="description" required> </textarea><br>
-                Expiration: <input type="datetime-local" name="expiration" required><br>
+                Expiration: <input type="datetime-local" id = "comp_expiration" name="expiration" required><br>
                 Amount of Evidence Required: <input type="number" name="required_evidence" min="1" required><br>
                 Private: <input type="checkbox" name="privacy" id = "privacy_checkbox"> <br>
                 Challengers:  <input type="text" id="challenger_input" style="display: none;">
