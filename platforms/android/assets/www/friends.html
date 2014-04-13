@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Friends</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+      <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+      <link rel="stylesheet" href="css/token-input.css"/>
+      <script type="text/javascript" src="js/jquery.tokeninput.js"></script>
+
+      <script type="text/javascript">
+        var curr_user = localStorage.getItem("current_userid");
+        $.ajax({
+          url: "http://localhost:8000/webService.php",
+          type: "post",
+          data: {action:'getAllUsers', user_id: localStorage.getItem("current_userid")},
+          success:function(data){
+              console.log(data);
+              if(data.stat == "success") {
+                  $("#friend_search").tokenInput(JSON.parse(data.users), {preventDuplicates: true});
+                  
+              } else {
+                  console.log("Failed!")
+                  console.log(data.code);
+              }
+              
+          }, error:function(err){
+              console.log("Failed!")
+              console.log(err);
+          }
+      });
+
+      $.ajax({
+          url: "http://localhost:8000/webService.php",
+          type: "post",
+          data: {action:'getPending', user_id: localStorage.getItem("current_userid")},
+          success:function(data){
+              console.log(data);
+              if(data.stat == "success") {
+                var pendings = JSON.parse(data.pendings);
+                var arrayLength = pendings.length;
+                for (var i = 0; i < arrayLength; i++) {
+                  var pendingName = pendings[i].name;
+                  var pendingId = pendings[i].id;
+                  $("#pendingList").append("<li>" + pendingName + "<button onclick =acceptRequest("+pendingId+")> Accept </button> </li>")
+                }
+                  
+              } else {
+                console.log("Failed!")
+                console.log(data.code);
+              }
+              
+          }, error:function(err){
+              console.log("Failed!")
+              console.log(err);
+          }
+      });
+
+      $.ajax({
+        url: "http://localhost:8000/webService.php",
+        type: "post",
+        data: {action:'getFriends', user_id: localStorage.getItem("current_userid")},
+        success:function(data){
+            console.log(data);
+            if(data.stat == "success") {
+                var friends = JSON.parse(data.friends);
+                var arrayLength = friends.length;
+                for (var i = 0; i < arrayLength; i++) {
+                  var friendName = friends[i].name;
+                  $("#friendList").append('<li>' + friendName + '</li>');
+                }
+                
+            } else {
+                console.log("Failed!")
+                console.log(data.code);
+            }
+            
+        }, error:function(err){
+            console.log("Failed!")
+            console.log(err);
+        }
+      });
+
+      function addFriends() {
+        var requests = $("#friend_search").val();
+        $.ajax({
+          url: "http://localhost:8000/webService.php",
+          type: "post",
+          data: {action:'addFriends', requests: JSON.stringify(requests), user_id: localStorage.getItem("current_userid")},
+          success:function(data){
+              console.log(data);
+              if(data.stat == "success") {
+                console.log(data.addFriends);
+                window.location.href = 'friends.html'; 
+                  
+              } else {
+                  console.log("Failed!")
+                  console.log(data.code);
+              }
+              
+          }, error:function(err){
+              console.log("Failed!")
+              console.log(err);
+          }
+        });
+
+      }
+
+      function acceptRequest(pending_id) {
+        $.ajax({
+          url: "http://localhost:8000/webService.php",
+          type: "post",
+          data: {action:'acceptRequest', pending_id: pending_id, user_id: localStorage.getItem("current_userid")},
+          success:function(data){
+              console.log(data);
+              if(data.stat == "success") {
+                console.log(data.code);
+                window.location.href = 'friends.html'; 
+                  
+              } else {
+                  console.log("Failed!")
+                  console.log(data.code);
+              }
+              
+          }, error:function(err){
+              console.log("Failed!")
+              console.log(err);
+          }
+        });
+        
+      }
+
+      </script>
+
+  </head>
+  <body>
+    <h4> Add Friends </h4>
+    <input type="text" id="friend_search" style="display: none;">
+    <button onclick = "addFriends()"> Submit </button>
+
+    <h4>Pending Friend Requests </h4>
+    <div id = "pendingDiv">
+      <ul id = "pendingList">
+
+      </ul>
+    </div>
+    <h4> Friends</h4>
+    <div id = "friendDiv">
+      <ul id = "friendList">
+
+      </ul>
+    </div>
+
+  </body>
+</html>

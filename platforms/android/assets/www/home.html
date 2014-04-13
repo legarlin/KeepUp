@@ -4,6 +4,9 @@
         <title>
             Sign Up 
         </title>
+
+        <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+        
         <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
         <script type="text/javascript">
             $( document ).ready(function() {
@@ -30,6 +33,10 @@
 
             }
 
+            function goToFriendsPage() {
+                 window.location.href = 'friends.html';
+            }
+
             function goToNewCompetition() {
                 window.location.href = 'newCompetition.html';
             }
@@ -53,7 +60,7 @@
         <button>
             Observing
         </button>
-        <button>
+        <button onclick = "goToFriendsPage()">
             Friends
         </button>
         <button onclick = "logOut()">
