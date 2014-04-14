@@ -11,10 +11,11 @@
 	var request;
 	var request2;
 	var request3;
-	function showComp() {
+	$(document).ready(function() {
 
 		var compCreator;
 		var compChallenger = [];
+		var isObserver;
 		var compName;
 		var compExp;
 		var compDes;
@@ -102,6 +103,27 @@
 																				+ challengedName
 																				+ "</div>");
 
+													$.ajax({
+												      url: "http://192.168.56.1:3000/webservice.php",
+												      type: "post",
+												      data: {action:'isObserver', user_id: localStorage.getItem("current_userid"), competition_id : localStorage.getItem("current_comp")},
+												      success:function(data){
+												          if(data.stat == "success") {
+												          	console.log(data);
+												          	if(JSON.parse(data.observer)==true || compCreator == localStorage.getItem("current_userid") || compChallenger.indexOf(localStorage.getItem("current_userid")) > -1) {
+												          		$("#buttonDiv").append("<button onclick=observe() id = observeButton disabled>Observe</button>");
+												          	} else {
+												          		$("#buttonDiv").append("<button onclick=observe() id = observeButton>Observe</button>");
+												          	}
+												          } else {
+												              console.log("Failed!")
+												              console.log(data.code);
+												          }
+												      }, error:function(err){
+												          console.log("Failed!")
+												          console.log(err);
+												      }
+												  });
 													},
 													error : function(err) {
 														console.log("Failed!")
@@ -122,22 +144,47 @@
 						console.log(err);
 					}
 				});
+	
 
-	}
+
+	});
 
 	function myComps() {
 		window.location.href = 'myCompetitions.html';
 	}
+
+	function observe() {
+		$.ajax({
+      url: "http://192.168.56.1:3000/webservice.php",
+      type: "post",
+      data: {action:'addObserver', user_id: localStorage.getItem("current_userid"), competition_id: localStorage.getItem("current_comp")},
+      success:function(data){
+          if(data.stat == "success") {
+          		console.log(data);
+              window.location.href = 'competition.html';
+          } else {
+              console.log("Failed!")
+              console.log(data.code);
+              $("#error").html(data.code);
+          }
+      }, error:function(err){
+          console.log("Failed!")
+          console.log(err);
+      }
+  	});
+	}
+
 </script>
 </head>
 
 
-
-<body onload="showComp()">
+<body>
 
 	<button onclick="myComps()">My Competitions</button>
 	<!--         <button onclick="getPhoto(pictureSource.PHOTOLIBRARY);">From Photo Library</button><br> -->
 	<!--     	<img style="display:none;" id="largeImage" src="" /> -->
-	<div id="competitionDiv"></div>
+	<span id = "buttonDiv"></span>
+	<div id="competitionDiv">
+	</div>
 </body>
 </html>
