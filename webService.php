@@ -18,9 +18,10 @@
       case 'acceptRequest' : acceptRequest();break;
       case 'addFriends' : addFriends();break;
       case 'getComps' : getComps(); break;
-    case 'getComp' : getComp(); break;
-    case 'getUser' : getUser(); break;
-    case 'getUsers' : getUsers(); break;
+      case 'getComp' : getComp(); break;
+      case 'getUser' : getUser(); break;
+      case 'getUsers' : getUsers(); break;
+      case 'getFriendComps' : getFriendComps(); break;
     }
   }
 
@@ -341,64 +342,78 @@ function getComp() {
     $query2 = "select user_id from challenger where competition_id = '$comp'";
     $rs2=$link->query($query2);
 
-     if(mysqli_num_rows($rs2) != 0) {
-    while($row = $rs2->fetch_assoc()){
-        $get_comp[] = $row;
+    if(mysqli_num_rows($rs2) != 0) {
+      while($row = $rs2->fetch_assoc()){
+          $get_comp[] = $row;
+        }
     }
-    }
-    
-   
-
-   
- 
-       echo json_encode(array('stat' => 'success', 'competitions' =>json_encode($get_comp)));
+    echo json_encode(array('stat' => 'success', 'competitions' =>json_encode($get_comp)));
    
 }
 
 function getUser() {
-  
-    $user = $_POST['user_id'];
-    $link = mysqli_connect('keepup.cw8gzyaihfxq.us-east-1.rds.amazonaws.com:3306', 'gldr','keepup2014', 'keepup');            
-            
-    if (mysqli_connect_errno()) {
-      trigger_error('Database connection failed: '  . mysqli_connect_error(), E_USER_ERROR);
-    }
+  $user = $_POST['user_id'];
+  $link = mysqli_connect('keepup.cw8gzyaihfxq.us-east-1.rds.amazonaws.com:3306', 'gldr','keepup2014', 'keepup');            
+          
+  if (mysqli_connect_errno()) {
+    trigger_error('Database connection failed: '  . mysqli_connect_error(), E_USER_ERROR);
+  }
 
-    $query = "select * from user where id = '$user'";
-    $rs=$link->query($query);
+  $query = "select * from user where id = '$user'";
+  $rs=$link->query($query);
 
-    $get_user = array();
+  $get_user = array();
 
-    $rs->data_seek(0);
-    $get_user[0] = $rs->fetch_assoc();
-  
+  $rs->data_seek(0);
+  $get_user[0] = $rs->fetch_assoc();
 
-   
-
-   
- 
-       echo json_encode(array('stat' => 'success', 'competitions' =>json_encode($get_user)));
+  echo json_encode(array('stat' => 'success', 'competitions' =>json_encode($get_user)));
 }
   
 function getUsers() {
-    $user = $_POST['user_id'];
-    $link = mysqli_connect('keepup.cw8gzyaihfxq.us-east-1.rds.amazonaws.com:3306', 'gldr','keepup2014', 'keepup');            
-            
-    if (mysqli_connect_errno()) {
-      trigger_error('Database connection failed: '  . mysqli_connect_error(), E_USER_ERROR);
-    }
-    $i = 0;
-    $get_user=array();
-    foreach ($user as $u){
-      $query = "select username from user where id = '$u'";
-      $rs=$link->query($query);
-      $rs->data_seek(0);
-      $get_user[$i] = $rs->fetch_assoc();
-      ++$i;
-    }
-   
+  $user = $_POST['user_id'];
+  $link = mysqli_connect('keepup.cw8gzyaihfxq.us-east-1.rds.amazonaws.com:3306', 'gldr','keepup2014', 'keepup');            
+          
+  if (mysqli_connect_errno()) {
+    trigger_error('Database connection failed: '  . mysqli_connect_error(), E_USER_ERROR);
+  }
+  $i = 0;
+  $get_user=array();
+  foreach ($user as $u){
+    $query = "select username from user where id = '$u'";
+    $rs=$link->query($query);
+    $rs->data_seek(0);
+    $get_user[$i] = $rs->fetch_assoc();
+    ++$i;
+  }
  
-       echo json_encode(array('stat' => 'success', 'challengers' =>json_encode($get_user)));
+  echo json_encode(array('stat' => 'success', 'challengers' =>json_encode($get_user)));
 }
+
+function getFriendComps() {
+  $user = $_POST['friends'];
+  $link = mysqli_connect('keepup.cw8gzyaihfxq.us-east-1.rds.amazonaws.com:3306', 'gldr','keepup2014', 'keepup');            
+          
+  if (mysqli_connect_errno()) {
+    trigger_error('Database connection failed: '  . mysqli_connect_error(), E_USER_ERROR);
+  }
+
+  
+  $i = 0;
+  $get_comp = array();
+  foreach ($user as $u) {
+    $query = "select id, title, creator, expiration from competition where id in (select competition_id from challenger where user_id= '$u' ) or id in (select id from competition where creator = '$u' )";
+    $rs=$link->query($query);
+    $rs->data_seek(0);
+    if(mysqli_num_rows($rs) != 0) {
+      while($row = $rs->fetch_assoc()){
+        $get_comp[] = $row;
+      }
+    }
+  }
+
+  echo json_encode(array('stat' => 'success', 'competitions' =>json_encode($get_comp)));
+}
+
 
 ?>

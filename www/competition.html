@@ -24,7 +24,7 @@
 		var challengedName = "";
 		request = $
 				.ajax({
-					url : "http://localhost:8000/webService.php",
+					url : "http://192.168.56.1:3000/webservice.php",
 					type : "post",
 					data : {
 						action : 'getComp',
@@ -45,7 +45,7 @@
 
 						request2 = $
 								.ajax({
-									url : "http://localhost:8000/webService.php",
+									url : "http://192.168.56.1:3000/webservice.php",
 									type : "post",
 									data : {
 										action : 'getUser',
@@ -59,7 +59,7 @@
 
 										request3 = $
 												.ajax({
-													url : "http://localhost:8000/webService.php",
+													url : "http://192.168.56.1:3000/webservice.php",
 													type : "post",
 													data : {
 														action : 'getUsers',
