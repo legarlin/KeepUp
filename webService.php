@@ -22,6 +22,9 @@
       case 'getUser' : getUser(); break;
       case 'getUsers' : getUsers(); break;
       case 'getFriendComps' : getFriendComps(); break;
+      case 'isObserver' : isObserver(); break; 
+      case 'addObserver' : addObserver();break;
+      case 'getObserving' :getObserving();break;
     }
   }
 
@@ -123,6 +126,7 @@
     $decoded = json_decode($_POST['newCompData'],true);
     $title = $decoded['title'];
     $creator = $decoded['creator'];
+    $creator_username = $decoded['creator_username'];
     $description = $decoded['description'];
     $expiration = $decoded['expiration'];
     $required_evidence = $decoded['required_evidence'];
@@ -135,7 +139,7 @@
       trigger_error('Database connection failed: '  . mysqli_connect_error(), E_USER_ERROR);
     }
 
-    $insert = "INSERT into competition (title, description, creator, expiration, public, required_evidence) VALUES ('$title', '$description', '$creator', '$expiration', $prv, '$required_evidence')";
+    $insert = "INSERT into competition (title, description, creator, expiration, public, required_evidence, creator_username) VALUES ('$title', '$description', '$creator', '$expiration', $prv, '$required_evidence', '$creator_username')";
 
     $rs=$link->query($insert);
     $comp_id = mysqli_insert_id($link);
@@ -402,7 +406,7 @@ function getFriendComps() {
   $i = 0;
   $get_comp = array();
   foreach ($user as $u) {
-    $query = "select id, title, creator, expiration from competition where id in (select competition_id from challenger where user_id= '$u' ) or id in (select id from competition where creator = '$u' )";
+    $query = "select id, title, creator, creator_username, expiration from competition where id in (select competition_id from challenger where user_id= '$u' ) or id in (select id from competition where creator = '$u' )";
     $rs=$link->query($query);
     $rs->data_seek(0);
     if(mysqli_num_rows($rs) != 0) {
@@ -413,6 +417,71 @@ function getFriendComps() {
   }
 
   echo json_encode(array('stat' => 'success', 'competitions' =>json_encode($get_comp)));
+}
+
+function isObserver() {
+  $user = $_POST['user_id'];
+  $comp = $_POST['competition_id'];
+  $link = mysqli_connect('keepup.cw8gzyaihfxq.us-east-1.rds.amazonaws.com:3306', 'gldr','keepup2014', 'keepup');            
+          
+  if (mysqli_connect_errno()) {
+    trigger_error('Database connection failed: '  . mysqli_connect_error(), E_USER_ERROR);
+  }
+
+  $query = "SELECT * from observer where user_id = '$user' and competition_id ='$comp'";
+  $rs=$link->query($query);
+  if($rs) {
+    $rs->data_seek(0);
+    if(mysqli_num_rows($rs) != 0) {
+      echo json_encode(array('stat' => 'success', 'observer' =>true));
+    } else {
+      echo json_encode(array('stat' => 'success', 'observer' =>false));
+    }
+  } else {
+      die(json_encode(array('stat' => 'error', 'code' => "Failure on isObserver")));
+  }
+
+}
+
+function addObserver() {
+  $user = $_POST['user_id'];
+  $comp = $_POST['competition_id'];
+  $link = mysqli_connect('keepup.cw8gzyaihfxq.us-east-1.rds.amazonaws.com:3306', 'gldr','keepup2014', 'keepup');            
+          
+  if (mysqli_connect_errno()) {
+    trigger_error('Database connection failed: '  . mysqli_connect_error(), E_USER_ERROR);
+  }
+
+  $query = "INSERT into observer (user_id,competition_id) values ('$user','$comp')";
+  $rs=$link->query($query);
+    if($rs) {
+      echo json_encode(array('stat' => 'success', 'observe' => array('user' => $user, 'comp'=> $comp)));
+    } else {
+       die(json_encode(array('stat' => 'error', 'code' => "Error adding Observer!")));
+    }
+}
+
+function getObserving() {
+  $user = $_POST['user_id'];
+  $link = mysqli_connect('keepup.cw8gzyaihfxq.us-east-1.rds.amazonaws.com:3306', 'gldr','keepup2014', 'keepup');            
+          
+  if (mysqli_connect_errno()) {
+    trigger_error('Database connection failed: '  . mysqli_connect_error(), E_USER_ERROR);
+  }
+
+  $query = "SELECT id, expiration, creator_username, creator, title from competition where id in (select competition_id from observer where user_id = '$user')";
+  $rs=$link->query($query);
+    if($rs) {
+      $get_observing = array();
+      if(mysqli_num_rows($rs) != 0) {
+        while($row = $rs->fetch_assoc()){
+          $get_observing[] = $row;
+        }
+      }
+      echo json_encode(array('stat' => 'success', 'observing' =>json_encode($get_observing)));
+    } else {
+       die(json_encode(array('stat' => 'error', 'code' => "Error getting observing!")));
+    }
 }
 
 

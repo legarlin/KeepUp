@@ -37,7 +37,13 @@
                                     for(var i = 0; i < compArray.length; i++) {
                                         var compName = compArray[i].title;
                                         var compExp = compArray[i].expiration;
+<<<<<<< HEAD
                                         $("#competitionsDiv").append("<div class='competition' onclick=goToComp(" +compArray[i].id + ")>" + "Name: "+ compName + "<br>" + "Expires: " + compExp + "</div>");
+=======
+                                        var compCreator = compArray[i].creator_username;
+                                        $("#competitionsDiv").append("<div style='border-style:solid;border-width:1px' onclick=goToComp(" +compArray[i].id + ")>" + "Name: "+ compName + " Creator: " + compCreator +
+                                            "<br>" + "Expires: " + compExp + "</div>");
+>>>>>>> dbc8979a80cb552bf08c8c82b080e4a62c7a4705
                                     }
 
                                 }, error:function(err){
@@ -89,6 +95,10 @@
             
             function myComps() { 
             	window.location.href = 'myCompetitions.html';
+            }
+
+            function myObserving() { 
+                window.location.href = 'myObserving.html';
             }
 
             function goToComp(id){
