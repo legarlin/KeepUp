@@ -8,15 +8,67 @@
       <script type="text/javascript" src="js/jquery.tokeninput.js"></script>
 
       <script type="text/javascript">
-        var curr_user = localStorage.getItem("current_userid");
+        $(document).ready(function() {
+          var curr_user = localStorage.getItem("current_userid");
+          $.ajax({
+            url: "http://192.168.56.1:3000/webservice.php",
+            type: "post",
+            data: {action:'getAllUsers', user_id: localStorage.getItem("current_userid")},
+            success:function(data){
+                console.log(data);
+                if(data.stat == "success") {
+                    $("#friend_search").tokenInput(JSON.parse(data.users), {preventDuplicates: true});
+                    
+                } else {
+                    console.log("Failed!")
+                    console.log(data.code);
+                }
+                
+            }, error:function(err){
+                console.log("Failed!")
+                console.log(err);
+            }
+        });
+
         $.ajax({
-          url: "http://localhost:8000/webService.php",
+            url: "http://192.168.56.1:3000/webservice.php",
+            type: "post",
+            data: {action:'getPending', user_id: localStorage.getItem("current_userid")},
+            success:function(data){
+                console.log(data);
+                if(data.stat == "success") {
+                  var pendings = JSON.parse(data.pendings);
+                  var arrayLength = pendings.length;
+                  for (var i = 0; i < arrayLength; i++) {
+                    var pendingName = pendings[i].name;
+                    var pendingId = pendings[i].id;
+                    $("#pendingList").append("<li>" + pendingName + "<button onclick =acceptRequest("+pendingId+")> Accept </button> </li>")
+                  }
+                    
+                } else {
+                  console.log("Failed!")
+                  console.log(data.code);
+                }
+                
+            }, error:function(err){
+                console.log("Failed!")
+                console.log(err);
+            }
+        });
+
+        $.ajax({
+          url: "http://192.168.56.1:3000/webservice.php",
           type: "post",
-          data: {action:'getAllUsers', user_id: localStorage.getItem("current_userid")},
+          data: {action:'getFriends', user_id: localStorage.getItem("current_userid")},
           success:function(data){
               console.log(data);
               if(data.stat == "success") {
-                  $("#friend_search").tokenInput(JSON.parse(data.users), {preventDuplicates: true});
+                  var friends = JSON.parse(data.friends);
+                  var arrayLength = friends.length;
+                  for (var i = 0; i < arrayLength; i++) {
+                    var friendName = friends[i].name;
+                    $("#friendList").append('<li>' + friendName + '</li>');
+                  }
                   
               } else {
                   console.log("Failed!")
@@ -27,63 +79,13 @@
               console.log("Failed!")
               console.log(err);
           }
-      });
-
-      $.ajax({
-          url: "http://localhost:8000/webService.php",
-          type: "post",
-          data: {action:'getPending', user_id: localStorage.getItem("current_userid")},
-          success:function(data){
-              console.log(data);
-              if(data.stat == "success") {
-                var pendings = JSON.parse(data.pendings);
-                var arrayLength = pendings.length;
-                for (var i = 0; i < arrayLength; i++) {
-                  var pendingName = pendings[i].name;
-                  var pendingId = pendings[i].id;
-                  $("#pendingList").append("<li>" + pendingName + "<button onclick =acceptRequest("+pendingId+")> Accept </button> </li>")
-                }
-                  
-              } else {
-                console.log("Failed!")
-                console.log(data.code);
-              }
-              
-          }, error:function(err){
-              console.log("Failed!")
-              console.log(err);
-          }
-      });
-
-      $.ajax({
-        url: "http://localhost:8000/webService.php",
-        type: "post",
-        data: {action:'getFriends', user_id: localStorage.getItem("current_userid")},
-        success:function(data){
-            console.log(data);
-            if(data.stat == "success") {
-                var friends = JSON.parse(data.friends);
-                var arrayLength = friends.length;
-                for (var i = 0; i < arrayLength; i++) {
-                  var friendName = friends[i].name;
-                  $("#friendList").append('<li>' + friendName + '</li>');
-                }
-                
-            } else {
-                console.log("Failed!")
-                console.log(data.code);
-            }
-            
-        }, error:function(err){
-            console.log("Failed!")
-            console.log(err);
-        }
+        });
       });
 
       function addFriends() {
         var requests = $("#friend_search").val();
         $.ajax({
-          url: "http://localhost:8000/webService.php",
+          url: "http://192.168.56.1:3000/webservice.php",
           type: "post",
           data: {action:'addFriends', requests: JSON.stringify(requests), user_id: localStorage.getItem("current_userid")},
           success:function(data){
@@ -107,7 +109,7 @@
 
       function acceptRequest(pending_id) {
         $.ajax({
-          url: "http://localhost:8000/webService.php",
+          url: "http://192.168.56.1:3000/webservice.php",
           type: "post",
           data: {action:'acceptRequest', pending_id: pending_id, user_id: localStorage.getItem("current_userid")},
           success:function(data){

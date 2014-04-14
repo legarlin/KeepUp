@@ -17,7 +17,7 @@
             function logOut() {
                 var curr_user = localStorage.getItem("current_username");
                 $.ajax({
-                    url: "http://localhost:8000/webService.php",
+                    url: "http://192.168.56.1:3000/webservice.php",
                     type: "post",
                     data: {action:'logOut', user: curr_user},
                     success:function(data){

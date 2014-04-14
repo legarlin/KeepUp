@@ -23,7 +23,7 @@
                 // Note: we disable elements AFTER the form data has been serialized.
                 $inputs.prop("disabled", true);
                 request = $.ajax({
-                    url: "http://localhost:8000/webService.php",
+                    url: "http://localhost:8000/index.php",
                     type: "post",
                     data: {action:'logIn', logInData: JSON.stringify(postData)},
                     success:function(data){
