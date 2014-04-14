@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+        <title>Log In</title>
+
+        <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+        <link href="css/style.css" rel="stylesheet" media="screen">
+        <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+
+        <script type="text/javascript">
+            var request;
+            function logIn() {
+
+                var $form = $('#logInForm');
+                // let's select and cache all the fields
+                var $inputs = $form.find("input, select, button, textarea");
+                // serialize the data in the form
+                var postData = {'username': $form.find('input[name="username"]').val(), 'password' : $form.find('input[name="password"]').val()}
+
+                // let's disable the inputs for the duration of the ajax request
+                // Note: we disable elements AFTER the form data has been serialized.
+                $inputs.prop("disabled", true);
+                request = $.ajax({
+                    url: "http://192.168.56.1:3000/webservice.php",
+                    type: "post",
+                    data: {action:'logIn', logInData: JSON.stringify(postData)},
+                    success:function(data){
+                        //alert(data.items[0])
+                        console.log(data);
+                        if(data.stat == "error") {  
+                            console.log("Failed!")
+                            console.log(data.code);
+                            $("#error").html(data.code);
+                             $inputs.prop("disabled", false);
+                        } else {
+                            localStorage.setItem("current_username", data.logIn.username);
+                            localStorage.setItem("current_userid", data.logIn.id);
+                            window.location.href = 'home.html';
+                        }
+                    }, error:function(err){
+                        console.log("Failed!")
+                        console.log(err);
+                        $("error").html(err);
+                    }
+                });
+                // callback handler that will be called regardless
+                // if the request failed or succeeded
+                request.always(function () {
+                    // reenable the inputs
+                    $inputs.prop("disabled", false);
+                });
+
+                // prevent default posting of form
+                event.preventDefault();
+            }
+        </script>
+    </head>
+    <body>
+        <div class="container page">
+            <div class="header">
+                <h4>Log in</h4>
+            </div>
+            <div class="container page-inner" style="margin-left: -90px;">
+                <form class="form-horizontal" onsubmit="logIn()" id="logInForm" style="display: inline">
+                    <div class="control-group">
+                        <label class="control-label form-label" for="username">Username:</label>
+                        <div class="controls">
+                            <input class="input" style="background-color: transparent;" type="text" id="username" name="username" required> 
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label form-label" for="password">Password: </label>
+                        <div class="controls">
+                            <input class="input" style="background-color: transparent;" type="password" id="password" name="password" required>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <div class="controls">
+                            <button class="btn btn-info btn-main" type="submit">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </body>
+</html>

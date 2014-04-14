@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            Sign Up 
+        </title>
+
+        <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+        
+        <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                var curr_user = localStorage.getItem("current_username");
+                $("#result").append(curr_user);
+
+                var friends = [];
+                $.ajax({
+                    url: "http://192.168.56.1:3000/webservice.php",
+                    type: "post",
+                    data: {action:'getFriends', user_id: localStorage.getItem("current_userid")},
+                    success:function(data){
+                        if(data.stat=="success") {
+                            console.log(data);
+                            var friendData = JSON.parse(data.friends);
+                            for(var x = 0; x < friendData.length; x++) {
+                                friends.push(friendData[x].id);
+                            }
+                            console.log(friends);
+                            $.ajax({
+                                url: "http://192.168.56.1:3000/webservice.php",
+                                type: "post",
+                                data: {action:'getFriendComps', friends: friends},
+                                success:function(data){
+                                    console.log(data);
+                                    var compArray = JSON.parse(data.competitions);
+                                    for(var i = 0; i < compArray.length; i++) {
+                                        var compName = compArray[i].title;
+                                        var compExp = compArray[i].expiration;
+                                        $("#competitionsDiv").append("<div style='border-style:solid;border-width:1px' onclick=goToComp(" +compArray[i].id + ")>" + "Name: "+ compName + "<br>" + "Expires: " + compExp + "</div>");
+                                    }
+
+                                }, error:function(err){
+                                    console.log("Failed!")
+                                    console.log(err);
+                                }
+                            });
+                        } else {
+                            console.log("Failed!")
+                            console.log(data.code);
+                        }
+                    }, error:function(err) {
+                        console.log("Failed!")
+                        console.log(err);
+                    }
+                });
+
+                
+        
+
+            });
+
+            function logOut() {
+                var curr_user = localStorage.getItem("current_username");
+                $.ajax({
+                    url: "http://192.168.56.1:3000/webservice.php",
+                    type: "post",
+                    data: {action:'logOut', user: curr_user},
+                    success:function(data){
+                        console.log(data);
+                        localStorage.removeItem("current_username");
+                        localStorage.removeItem("current_userid");
+                        window.location.href = 'index.html';
+                    }, error:function(err){
+                        console.log("Failed!")
+                        console.log(err);
+                    }
+                });
+
+            }
+
+            function goToFriendsPage() {
+                 window.location.href = 'friends.html';
+            }
+
+            function goToNewCompetition() {
+                window.location.href = 'newCompetition.html';
+            }
+            
+            function myComps() { 
+            	window.location.href = 'myCompetitions.html';
+            }
+
+            function goToComp(id){
+                window.location.href = 'competition.html';
+                localStorage.setItem("current_comp", id);
+            }
+        </script>
+        </head>
+    <body>
+        <button style = "float:right" onclick = "goToNewCompetition()">
+            New Competition
+        </button>
+        <h3 id = "result">
+            Welcome
+        </h3>
+
+        <div id = "competitionsDiv">
+            
+        </div>
+
+        <button onclick = "myComps()">
+            My Comps
+        </button>
+        <button>
+            Observing
+        </button>
+        <button onclick = "goToFriendsPage()">
+            Friends
+        </button>
+        <button onclick = "logOut()">
+            Log Out
+        </button>
+    </body>
+</html>
