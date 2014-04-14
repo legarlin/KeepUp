@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            Sign Up 
+        </title>
+
+        <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+        
+        <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+        <script type="text/javascript">
+            $( document ).ready(function() {
+                var curr_user = localStorage.getItem("current_username");
+                $("#result").append(curr_user);
+            });
+
+            function logOut() {
+                var curr_user = localStorage.getItem("current_username");
+                $.ajax({
+                    url: "http://192.168.56.1:3000/webservice.php",
+                    type: "post",
+                    data: {action:'logOut', user: curr_user},
+                    success:function(data){
+                        console.log(data);
+                        localStorage.removeItem("current_username");
+                        localStorage.removeItem("current_userid");
+                        window.location.href = 'index.html';
+                    }, error:function(err){
+                        console.log("Failed!")
+                        console.log(err);
+                    }
+                });
+
+            }
+
+            function goToFriendsPage() {
+                 window.location.href = 'friends.html';
+            }
+
+            function goToNewCompetition() {
+                window.location.href = 'newCompetition.html';
+            }
+            
+            function myComps() { 
+            	window.location.href = 'myCompetitions.html';
+            }
+        </script>
+        </head>
+    <body>
+        <button style = "float:right" onclick = "goToNewCompetition()">
+            New Competition
+        </button>
+        <h3 id = "result">
+            Welcome
+        </h3>
+
+        <div id = "competitions_list">
+            
+        </div>
+
+        <button onclick = "myComps()">
+            My Comps
+        </button>
+        <button>
+            Observing
+        </button>
+        <button onclick = "goToFriendsPage()">
+            Friends
+        </button>
+        <button onclick = "logOut()">
+            Log Out
+        </button>
+    </body>
+</html>
