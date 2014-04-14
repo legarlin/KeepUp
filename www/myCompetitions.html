@@ -45,6 +45,10 @@
             	window.location.href = 'competition.html';
             	localStorage.setItem("current_comp", id);
             }
+
+            function goHome() {
+                window.location.href = 'home.html';
+            }
             
         </script>
     </head>
@@ -61,6 +65,9 @@
             </div>
 
             <div class="footer">
+                <button class="btn-link btn-footer-home" onclick="goHome()">
+                    <i class="icon-home icon-white"></i>
+                </button>
             </div>
         </div>
     </body>

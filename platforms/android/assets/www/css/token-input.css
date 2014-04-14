@@ -1,18 +1,29 @@
 /* Example tokeninput style #1: Token vertical list*/
+
+@font-face {
+    font-family: 'Merriweather Sans';
+    src: url('fonts/MerriweatherSans-Light.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 ul.token-input-list {
     overflow: hidden; 
-    height: auto !important; 
-    height: 1%;
-    width: 100%;
+    height: auto !important;
+    width: 218px;
     border: 1px solid #999;
-    cursor: text;
     font-size: 12px;
-    font-family: Verdana;
-    z-index: 999;
-    margin: 0;
+    font-family: Merriweather Sans;
+    letter-spacing: -0.5px;
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-bottom: 0px;
+    margin-top: 50px;
     padding: 0;
-    background-color: #fff;
+    background-color: transparent;
+    border-radius: 4px;
     list-style-type: none;
+    z-index: 0;
     clear: left;
 }
 
@@ -22,9 +33,9 @@ ul.token-input-list li {
 
 ul.token-input-list li input {
     border: 0;
-    width: 87.5%;
+    width: 100.%;
     padding: 3px 8px;
-    background-color: white;
+    background-color: transparent;
     -webkit-appearance: caret;
 }
 
@@ -64,16 +75,17 @@ li.token-input-selected-token span {
 
 div.token-input-dropdown {
     position: absolute;
-    width: 87.5%;
-    background-color: #fff;
+    width: 218px;
+    background-color: transparent;
     overflow: hidden;
     border-left: 1px solid #ccc;
     border-right: 1px solid #ccc;
     border-bottom: 1px solid #ccc;
+    border-radius: 4px;
     cursor: default;
     font-size: 12px;
-    font-family: Verdana;
-    z-index: 1;
+    font-family: Merriweather Sans;
+    letter-spacing: -0.5px;
 }
 
 div.token-input-dropdown p {
@@ -103,7 +115,8 @@ div.token-input-dropdown ul li.token-input-dropdown-item2 {
 }
 
 div.token-input-dropdown ul li em {
-    font-weight: bold;
+    font-family: Merriweather Sans;
+    font-weight: normal;
     font-style: normal;
 }
 

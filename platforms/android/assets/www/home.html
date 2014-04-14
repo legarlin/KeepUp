@@ -38,7 +38,6 @@
                                         var compName = compArray[i].title;
                                         var compExp = compArray[i].expiration;
                                         $("#competitionsDiv").append("<div class='competition' onclick=goToComp(" +compArray[i].id + ")>" + "Name: "+ compName + "<br>" + "Expires: " + compExp + "</div>");
-
                                     }
 
                                 }, error:function(err){
@@ -91,13 +90,10 @@
             function myComps() { 
             	window.location.href = 'myCompetitions.html';
             }
-<<<<<<< HEAD
-=======
 
             function myObserving() { 
                 window.location.href = 'myObserving.html';
             }
->>>>>>> dbc8979a80cb552bf08c8c82b080e4a62c7a4705
 
             function goToComp(id){
                 window.location.href = 'competition.html';
@@ -118,7 +114,6 @@
                     </button>
                 </div>
 
-<<<<<<< HEAD
                 <div class="container-overflow" id="competitionsDiv">
                 </div>
 
@@ -137,23 +132,5 @@
                 </button>
             </div>
         </div>
-=======
-        <div id = "competitionsDiv">
-            
-        </div>
-
-        <button onclick = "myComps()">
-            My Comps
-        </button>
-        <button onclick = "myObserving()">
-            Observing
-        </button>
-        <button onclick = "goToFriendsPage()">
-            Friends
-        </button>
-        <button onclick = "logOut()">
-            Log Out
-        </button>
->>>>>>> dbc8979a80cb552bf08c8c82b080e4a62c7a4705
     </body>
 </html>

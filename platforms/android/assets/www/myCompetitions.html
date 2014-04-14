@@ -45,11 +45,14 @@
             	window.location.href = 'competition.html';
             	localStorage.setItem("current_comp", id);
             }
+
+            function goHome() {
+                window.location.href = 'home.html';
+            }
             
         </script>
     </head>
     <body onload = "getComps()">
-<<<<<<< HEAD
         <div class="container page-dark">
             <div class="wrapper">
                 <div class="header">
@@ -59,14 +62,12 @@
                 </div>
 
                 <div class="push"></div>
-=======
-        <div class="container page">
-            <div class="header">
-                <h4>My competitions</h4>
->>>>>>> dbc8979a80cb552bf08c8c82b080e4a62c7a4705
             </div>
 
             <div class="footer">
+                <button class="btn-link btn-footer-home" onclick="goHome()">
+                    <i class="icon-home icon-white"></i>
+                </button>
             </div>
         </div>
     </body>

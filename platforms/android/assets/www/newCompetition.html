@@ -6,6 +6,7 @@
         </title>
 
         <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+        <link href="css/style.css" rel="stylesheet" media="screen">
         
         <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
         <link rel="stylesheet" href="css/token-input.css"/>
@@ -75,7 +76,7 @@
                 {
                     'title': $form.find('input[name="title"]').val(),
                     'creator' : localStorage.getItem("current_userid"),
-                    'creator_username' : localStorage.getItem("current_username");
+                    'creator_username' : localStorage.getItem("current_username"),
                     'description' : $form.find('textarea[name="description"]').val(),
                     'expiration' : $form.find('input[name="expiration"]').val().slice(0, 19).replace('T', ' '),
                     'required_evidence' : $form.find('input[name="required_evidence"]').val(),
@@ -119,21 +120,81 @@
                 event.preventDefault();
                
             }
+
+            function goHome() {
+                window.location.href = 'home.html';
+            }
         </script>
 
     </head>
-    <body>
-       Welcome To The New Competition Page
-        <form onsubmit="new_comp()" id="newCompForm">
-            <fieldset>
-                Title <input type="text" name="title" required><br>
-                Description <textarea name="description" required> </textarea><br>
-                Expiration: <input type="datetime-local" id = "comp_expiration" name="expiration" required><br>
-                Amount of Evidence Required: <input type="number" name="required_evidence" min="1" required><br>
-                Private: <input type="checkbox" name="privacy" id = "privacy_checkbox"> <br>
-                Challengers:  <input type="text" id="challenger_input" style="display: none;">
-                <input type="submit">
-            </fieldset>
-        </form>
+    <body style="overflow-x: hidden">
+        <div class="container page">
+            <div class="wrapper">
+                <div class="header">
+                    <h4>New Competition</h4>
+                </div>
+
+                <div class="container page-inner" style="margin-left: -90px;">
+                    <form class="form-horizontal" onsubmit="new_comp()" id="newCompForm">
+                        <div class="control-group">
+                            <label class="control-label form-label" for="title">Title:</label>
+                            <div class="controls">
+                                <input class="input" style="background-color: transparent;" type="text" id="title" name="title" required>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label form-label" for="description">Description:</label>
+                            <div class="controls">
+                                <textarea id="description" style="background-color: transparent;" name="description" required></textarea>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label form-label" for="comp-expiration">Expiration:</label>
+                            <div class="controls">
+                                <input type="datetime-local" id ="comp_expiration" name="expiration" style="background-color: transparent;" required>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label form-label" for="evidence"># Evidence:</label>
+                            <div class="controls">
+                                <input type="number" style="background-color: transparent;" name="required_evidence" id="evidence" min="1" required>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label form-label" for="privacy_checkbox">Private?</label>
+                            <div class="controls">
+                                <input type="checkbox" style="background-color: transparent;" name="privacy" id="privacy_checkbox">
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label form-label" for="challenger_input">Challengers:</label>
+                            <div class="controls">
+                                <input class="input" type="text" id="challenger_input" required>
+                            </div>
+                        </div>
+
+
+                        <div class="control-group">
+                            <div class="controls">
+                                <button class="btn btn-info btn-main" type="submit">Challenge</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="push"></div>
+            </div>
+
+            <div class="footer">
+                <button class="btn-link btn-footer-home" onclick="goHome()">
+                    <i class="icon-home icon-white"></i>
+                </button>
+            </div>
+        </div>
     </body>
 </html>
