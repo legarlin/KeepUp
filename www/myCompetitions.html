@@ -31,7 +31,7 @@
                         for(var i = 0; i < compArray.length; i++) {
                         	var compName = compArray[i].title;
                         	var compExp = compArray[i].expiration;
-                        	$("#competitionsDiv").append("<div style='border-style:solid;border-width:1px solid green;height:100px' onclick=goToComp(" +compArray[i].id + ")>" + "Name: "+ compName + "<br>" + "Expires: " + compExp + "</div>");
+                        	$("#competitionsDiv").append("<div class='competition' onclick=goToComp(" +compArray[i].id + ")>" + "Name: "+ compName + "<br>" + "Expires: " + compExp + "</div>");
                         }
 
                     }, error:function(err){
@@ -49,12 +49,18 @@
         </script>
     </head>
     <body onload = "getComps()">
-        <div class="container page">
-            <div class="header">
-                <h4>My competitions</h4>
+        <div class="container page-dark">
+            <div class="wrapper">
+                <div class="header">
+                    <h4>My competitions</h4>
+                </div>
+                <div class="container-overflow" id="competitionsDiv">
+                </div>
+
+                <div class="push"></div>
             </div>
-            <div id="competitionsDiv" style="overflow: scroll; height: 400px; margin-top: 10px; margin-bottom: 10px">
-       	
+
+            <div class="footer">
             </div>
         </div>
     </body>

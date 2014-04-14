@@ -4,10 +4,7 @@
         <title>My Competitions</title>
 
         <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
-<<<<<<< HEAD
         <link href="css/style.css" rel="stylesheet" media="screen">
-=======
->>>>>>> d5cd0ff0f953799277aa1e29990bbc94d13b7961
         
         <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
 
@@ -34,11 +31,7 @@
                         for(var i = 0; i < compArray.length; i++) {
                         	var compName = compArray[i].title;
                         	var compExp = compArray[i].expiration;
-<<<<<<< HEAD
                         	$("#competitionsDiv").append("<div class='competition' onclick=goToComp(" +compArray[i].id + ")>" + "Name: "+ compName + "<br>" + "Expires: " + compExp + "</div>");
-=======
-                        	$("#competitionsDiv").append("<div style='border-style:solid;border-width:1px' onclick=goToComp(" +compArray[i].id + ")>" + "Name: "+ compName + "<br>" + "Expires: " + compExp + "</div>");
->>>>>>> d5cd0ff0f953799277aa1e29990bbc94d13b7961
                         }
 
                     }, error:function(err){
@@ -56,20 +49,19 @@
         </script>
     </head>
     <body onload = "getComps()">
-<<<<<<< HEAD
-        <div class="container page">
-            <div class="header">
-                <h4>My competitions</h4>
+        <div class="container page-dark">
+            <div class="wrapper">
+                <div class="header">
+                    <h4>My competitions</h4>
+                </div>
+                <div class="container-overflow" id="competitionsDiv">
+                </div>
+
+                <div class="push"></div>
             </div>
-            <div id="competitionsDiv" style="overflow: scroll; height: 400px; margin-top: 10px; margin-bottom: 10px">
-       	
+
+            <div class="footer">
             </div>
         </div>
-=======
-       My Competions
-       <div id = "competitionsDiv">
-       	
-       </div>
->>>>>>> d5cd0ff0f953799277aa1e29990bbc94d13b7961
     </body>
 </html>

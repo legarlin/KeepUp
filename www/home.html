@@ -6,6 +6,7 @@
         </title>
 
         <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+        <link href="css/style.css" rel="stylesheet" media="screen">
         
         <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
         <script type="text/javascript">
@@ -36,7 +37,7 @@
                                     for(var i = 0; i < compArray.length; i++) {
                                         var compName = compArray[i].title;
                                         var compExp = compArray[i].expiration;
-                                        $("#competitionsDiv").append("<div style='border-style:solid;border-width:1px' onclick=goToComp(" +compArray[i].id + ")>" + "Name: "+ compName + "<br>" + "Expires: " + compExp + "</div>");
+                                        $("#competitionsDiv").append("<div class='competition' onclick=goToComp(" +compArray[i].id + ")>" + "Name: "+ compName + "<br>" + "Expires: " + compExp + "</div>");
                                     }
 
                                 }, error:function(err){
@@ -97,28 +98,35 @@
         </script>
         </head>
     <body>
-        <button style = "float:right" onclick = "goToNewCompetition()">
-            New Competition
-        </button>
-        <h3 id = "result">
-            Welcome
-        </h3>
+        <div class="container page-dark">
+            <div class="wrapper">
+                <div class="header">
+                    <button class="btn-link" onclick="goToNewCompetition()" style="float: left; width: 10%; margin: 5px">
+                        <i class="icon-plus"></i>
+                    </button>
+                    <h4 id="result" style="display: inline-block"><i class="icon-home icon-white" style="margin-top: 3px;"></i> </h4>
+                    <button class="btn-link" onclick="logOut()" style="float: right; margin: 6px; width: 10%">
+                        <i class="icon-cog"></i>
+                    </button>
+                </div>
 
-        <div id = "competitionsDiv">
-            
+                <div class="container-overflow" id="competitionsDiv">
+                </div>
+
+                <div class="push"></div>
+            </div>
+
+            <div class="footer">
+                <button class="btn-link btn-footer-home" onclick="myComps()">
+                    <i class="icon-fire icon-white"></i>
+                </button>
+                <button class="btn-link btn-footer-home">
+                    <i class="icon-eye-open icon-white"></i>
+                </button>
+                <button class="btn-link btn-footer-home" onclick="goToFriendsPage()">
+                    <i class="icon-globe icon-white"></i>
+                </button>
+            </div>
         </div>
-
-        <button onclick = "myComps()">
-            My Comps
-        </button>
-        <button>
-            Observing
-        </button>
-        <button onclick = "goToFriendsPage()">
-            Friends
-        </button>
-        <button onclick = "logOut()">
-            Log Out
-        </button>
     </body>
 </html>
