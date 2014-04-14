@@ -26,6 +26,7 @@
 /Users/Daniel/Desktop/Spring2014/CIS350/Workspace/KeepUp/platforms/android/assets/www/js \
 /Users/Daniel/Desktop/Spring2014/CIS350/Workspace/KeepUp/platforms/android/assets/www/logIn.html \
 /Users/Daniel/Desktop/Spring2014/CIS350/Workspace/KeepUp/platforms/android/assets/www/myCompetitions.html \
+/Users/Daniel/Desktop/Spring2014/CIS350/Workspace/KeepUp/platforms/android/assets/www/myObserving.html \
 /Users/Daniel/Desktop/Spring2014/CIS350/Workspace/KeepUp/platforms/android/assets/www/newCompetition.html \
 /Users/Daniel/Desktop/Spring2014/CIS350/Workspace/KeepUp/platforms/android/assets/www/phonegap.js \
 /Users/Daniel/Desktop/Spring2014/CIS350/Workspace/KeepUp/platforms/android/assets/www/res \
