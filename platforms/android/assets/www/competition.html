@@ -1,10 +1,142 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>My Competitions</title>
-        </head>
-        
-        <body>
-        competition page
-        
-        </body>
+<head>
+<title>My Competitions</title>
+<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+
+<script type="text/javascript"
+	src="http://code.jquery.com/jquery-latest.min.js"></script>
+
+<script type="text/javascript">
+	var request;
+	var request2;
+	var request3;
+	function showComp() {
+
+		var compCreator;
+		var compChallenger = [];
+		var compName;
+		var compExp;
+		var compDes;
+		var compEv;
+		var compID;
+		var creatorName;
+		var challengedName = "";
+		request = $
+				.ajax({
+					url : "http://localhost:8000/webService.php",
+					type : "post",
+					data : {
+						action : 'getComp',
+						comp_id : localStorage.getItem("current_comp")
+					},
+					success : function(data) {
+						console.log(data);
+						var compArray = JSON.parse(data.competitions);
+						compName = compArray[0].title;
+						compExp = compArray[0].expiration;
+						compDes = compArray[0].description;
+						compCreator = compArray[0].creator;
+						compEv = compArray[0].required_evidence;
+						compID = compArray[0].id;
+						for (var i = 0; i < compArray.length - 1; i++) {
+							compChallenger[i] = compArray[i + 1].user_id;
+						}
+
+						request2 = $
+								.ajax({
+									url : "http://localhost:8000/webService.php",
+									type : "post",
+									data : {
+										action : 'getUser',
+										user_id : compCreator
+									},
+									success : function(data) {
+										console.log(data);
+										var compArray2 = JSON
+												.parse(data.competitions);
+										creatorName = compArray2[0].username;
+
+										request3 = $
+												.ajax({
+													url : "http://localhost:8000/webService.php",
+													type : "post",
+													data : {
+														action : 'getUsers',
+														user_id : compChallenger
+													},
+													success : function(data) {
+														console.log(data);
+														var compArray3 = JSON
+																.parse(data.challengers);
+														//challengedName = compArray3[0].username + ", ";
+														for (var i = 0; i < compArray3.length; i++) {
+															if (i == 0) {
+																challengedName = compArray3[i].username;
+															} else {
+																challengedName = challengedName
+																		+ ", "
+																		+ compArray3[i].username;
+															}
+
+														}
+
+														$("#competitionDiv")
+																.append(
+																		"<div style='border-style:solid;border-width:1px' onclick=goToComp("
+																				+ compID
+																				+ ")>"
+																				+ "Name: "
+																				+ compName
+																				+ "<br>"
+																				+ "Description: "
+																				+ compDes
+																				+ "<br>"
+																				+ "Expires: "
+																				+ compExp
+																				+ "<br>"
+																				+ "Creator: "
+																				+ creatorName
+																				+ "<br>"
+																				+ "Challengers: "
+																				+ challengedName
+																				+ "</div>");
+
+													},
+													error : function(err) {
+														console.log("Failed!")
+														console.log(err);
+													}
+												});
+
+									},
+									error : function(err) {
+										console.log("Failed!")
+										console.log(err);
+									}
+								});
+
+					},
+					error : function(err) {
+						console.log("Failed!")
+						console.log(err);
+					}
+				});
+
+	}
+
+	function myComps() {
+		window.location.href = 'myCompetitions.html';
+	}
+</script>
+</head>
+
+
+
+<body onload="showComp()">
+
+	<button onclick="myComps()">My Competitions</button>
+	<!--         <button onclick="getPhoto(pictureSource.PHOTOLIBRARY);">From Photo Library</button><br> -->
+	<!--     	<img style="display:none;" id="largeImage" src="" /> -->
+	<div id="competitionDiv"></div>
+</body>
