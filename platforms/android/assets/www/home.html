@@ -9,6 +9,7 @@
         
         <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
         <script type="text/javascript">
+<<<<<<< HEAD
             $(document).ready(function() {
                 var curr_user = localStorage.getItem("current_username");
                 $("#result").append(curr_user);
@@ -57,6 +58,11 @@
                 
         
 
+=======
+            $( document ).ready(function() {
+                var curr_user = localStorage.getItem("current_username");
+                $("#result").append(curr_user);
+>>>>>>> d5cd0ff0f953799277aa1e29990bbc94d13b7961
             });
 
             function logOut() {
@@ -89,11 +95,14 @@
             function myComps() { 
             	window.location.href = 'myCompetitions.html';
             }
+<<<<<<< HEAD
 
             function goToComp(id){
                 window.location.href = 'competition.html';
                 localStorage.setItem("current_comp", id);
             }
+=======
+>>>>>>> d5cd0ff0f953799277aa1e29990bbc94d13b7961
         </script>
         </head>
     <body>
@@ -104,7 +113,11 @@
             Welcome
         </h3>
 
+<<<<<<< HEAD
         <div id = "competitionsDiv">
+=======
+        <div id = "competitions_list">
+>>>>>>> d5cd0ff0f953799277aa1e29990bbc94d13b7961
             
         </div>
 
