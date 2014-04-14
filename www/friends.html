@@ -11,7 +11,7 @@
         $(document).ready(function() {
           var curr_user = localStorage.getItem("current_userid");
           $.ajax({
-            url: "http://localhost:8000/",
+            url: "http://192.168.56.1:3000/webservice.php",
             type: "post",
             data: {action:'getAllUsers', user_id: localStorage.getItem("current_userid")},
             success:function(data){
@@ -31,7 +31,7 @@
         });
 
         $.ajax({
-            url: "http://localhost:8000/",
+            url: "http://192.168.56.1:3000/webservice.php",
             type: "post",
             data: {action:'getPending', user_id: localStorage.getItem("current_userid")},
             success:function(data){
@@ -57,7 +57,7 @@
         });
 
         $.ajax({
-          url: "http://localhost:8000/",
+          url: "http://192.168.56.1:3000/webservice.php",
           type: "post",
           data: {action:'getFriends', user_id: localStorage.getItem("current_userid")},
           success:function(data){
@@ -85,7 +85,7 @@
       function addFriends() {
         var requests = $("#friend_search").val();
         $.ajax({
-          url: "http://localhost:8000/",
+          url: "http://192.168.56.1:3000/webservice.php",
           type: "post",
           data: {action:'addFriends', requests: JSON.stringify(requests), user_id: localStorage.getItem("current_userid")},
           success:function(data){
@@ -109,7 +109,7 @@
 
       function acceptRequest(pending_id) {
         $.ajax({
-          url: "http://localhost:8000/",
+          url: "http://192.168.56.1:3000/webservice.php",
           type: "post",
           data: {action:'acceptRequest', pending_id: pending_id, user_id: localStorage.getItem("current_userid")},
           success:function(data){
