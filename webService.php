@@ -300,7 +300,7 @@
       if($rs) {
         continue;
       } else {
-        die(json_encode(array('stat' => 'error', 'code' => "Failure on Request")));
+        die(json_encode(array('stat' => 'error', 'code' => "Unable to Add 1 or More Friends")));
       }
     }
     echo json_encode(array('stat' => 'success', 'addFriends' => array('user' => $user, 'requests'=> $requests)));

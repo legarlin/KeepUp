@@ -97,6 +97,7 @@
               } else {
                   console.log("Failed!")
                   console.log(data.code);
+                  $("#error").html(data.code);
               }
               
           }, error:function(err){
@@ -136,6 +137,7 @@
   </head>
   <body>
     <h4> Add Friends </h4>
+    <div id = "error" style = "margin-left:90px"></div>
     <input type="text" id="friend_search" style="display: none;">
     <button onclick = "addFriends()"> Submit </button>
 
