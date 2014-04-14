@@ -75,7 +75,7 @@
                 {
                     'title': $form.find('input[name="title"]').val(),
                     'creator' : localStorage.getItem("current_userid"),
-                    'creator_username' : localStorage.getItem("current_username");
+                    'creator_username' : localStorage.getItem("current_username"),
                     'description' : $form.find('textarea[name="description"]').val(),
                     'expiration' : $form.find('input[name="expiration"]').val().slice(0, 19).replace('T', ' '),
                     'required_evidence' : $form.find('input[name="required_evidence"]').val(),
