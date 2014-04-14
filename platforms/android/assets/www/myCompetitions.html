@@ -21,7 +21,7 @@
                 // Note: we disable elements AFTER the form data has been serialized.
                 //$inputs.prop("disabled", true);
                 request = $.ajax({
-                    url: "http://localhost:8000/",
+                    url: "http://192.168.56.1:3000/webservice.php",
                     type: "post",
                     data: {action:'getComps', user_id: localStorage.getItem("current_userid")},
                     success:function(data){
