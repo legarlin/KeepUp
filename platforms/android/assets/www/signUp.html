@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            Sign Up 
+        </title>
+
+        <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+        <link href="css/style.css" rel="stylesheet" media="screen">
+        
+        <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+        <script type="text/javascript">
+            function signUp() {
+                var $form = $('#signUpForm');
+
+                var pass1=$form.find('input[name="password"]').val();
+                var pass2=$form.find('input[name="confirmpassword"]').val();
+                if(pass1 != pass2){
+                    $("#error").html("Passwords do not match!");
+                    event.preventDefault();
+                    return;
+                }
+
+                // let's select and cache all the fields
+                var $inputs = $form.find("input, select, button, textarea");
+                // serialize the data in the form
+                var postData = 
+                {
+                    'firstname': $form.find('input[name="firstname"]').val(), 
+                    'lastname' : $form.find('input[name="lastname"]').val(),
+                    'username' : $form.find('input[name="username"]').val(),
+                    'password' : $form.find('input[name="password"]').val()
+                }
+
+                // let's disable the inputs for the duration of the ajax request
+                // Note: we disable elements AFTER the form data has been serialized.
+                $inputs.prop("disabled", true);
+                request = $.ajax({
+                    url: "http://192.168.56.1:3000/webservice.php",
+                    type: "post",
+                    data: {action:'signUp', signUpData: JSON.stringify(postData)},
+                    success:function(data){
+                        if(data.stat == "success") {
+                            localStorage.setItem("current_username", data.signUp.username);
+                            localStorage.setItem("current_userid", data.signUp.id);
+                            window.location.href = 'home.html'; 
+                        } else {
+                            console.log("Failed!")
+                            console.log(data.code);
+                            $("#error").html(data.code);
+                        }
+                    }, error:function(err){
+                        console.log("Failed!")
+                        console.log(err);
+                    }
+                });
+                // callback handler that will be called regardless
+                // if the request failed or succeeded
+                request.always(function () {
+                    // reenable the inputs
+                    $inputs.prop("disabled", false);
+                });
+
+                // prevent default posting of form
+                event.preventDefault();
+            }
+        </script>
+
+    </head>
+    <body>
+        <div class="container page">
+            <div class="header">
+                <h3>Sign Up</h3>
+            </div>
+            <div class="container page-inner" style="margin-left: -90px;">
+                <form class="form-horizontal" onsubmit="signUp()" id="signUpForm">
+                    <div class="control-group">
+                        <label class="control-label form-label" for="firstname">First Name:</label>
+                        <div class="controls">
+                            <input class="input" style="background-color: transparent;" type="text" id="firstname" name="firstname" required>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label form-label" for="lastname">Last Name:</label>
+                        <div class="controls">
+                            <input class="input" style="background-color: transparent;" type="text" id="lastname" name="lastname" required>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label form-label" for="username">Username:</label>
+                        <div class="controls">
+                            <input class="input" style="background-color: transparent;" type="text" id="username" name="username" required>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label form-label" for="password">Password:</label>
+                        <div class="controls">
+                            <input type="password" style="background-color: transparent;" id="password" name="password" required>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label form-label" for="confirmpassword" style="line-height: 12px; margin-top: -3px;">Confirm <br>Password:</label>
+                        <div class="controls">
+                            <input type="password" style="background-color: transparent;" id="confirmpassword" name="confirmpassword" required>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <div class="controls">
+                            <button class="btn btn-info btn-main" type="submit">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </body>
+</html>
