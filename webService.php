@@ -25,6 +25,9 @@
       case 'isObserver' : isObserver(); break; 
       case 'addObserver' : addObserver();break;
       case 'getObserving' :getObserving();break;
+      case 'submitVote' : submitVote();break;
+      case 'hasVoted' : hasVoted();break;
+      case 'getCompVotes' :getCompVotes();break;
     }
   }
 
@@ -297,7 +300,7 @@
       if($rs) {
         continue;
       } else {
-        die(json_encode(array('stat' => 'error', 'code' => "Failure on Request")));
+        die(json_encode(array('stat' => 'error', 'code' => "Unable to Add 1 or More Friends")));
       }
     }
     echo json_encode(array('stat' => 'success', 'addFriends' => array('user' => $user, 'requests'=> $requests)));
@@ -482,6 +485,89 @@ function getObserving() {
     } else {
        die(json_encode(array('stat' => 'error', 'code' => "Error getting observing!")));
     }
+}
+
+function submitVote() {
+  $voter = $_POST['user_id'];
+  $competition_id = $_POST['competition_id'];
+  $contestant = $_POST['contestant'];
+  $link = mysqli_connect('keepup.cw8gzyaihfxq.us-east-1.rds.amazonaws.com:3306', 'gldr','keepup2014', 'keepup');            
+          
+  if (mysqli_connect_errno()) {
+    trigger_error('Database connection failed: '  . mysqli_connect_error(), E_USER_ERROR);
+  }
+  $query = "INSERT into pick_side (voter,competition_id, contestant) values ('$voter','$competition_id', $contestant)";
+  $rs=$link->query($query);
+    if($rs) {
+      $checkObs = "SELECT * from observer where user_id = '$vote' and competition_id ='$competition_id'";
+      $exec=$link->query($checkObs);
+      if($exec) {
+        $exec->data_seek(0);
+        if(mysqli_num_rows($exec) == 0) {
+          $addObs = "INSERT into observer (user_id,competition_id) values ('$voter','$competition_id')";
+          $execAdd=$link->query($addObs);
+          if($execAdd) {
+            echo json_encode(array('stat' => 'success', 'submitVote' => array('voter' => $voter, 'competition_id'=> $competition_id, 'contestant' => $contestant, 'addedObs' =>true)));
+            return;
+          } else {
+            die(json_encode(array('stat' => 'error', 'code' => "Error adding observer when voting!")));
+          }
+        }
+      }
+      echo json_encode(array('stat' => 'success', 'submitVote' => array('voter' => $voter, 'competition_id'=> $competition_id, 'contestant' => $contestant)));
+    } else {
+       die(json_encode(array('stat' => 'error', 'code' => "Error submitting vote!")));
+    }
+}
+
+function hasVoted() {
+  $voter = $_POST['user_id'];
+  $competition_id = $_POST['competition_id'];
+
+  $link = mysqli_connect('keepup.cw8gzyaihfxq.us-east-1.rds.amazonaws.com:3306', 'gldr','keepup2014', 'keepup');            
+          
+  if (mysqli_connect_errno()) {
+    trigger_error('Database connection failed: '  . mysqli_connect_error(), E_USER_ERROR);
+  }
+
+  $query = "SELECT contestant from pick_side where voter = '$voter' and competition_id ='$competition_id'";
+  $rs=$link->query($query);
+  if($rs) {
+    $rs->data_seek(0);
+    if(mysqli_num_rows($rs) != 0) {
+      $rs->data_seek(0);
+      $row =  $rs->fetch_assoc();
+      echo json_encode(array('stat' => 'success', 'hasVoted' =>true, 'contestant' => $row['contestant']));
+    } else {
+      echo json_encode(array('stat' => 'success', 'hasVoted' =>false));
+    }
+  } else {
+      die(json_encode(array('stat' => 'error', 'code' => "Failure on hasVoted")));
+  }
+}
+
+function getCompVotes() {
+  $competition_id = $_POST['competition_id'];
+
+  $link = mysqli_connect('keepup.cw8gzyaihfxq.us-east-1.rds.amazonaws.com:3306', 'gldr','keepup2014', 'keepup');            
+          
+  if (mysqli_connect_errno()) {
+    trigger_error('Database connection failed: '  . mysqli_connect_error(), E_USER_ERROR);
+  }
+
+  $query = "SELECT username, count(contestant) as votes from pick_side, user where id=contestant and competition_id='$competition_id' group by username";
+  $rs=$link->query($query);
+  if($rs) {
+    $votes = array();
+    if(mysqli_num_rows($rs) != 0) {
+      while($row = $rs->fetch_assoc()){
+        $votes[$row['username']] = $row['votes'];
+      }
+    }
+    echo json_encode(array('stat' => 'success', 'voteArray' =>json_encode($votes)));
+  } else {
+     die(json_encode(array('stat' => 'error', 'code' => "Error getting votes!")));
+  }
 }
 
 

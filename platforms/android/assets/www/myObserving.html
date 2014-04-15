@@ -21,7 +21,7 @@
                           var compName = compArray[i].title;
                           var compExp = compArray[i].expiration;
                           var compCreator = compArray[i].creator_username;
-                          $("#competitionsDiv").append("<div style='border-style:solid;border-width:1px'>" + "Name: "+ compName + " Creator: " + compCreator +
+                          $("#competitionsDiv").append("<div style='border-style:solid;border-width:1px' onclick=goToComp(" +compArray[i].id + ")>" + "Name: "+ compName + " Creator: " + compCreator +
                                             "<br>" + "Expires: " + compExp + "</div>");
                         }
 
@@ -32,12 +32,21 @@
                 });
             }
             
+            function goToComp(id){
+              window.location.href = 'competition.html';
+              localStorage.setItem("current_comp", id);
+            }
+            
         </script>
     </head>
     <body onload = "getObserving()">
-       My Competions
+       Observed Competitions
        <div id = "competitionsDiv">
         
        </div>
     </body>
 </html>
+
+
+
+

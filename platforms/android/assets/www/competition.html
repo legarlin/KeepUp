@@ -23,6 +23,8 @@
 		var compID;
 		var creatorName;
 		var challengedName = "";
+		var allNames= []
+		var allIds = []
 		request = $
 				.ajax({
 					url : "http://192.168.56.1:3000/webservice.php",
@@ -34,6 +36,9 @@
 					success : function(data) {
 						console.log(data);
 						var compArray = JSON.parse(data.competitions);
+
+						allNames.push(compArray[0].creator_username);
+						allIds.push(compArray[0].creator);
 						compName = compArray[0].title;
 						compExp = compArray[0].expiration;
 						compDes = compArray[0].description;
@@ -42,6 +47,7 @@
 						compID = compArray[0].id;
 						for (var i = 0; i < compArray.length - 1; i++) {
 							compChallenger[i] = compArray[i + 1].user_id;
+							allIds.push(compChallenger[i]);
 						}
 
 						request2 = $
@@ -54,8 +60,7 @@
 									},
 									success : function(data) {
 										console.log(data);
-										var compArray2 = JSON
-												.parse(data.competitions);
+										var compArray2 = JSON.parse(data.competitions);
 										creatorName = compArray2[0].username;
 
 										request3 = $
@@ -68,18 +73,16 @@
 													},
 													success : function(data) {
 														console.log(data);
-														var compArray3 = JSON
-																.parse(data.challengers);
+														var compArray3 = JSON.parse(data.challengers);
 														//challengedName = compArray3[0].username + ", ";
 														for (var i = 0; i < compArray3.length; i++) {
 															if (i == 0) {
 																challengedName = compArray3[i].username;
-															} else {
-																challengedName = challengedName
-																		+ ", "
-																		+ compArray3[i].username;
-															}
 
+															} else {
+																challengedName = challengedName + ", " + compArray3[i].username;
+															}
+															allNames.push(compArray3[i].username);
 														}
 
 														$("#competitionDiv")
@@ -103,7 +106,7 @@
 																				+ challengedName
 																				+ "</div>");
 
-													$.ajax({
+														$.ajax({
 												      url: "http://192.168.56.1:3000/webservice.php",
 												      type: "post",
 												      data: {action:'isObserver', user_id: localStorage.getItem("current_userid"), competition_id : localStorage.getItem("current_comp")},
@@ -115,15 +118,44 @@
 												          	} else {
 												          		$("#buttonDiv").append("<button onclick=observe() id = observeButton>Observe</button>");
 												          	}
-												          } else {
-												              console.log("Failed!")
-												              console.log(data.code);
-												          }
-												      }, error:function(err){
-												          console.log("Failed!")
-												          console.log(err);
-												      }
-												  });
+												          	if(allIds.indexOf(localStorage.getItem("current_userid")) < 0) {
+												          		$.ajax({
+																	      url: "http://192.168.56.1:3000/webservice.php",
+																	      type: "post",
+																	      data: {action:'hasVoted', user_id: localStorage.getItem("current_userid"), competition_id : localStorage.getItem("current_comp")},
+																	      success:function(data){
+																          if(data.stat == "success") {
+																          	console.log(data);
+																          	if(JSON.parse(data.hasVoted)==false) {
+																          		var s = $('<select />');
+																          		s.attr('id', 'voteDropdown');
+																							for(var x  = 0; x <allNames.length; x++) {
+																							    $('<option />', {value: allIds[x], text: allNames[x]}).appendTo(s);
+																							}
+																							$('#pickSideDiv').append("Pick Who You Think Will Win!");
+																							$('#pickSideDiv').append(s);
+																							$('#pickSideDiv').append("<button onclick=submitVote()>Submit</button>");
+																          	} else {
+																          		var s = $('<select />');
+																          		s.attr('id', 'voteDropdown');
+																          		s.attr('disabled', true);
+																							for(var x  = 0; x <allNames.length; x++) {
+																							    $('<option />', {value: allIds[x], text: allNames[x]}).appendTo(s);
+																							}
+																							s.val(JSON.parse(data.contestant));
+																							$('#pickSideDiv').append("Pick Who You Think Will Win!");
+																							$('#pickSideDiv').append(s);
+																          	}
+																          }  else {
+																            console.log("Failed!")
+																            console.log(data.code);
+																          }
+																	      }
+																	  });
+													        }
+													      }
+													    }
+												  	});
 													},
 													error : function(err) {
 														console.log("Failed!")
@@ -144,9 +176,8 @@
 						console.log(err);
 					}
 				});
-	
 
-
+		getCompVotes();	
 	});
 
 	function myComps() {
@@ -174,6 +205,55 @@
   	});
 	}
 
+	function submitVote() {
+		var selectedID = $("#voteDropdown").val();
+		console.log(selectedID);
+		$.ajax({
+      url: "http://192.168.56.1:3000/webservice.php",
+      type: "post",
+      data: {action:'submitVote', user_id: localStorage.getItem("current_userid"), competition_id: localStorage.getItem("current_comp"), contestant: selectedID},
+      success:function(data){
+          if(data.stat == "success") {
+          		console.log(data);
+              window.location.href = 'competition.html';
+          } else {
+              console.log("Failed!")
+              console.log(data.code);
+              $("#error").html(data.code);
+          }
+      }, error:function(err){
+          console.log("Failed!")
+          console.log(err);
+      }
+  	});
+
+	}
+
+	function getCompVotes() {
+		$.ajax({
+      url: "http://192.168.56.1:3000/webservice.php",
+      type: "post",
+      data: {action:'getCompVotes', competition_id: localStorage.getItem("current_comp")},
+      success:function(data){
+          if(data.stat == "success") {
+          	console.log(data);
+            var voteData = JSON.parse(data.voteArray);
+            for(var k in voteData) {
+            	$('#votesTable tr:last').after("<tr><td>" + k + "</td><td style='text-align: center;'>" + voteData[k] + "</td></tr>");
+            }
+              
+          } else {
+              console.log("Failed!")
+              console.log(data.code);
+              $("#error").html(data.code);
+          }
+      }, error:function(err){
+          console.log("Failed!")
+          console.log(err);
+      }
+  	});
+	}
+
 </script>
 </head>
 
@@ -186,5 +266,16 @@
 	<span id = "buttonDiv"></span>
 	<div id="competitionDiv">
 	</div>
+	<div id = "pickSideDiv">
+	</div>
+
+	<table id = "votesTable" border="1">
+		<tr>
+	  	<th>Contestant</th>
+	  	<th>Votes</th>
+		</tr>
+		<tr>
+		</tr>
+	</table>
 </body>
 </html>
