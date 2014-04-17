@@ -3,6 +3,7 @@
 <head>
 <title>My Competitions</title>
 <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+<link href="css/style.css" rel="stylesheet" media="screen">
 
 <script type="text/javascript"
 	src="http://code.jquery.com/jquery-latest.min.js"></script>
@@ -118,6 +119,7 @@
 						allNames.push(compArray[0].creator_username);
 						allIds.push(compArray[0].creator);
 						compName = compArray[0].title;
+						$("#result").append(compName);
 						compExp = compArray[0].expiration;
 						compDes = compArray[0].description;
 						compCreator = compArray[0].creator;
@@ -165,18 +167,14 @@
 
 														$("#competitionDiv")
 																.append(
-																		"<div style='border-style:solid;border-width:1px' onclick=goToComp("
+																		"<div onclick=goToComp("
 																				+ compID
 																				+ ")>"
-																				+ "Name: "
-																				+ compName
-																				+ "<br>"
-																				+ "Description: "
 																				+ compDes
-																				+ "<br>"
+																				+ "<br><br>"
 																				+ "Expires: "
 																				+ compExp
-																				+ "<br>"
+																				+ "<br><br>"
 																				+ "Creator: "
 																				+ creatorName
 																				+ "<br>"
@@ -192,9 +190,9 @@
 												          if(data.stat == "success") {
 												          	console.log(data);
 												          	if(JSON.parse(data.observer)==true || compCreator == localStorage.getItem("current_userid") || compChallenger.indexOf(localStorage.getItem("current_userid")) > -1) {
-												          		$("#buttonDiv").append("<button onclick=observe() id = observeButton disabled>Observe</button>");
+												          		$("#buttonDiv").append("<button class='btn-link' onclick=observe() id=observeButton disabled><i class='icon-eye-open' style='opacity:0.4'></i></button>");
 												          	} else {
-												          		$("#buttonDiv").append("<button onclick=observe() id = observeButton>Observe</button>");
+												          		$("#buttonDiv").append("<button class='btn-link' onclick=observe() id=observeButton><i class='icon-eye-open icon-white'></i></button>");
 												          	}
 												          	if(allIds.indexOf(localStorage.getItem("current_userid")) < 0) {
 												          		$.ajax({
@@ -336,32 +334,63 @@
   	});
 	}
 
+	function goHome() {
+		window.location.href = 'home.html';
+	}
+
 </script>
 </head>
 
 
 <body>
+	<div class="container page-dark">
+		<div class="wrapper">
+			<div class="header">
+				<button class="btn-link" onclick="myComps()" style="float: left; width: 10%; margin: 5px;"><i class="icon-arrow-left"></i>
+				</button>
+				<h4 id="result" style="display: inline-block"></h4>
+				<span id="buttonDiv" style="display: inline; float: right; width: 10%; margin: 6px">
+				</span>
+			</div>
 
-	<button onclick="myComps()">My Competitions</button>
-	<!--         <button onclick="getPhoto(pictureSource.PHOTOLIBRARY);">From Photo Library</button><br> -->
-	<!--     	<img style="display:none;" id="largeImage" src="" /> -->
-	<span id = "buttonDiv"></span>
-	<div id="competitionDiv">
-	</div>
-	<div id = "pickSideDiv">
-	</div>
+			<div class="container-overflow">
+				
+				<!--         
+				<button onclick="getPhoto(pictureSource.PHOTOLIBRARY);">From Photo Library</button><br>
+				<img style="display:none;" id="largeImage" src="" />
+				-->
 
-	<table id = "votesTable" border="1">
-		<tr>
-	  	<th>Contestant</th>
-	  	<th>Votes</th>
-		</tr>
-		<tr>
-		</tr>
-	</table>
-	<div id = "evidenceTab">
-		<div id = "addEvidenceDiv">
+				<div id="competitionDiv" style="margin: 10px;">
+					<i class="icon-info-sign icon-white"></i>
+					<br>
+				</div>
+
+				<div id="pickSideDiv">
+				</div>
+
+				<table id = "votesTable" border="1">
+					<tr>
+				  	<th>Contestant</th>
+				  	<th>Votes</th>
+					</tr>
+					<tr>
+					</tr>
+				</table>
+			</div>
+
+			<div class="push"></div>
 		</div>
-	</div>
+
+  <div id = "evidenceTab">
+    <div id = "addEvidenceDiv">
+    </div>
+  </div>
+
+		<div class="footer">
+			<button class="btn-link btn-footer-home" onclick="goHome()">
+                <i class="icon-home icon-white"></i>
+            </button>
+	  </div>
+  </div> 
 </body>
 </html>
