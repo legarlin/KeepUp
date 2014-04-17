@@ -6,11 +6,88 @@
 
 <script type="text/javascript"
 	src="http://code.jquery.com/jquery-latest.min.js"></script>
-
+<script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+<script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/hmac-sha1.js"></script>
+<script type="text/javascript" charset="utf-8" src="js/aws-sdk-2.0.0-rc1.min.js"></script>
+<script type="text/javascript" src = "js/parse-1.2.18.min.js"></script>
 <script type="text/javascript">
 	var request;
 	var request2;
 	var request3;
+  Parse.initialize("u1iaKaYFymF8F4RuTcCDvYzfVR0bPWg4u8ZQSMwR", "wVu9mY0XjXmAXe3wyJroP0WE16QIiK4rNu5NyqXG");
+  var ParsePicture = Parse.Object.extend("ParsePicture");
+	var pictureSource;   // picture source
+  var destinationType; // sets the format of returned value
+	document.addEventListener("deviceready",onDeviceReady,false);
+
+	// device APIs are available
+  //
+  function onDeviceReady() {
+      pictureSource=navigator.camera.PictureSourceType;
+      destinationType=navigator.camera.DestinationType;
+  }
+
+  function onPhotoSuccess(imageData) {
+    console.log("INFO!")
+    console.log(imageData)
+    var type;
+    if(imageData.indexOf("/image") !== -1) {
+      type = "image";
+    } else if(imageData.indexOf("/video") !== -1) {
+      type = "video";
+    }
+    
+    window.resolveLocalFileSystemURI(imageData, function(entry) {
+      var reader = new FileReader();
+      reader.onloadend = function(evt) {
+        var byteArray = new Uint8Array(evt.target.result);
+        var output = new Array(byteArray.length);
+        var i = 0;
+        var n = output.length;
+        while( i < n ) {
+            output[i] = byteArray[i];
+            i++;
+        }
+        var parseFile = new Parse.File("testEv",output);
+        parseFile.save().then(function(){
+          var parsePicture = new ParsePicture();
+          parsePicture.set("name", "testEv");
+          parsePicture.set("picture", parseFile);
+          parsePicture.set("type", type);
+          parsePicture.save(null, {
+            success: function(ob) {
+            console.log("saved!");
+          }, error:function(e) {
+            console.log("error!", e);
+          }
+          }); 
+        }); 
+      }
+      reader.onerror = function(evt) {
+        console.log('read error');
+        console.log(JSON.stringify(evt));
+      } 
+      entry.file(function(s) {
+          reader.readAsArrayBuffer(s);
+      }, function(e) {
+          console.log('ee');
+      });
+    });
+  }
+
+  function onFail() {
+    console.log("FAILED!");
+  }
+
+  // A button will call this function
+  function getEvidence(source) {
+    navigator.camera.getPicture(onPhotoSuccess, onFail, { quality: 50,
+        destinationType: destinationType.DATA_URL,
+        mediaType: 2,
+        sourceType: source });
+  }
+
+
 	$(document).ready(function() {
 
 		var compCreator;
@@ -25,6 +102,7 @@
 		var challengedName = "";
 		var allNames= []
 		var allIds = []
+
 		request = $
 				.ajax({
 					url : "http://192.168.56.1:3000/webservice.php",
@@ -152,6 +230,10 @@
 																          }
 																	      }
 																	  });
+													        } else {
+													        	console.log(pictureSource);
+													        	$("#addEvidenceDiv").append("<h4>Add Evidence </h4>");
+													        	$("#addEvidenceDiv").append("<button onclick=getEvidence(" + pictureSource.PHOTOLIBRARY + ")>Upload Evidence</button>");
 													        }
 													      }
 													    }
@@ -277,5 +359,9 @@
 		<tr>
 		</tr>
 	</table>
+	<div id = "evidenceTab">
+		<div id = "addEvidenceDiv">
+		</div>
+	</div>
 </body>
 </html>
