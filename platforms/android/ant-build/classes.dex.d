@@ -6,6 +6,7 @@
 /Users/Daniel/Desktop/Spring2014/CIS350/Workspace/KeepUp/platforms/android/ant-build/classes/com/phonegap/helloworld/R$string.class \
 /Users/Daniel/Desktop/Spring2014/CIS350/Workspace/KeepUp/platforms/android/ant-build/classes/com/phonegap/helloworld/R$xml.class \
 /Users/Daniel/Desktop/Spring2014/CIS350/Workspace/KeepUp/platforms/android/ant-build/classes/com/phonegap/helloworld/R.class \
+/Users/Daniel/Desktop/Spring2014/CIS350/Workspace/KeepUp/platforms/android/ant-build/classes/com/phonegap/plugins/videoplayer/VideoPlayer.class \
 /Users/Daniel/Desktop/Spring2014/CIS350/Workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/camera/CameraLauncher.class \
 /Users/Daniel/Desktop/Spring2014/CIS350/Workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/camera/ExifHelper.class \
 /Users/Daniel/Desktop/Spring2014/CIS350/Workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/camera/FileHelper.class \

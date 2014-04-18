@@ -240,6 +240,13 @@ module.exports = [
         "clobbers": [
             "navigator.device.capture"
         ]
+    },
+    {
+        "file": "plugins/com.phonegap.plugins.videoplayer/www/videoplayer.js",
+        "id": "com.phonegap.plugins.videoplayer.VideoPlayer",
+        "clobbers": [
+            "cordova.plugins.videoPlayer"
+        ]
     }
 ];
 module.exports.metadata = 
@@ -251,7 +258,8 @@ module.exports.metadata =
     "org.apache.cordova.file-transfer": "0.4.2",
     "org.apache.cordova.camera": "0.2.8",
     "org.apache.cordova.media": "0.2.9",
-    "org.apache.cordova.media-capture": "0.2.8"
+    "org.apache.cordova.media-capture": "0.2.8",
+    "com.phonegap.plugins.videoplayer": "1.0"
 }
 // BOTTOM OF METADATA
 });

@@ -132,6 +132,7 @@
     $creator_username = $decoded['creator_username'];
     $description = $decoded['description'];
     $expiration = $decoded['expiration'];
+    $is_first_to = $decoded['is_first_to'];
     $required_evidence = $decoded['required_evidence'];
     $challengers = explode(",", $decoded['challengers']);
     $prv = $decoded['prv'];
@@ -142,7 +143,7 @@
       trigger_error('Database connection failed: '  . mysqli_connect_error(), E_USER_ERROR);
     }
 
-    $insert = "INSERT into competition (title, description, creator, expiration, public, required_evidence, creator_username) VALUES ('$title', '$description', '$creator', '$expiration', $prv, '$required_evidence', '$creator_username')";
+    $insert = "INSERT into competition (title, description, creator, expiration, public, is_first_to, required_evidence, creator_username) VALUES ('$title', '$description', '$creator', '$expiration', $prv, $is_first_to, '$required_evidence', '$creator_username')";
 
     $rs=$link->query($insert);
     $comp_id = mysqli_insert_id($link);

@@ -65,12 +65,15 @@
 /Users/Daniel/Desktop/Spring2014/CIS350/Workspace/KeepUp/platforms/android/assets/www/js/jquery.tokeninput.js \
 /Users/Daniel/Desktop/Spring2014/CIS350/Workspace/KeepUp/platforms/android/assets/www/js/moment.js \
 /Users/Daniel/Desktop/Spring2014/CIS350/Workspace/KeepUp/platforms/android/assets/www/js/parse-1.2.18.min.js \
+/Users/Daniel/Desktop/Spring2014/CIS350/Workspace/KeepUp/platforms/android/assets/www/plugins/com.phonegap.plugins.videoplayer \
 /Users/Daniel/Desktop/Spring2014/CIS350/Workspace/KeepUp/platforms/android/assets/www/plugins/org.apache.cordova.camera \
 /Users/Daniel/Desktop/Spring2014/CIS350/Workspace/KeepUp/platforms/android/assets/www/plugins/org.apache.cordova.device \
 /Users/Daniel/Desktop/Spring2014/CIS350/Workspace/KeepUp/platforms/android/assets/www/plugins/org.apache.cordova.file \
 /Users/Daniel/Desktop/Spring2014/CIS350/Workspace/KeepUp/platforms/android/assets/www/plugins/org.apache.cordova.file-transfer \
 /Users/Daniel/Desktop/Spring2014/CIS350/Workspace/KeepUp/platforms/android/assets/www/plugins/org.apache.cordova.media \
 /Users/Daniel/Desktop/Spring2014/CIS350/Workspace/KeepUp/platforms/android/assets/www/plugins/org.apache.cordova.media-capture \
+/Users/Daniel/Desktop/Spring2014/CIS350/Workspace/KeepUp/platforms/android/assets/www/plugins/com.phonegap.plugins.videoplayer/www \
+/Users/Daniel/Desktop/Spring2014/CIS350/Workspace/KeepUp/platforms/android/assets/www/plugins/com.phonegap.plugins.videoplayer/www/videoplayer.js \
 /Users/Daniel/Desktop/Spring2014/CIS350/Workspace/KeepUp/platforms/android/assets/www/plugins/org.apache.cordova.camera/www \
 /Users/Daniel/Desktop/Spring2014/CIS350/Workspace/KeepUp/platforms/android/assets/www/plugins/org.apache.cordova.camera/www/Camera.js \
 /Users/Daniel/Desktop/Spring2014/CIS350/Workspace/KeepUp/platforms/android/assets/www/plugins/org.apache.cordova.camera/www/CameraConstants.js \

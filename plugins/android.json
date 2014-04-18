@@ -11,7 +11,8 @@
                 "<feature name=\"FileTransfer\"><param name=\"android-package\" value=\"org.apache.cordova.filetransfer.FileTransfer\" /></feature>": 1,
                 "<feature name=\"Camera\"><param name=\"android-package\" value=\"org.apache.cordova.camera.CameraLauncher\" /></feature>": 1,
                 "<feature name=\"Media\"><param name=\"android-package\" value=\"org.apache.cordova.media.AudioHandler\" /></feature>": 1,
-                "<feature name=\"Capture\"><param name=\"android-package\" value=\"org.apache.cordova.mediacapture.Capture\" /></feature>": 1
+                "<feature name=\"Capture\"><param name=\"android-package\" value=\"org.apache.cordova.mediacapture.Capture\" /></feature>": 1,
+                "<feature name=\"VideoPlayer\"><param name=\"android-package\" value=\"com.phonegap.plugins.videoplayer.VideoPlayer\" /></feature>": 1
             }
         },
         "AndroidManifest.xml": {
@@ -44,6 +45,9 @@
             "PACKAGE_NAME": "com.phonegap.helloworld"
         },
         "org.apache.cordova.media-capture": {
+            "PACKAGE_NAME": "com.phonegap.helloworld"
+        },
+        "com.phonegap.plugins.videoplayer": {
             "PACKAGE_NAME": "com.phonegap.helloworld"
         }
     },

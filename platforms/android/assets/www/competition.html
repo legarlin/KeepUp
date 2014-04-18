@@ -29,8 +29,8 @@
   }
 
   function onPhotoSuccess(imageData) {
-    console.log("INFO!")
-    console.log(imageData)
+    console.log("INFO!");
+    console.log(imageData);
     var type;
     if(imageData.indexOf("/image") !== -1) {
       type = "image";
@@ -82,12 +82,32 @@
 
   // A button will call this function
   function getEvidence(source) {
-    navigator.camera.getPicture(onPhotoSuccess, onFail, { quality: 50,
+    navigator.camera.getPicture(previewMedia, onFail, { quality: 50,
         destinationType: destinationType.DATA_URL,
         mediaType: 2,
         sourceType: source });
   }
 
+  function previewMedia(imageData) {
+    $("#previewMedia").empty();
+    if(imageData.indexOf("/image") !== -1) {
+      $("#previewMedia").append("<img width = '240' height = '160' src=" + imageData + "/>")
+    } else if(imageData.indexOf("/video") !== -1) {
+      $("#previewMedia").append("<video id = 'previewVideo' width = '240' height = '160' controls> <source src =" +imageData + " type='video/mp4'></video>")
+      document.getElementById("previewVideo").onclick = function() {
+        play(imageData);
+      }
+    }
+    console.log("IMAGE DATA" + imageData); 
+    $("#previewMedia").append("<button id = 'uploadMedia'> Upload </button>");
+    document.getElementById("uploadMedia").onclick = function() {
+      onPhotoSuccess(imageData);
+    }
+  }
+
+  function play(url) {
+   cordova.plugins.videoPlayer.play(url); 
+  }
 
 	$(document).ready(function() {
 
@@ -166,10 +186,10 @@
 														}
 
 														$("#competitionDiv")
-																.append(
-																		"<div onclick=goToComp("
-																				+ compID
-																				+ ")>"
+																.append("<div> Title: "
+                                        + compName
+                                        + "<br><br>"
+                                        + "Description: " 
 																				+ compDes
 																				+ "<br><br>"
 																				+ "Expires: "
@@ -343,8 +363,8 @@
 
 
 <body>
-	<div class="container page-dark">
-		<div class="wrapper">
+	<div class="container">
+		<!--<div class="wrapper"> -->
 			<div class="header">
 				<button class="btn-link" onclick="myComps()" style="float: left; width: 10%; margin: 5px;"><i class="icon-arrow-left"></i>
 				</button>
@@ -353,13 +373,7 @@
 				</span>
 			</div>
 
-			<div class="container-overflow">
-				
-				<!--         
-				<button onclick="getPhoto(pictureSource.PHOTOLIBRARY);">From Photo Library</button><br>
-				<img style="display:none;" id="largeImage" src="" />
-				-->
-
+			<div class="container">
 				<div id="competitionDiv" style="margin: 10px;">
 					<i class="icon-info-sign icon-white"></i>
 					<br>
@@ -378,19 +392,24 @@
 				</table>
 			</div>
 
-			<div class="push"></div>
-		</div>
+			<!--<div class="push"></div> -->
+      <div class="container">
+        <div id = "evidenceTab">
+          <div id = "addEvidenceDiv">
+          </div>
+          <div id = "previewMedia">
+          </div>
+        </div>
+      </div>
 
-  <div id = "evidenceTab">
-    <div id = "addEvidenceDiv">
-    </div>
-  </div>
+    <!--</div>-->
 
 		<div class="footer">
 			<button class="btn-link btn-footer-home" onclick="goHome()">
-                <i class="icon-home icon-white"></i>
-            </button>
+        <i class="icon-home icon-white"></i>
+      </button>
 	  </div>
+
   </div> 
 </body>
 </html>
