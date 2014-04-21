@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>My Competitions</title>
+<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+<link href="css/style.css" rel="stylesheet" media="screen">
+
+<script type="text/javascript"
+	src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+<script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/hmac-sha1.js"></script>
+<script type="text/javascript" charset="utf-8" src="js/aws-sdk-2.0.0-rc1.min.js"></script>
+<script type="text/javascript" src = "js/parse-1.2.18.min.js"></script>
+<script type="text/javascript">
+	var request;
+	var request2;
+	var request3;
+  Parse.initialize("u1iaKaYFymF8F4RuTcCDvYzfVR0bPWg4u8ZQSMwR", "wVu9mY0XjXmAXe3wyJroP0WE16QIiK4rNu5NyqXG");
+  var ParsePicture = Parse.Object.extend("ParsePicture");
+	var pictureSource;   // picture source
+  var destinationType; // sets the format of returned value
+	document.addEventListener("deviceready",onDeviceReady,false);
+
+	// device APIs are available
+  //
+  function onDeviceReady() {
+      pictureSource=navigator.camera.PictureSourceType;
+      destinationType=navigator.camera.DestinationType;
+  }
+
+  function onPhotoSuccess(imageData) {
+    console.log("INFO!");
+    console.log(imageData);
+    var type;
+    if(imageData.indexOf("/image") !== -1) {
+      type = "image";
+    } else if(imageData.indexOf("/video") !== -1) {
+      type = "video";
+    }
+    
+    window.resolveLocalFileSystemURI(imageData, function(entry) {
+      var reader = new FileReader();
+      reader.onloadend = function(evt) {
+        var byteArray = new Uint8Array(evt.target.result);
+        var output = new Array(byteArray.length);
+        var i = 0;
+        var n = output.length;
+        while( i < n ) {
+            output[i] = byteArray[i];
+            i++;
+        }
+        var parseFile = new Parse.File("testEv",output);
+        parseFile.save().then(function(){
+          var parsePicture = new ParsePicture();
+          parsePicture.set("name", "testEv");
+          parsePicture.set("picture", parseFile);
+          parsePicture.set("type", type);
+          parsePicture.save(null, {
+            success: function(ob) {
+            console.log("saved!");
+          }, error:function(e) {
+            console.log("error!", e);
+          }
+          }); 
+        }); 
+      }
+      reader.onerror = function(evt) {
+        console.log('read error');
+        console.log(JSON.stringify(evt));
+      } 
+      entry.file(function(s) {
+          reader.readAsArrayBuffer(s);
+      }, function(e) {
+          console.log('ee');
+      });
+    });
+  }
+
+  function onFail() {
+    console.log("FAILED!");
+  }
+
+  // A button will call this function
+  function getEvidence(source) {
+    navigator.camera.getPicture(previewMedia, onFail, { quality: 50,
+        destinationType: destinationType.DATA_URL,
+        mediaType: 2,
+        sourceType: source });
+  }
+
+  function previewMedia(imageData) {
+    $("#previewMedia").empty();
+    if(imageData.indexOf("/image") !== -1) {
+      $("#previewMedia").append("<img width = '240' height = '160' src=" + imageData + "/>")
+    } else if(imageData.indexOf("/video") !== -1) {
+      $("#previewMedia").append("<video id = 'previewVideo' width = '240' height = '160' controls> <source src =" +imageData + " type='video/mp4'></video>")
+      document.getElementById("previewVideo").onclick = function() {
+        play(imageData);
+      }
+    }
+    console.log("IMAGE DATA" + imageData); 
+    $("#previewMedia").append("<button id = 'uploadMedia'> Upload </button>");
+    document.getElementById("uploadMedia").onclick = function() {
+      onPhotoSuccess(imageData);
+    }
+  }
+
+  function play(url) {
+   cordova.plugins.videoPlayer.play(url); 
+  }
+
+	$(document).ready(function() {
+
+		var compCreator;
+		var compChallenger = [];
+		var isObserver;
+		var compName;
+		var compExp;
+		var compDes;
+		var compEv;
+		var compID;
+		var creatorName;
+		var challengedName = "";
+		var allNames= []
+		var allIds = []
+
+		request = $
+				.ajax({
+					url : "http://192.168.56.1:3000/webservice.php",
+					type : "post",
+					data : {
+						action : 'getComp',
+						comp_id : localStorage.getItem("current_comp")
+					},
+					success : function(data) {
+						console.log(data);
+						var compArray = JSON.parse(data.competitions);
+
+						allNames.push(compArray[0].creator_username);
+						allIds.push(compArray[0].creator);
+						compName = compArray[0].title;
+						$("#result").append(compName);
+						compExp = compArray[0].expiration;
+						compDes = compArray[0].description;
+						compCreator = compArray[0].creator;
+						compEv = compArray[0].required_evidence;
+						compID = compArray[0].id;
+						for (var i = 0; i < compArray.length - 1; i++) {
+							compChallenger[i] = compArray[i + 1].user_id;
+							allIds.push(compChallenger[i]);
+						}
+
+						request2 = $
+								.ajax({
+									url : "http://192.168.56.1:3000/webservice.php",
+									type : "post",
+									data : {
+										action : 'getUser',
+										user_id : compCreator
+									},
+									success : function(data) {
+										console.log(data);
+										var compArray2 = JSON.parse(data.competitions);
+										creatorName = compArray2[0].username;
+
+										request3 = $
+												.ajax({
+													url : "http://192.168.56.1:3000/webservice.php",
+													type : "post",
+													data : {
+														action : 'getUsers',
+														user_id : compChallenger
+													},
+													success : function(data) {
+														console.log(data);
+														var compArray3 = JSON.parse(data.challengers);
+														//challengedName = compArray3[0].username + ", ";
+														for (var i = 0; i < compArray3.length; i++) {
+															if (i == 0) {
+																challengedName = compArray3[i].username;
+
+															} else {
+																challengedName = challengedName + ", " + compArray3[i].username;
+															}
+															allNames.push(compArray3[i].username);
+														}
+
+														$("#competitionDiv")
+																.append("<div> Title: "
+                                        + compName
+                                        + "<br><br>"
+                                        + "Description: " 
+																				+ compDes
+																				+ "<br><br>"
+																				+ "Expires: "
+																				+ compExp
+																				+ "<br><br>"
+																				+ "Creator: "
+																				+ creatorName
+																				+ "<br>"
+																				+ "Challengers: "
+																				+ challengedName
+																				+ "</div>");
+
+														$.ajax({
+												      url: "http://192.168.56.1:3000/webservice.php",
+												      type: "post",
+												      data: {action:'isObserver', user_id: localStorage.getItem("current_userid"), competition_id : localStorage.getItem("current_comp")},
+												      success:function(data){
+												          if(data.stat == "success") {
+												          	console.log(data);
+												          	if(JSON.parse(data.observer)==true || compCreator == localStorage.getItem("current_userid") || compChallenger.indexOf(localStorage.getItem("current_userid")) > -1) {
+												          		$("#buttonDiv").append("<button class='btn-link' onclick=observe() id=observeButton disabled><i class='icon-eye-open' style='opacity:0.4'></i></button>");
+												          	} else {
+												          		$("#buttonDiv").append("<button class='btn-link' onclick=observe() id=observeButton><i class='icon-eye-open icon-white'></i></button>");
+												          	}
+												          	if(allIds.indexOf(localStorage.getItem("current_userid")) < 0) {
+												          		$.ajax({
+																	      url: "http://192.168.56.1:3000/webservice.php",
+																	      type: "post",
+																	      data: {action:'hasVoted', user_id: localStorage.getItem("current_userid"), competition_id : localStorage.getItem("current_comp")},
+																	      success:function(data){
+																          if(data.stat == "success") {
+																          	console.log(data);
+																          	if(JSON.parse(data.hasVoted)==false) {
+																          		var s = $('<select />');
+																          		s.attr('id', 'voteDropdown');
+																							for(var x  = 0; x <allNames.length; x++) {
+																							    $('<option />', {value: allIds[x], text: allNames[x]}).appendTo(s);
+																							}
+																							$('#pickSideDiv').append("Pick Who You Think Will Win!");
+																							$('#pickSideDiv').append(s);
+																							$('#pickSideDiv').append("<button onclick=submitVote()>Submit</button>");
+																          	} else {
+																          		var s = $('<select />');
+																          		s.attr('id', 'voteDropdown');
+																          		s.attr('disabled', true);
+																							for(var x  = 0; x <allNames.length; x++) {
+																							    $('<option />', {value: allIds[x], text: allNames[x]}).appendTo(s);
+																							}
+																							s.val(JSON.parse(data.contestant));
+																							$('#pickSideDiv').append("Pick Who You Think Will Win!");
+																							$('#pickSideDiv').append(s);
+																          	}
+																          }  else {
+																            console.log("Failed!")
+																            console.log(data.code);
+																          }
+																	      }
+																	  });
+													        } else {
+													        	console.log(pictureSource);
+													        	$("#addEvidenceDiv").append("<h4>Add Evidence </h4>");
+													        	$("#addEvidenceDiv").append("<button onclick=getEvidence(" + pictureSource.PHOTOLIBRARY + ")>Upload Evidence</button>");
+													        }
+													      }
+													    }
+												  	});
+													},
+													error : function(err) {
+														console.log("Failed!")
+														console.log(err);
+													}
+												});
+
+									},
+									error : function(err) {
+										console.log("Failed!")
+										console.log(err);
+									}
+								});
+
+					},
+					error : function(err) {
+						console.log("Failed!")
+						console.log(err);
+					}
+				});
+
+		getCompVotes();	
+	});
+
+	function myComps() {
+		window.location.href = 'myCompetitions.html';
+	}
+
+	function observe() {
+		$.ajax({
+      url: "http://192.168.56.1:3000/webservice.php",
+      type: "post",
+      data: {action:'addObserver', user_id: localStorage.getItem("current_userid"), competition_id: localStorage.getItem("current_comp")},
+      success:function(data){
+          if(data.stat == "success") {
+          		console.log(data);
+              window.location.href = 'competition.html';
+          } else {
+              console.log("Failed!")
+              console.log(data.code);
+              $("#error").html(data.code);
+          }
+      }, error:function(err){
+          console.log("Failed!")
+          console.log(err);
+      }
+  	});
+	}
+
+	function submitVote() {
+		var selectedID = $("#voteDropdown").val();
+		console.log(selectedID);
+		$.ajax({
+      url: "http://192.168.56.1:3000/webservice.php",
+      type: "post",
+      data: {action:'submitVote', user_id: localStorage.getItem("current_userid"), competition_id: localStorage.getItem("current_comp"), contestant: selectedID},
+      success:function(data){
+          if(data.stat == "success") {
+          		console.log(data);
+              window.location.href = 'competition.html';
+          } else {
+              console.log("Failed!")
+              console.log(data.code);
+              $("#error").html(data.code);
+          }
+      }, error:function(err){
+          console.log("Failed!")
+          console.log(err);
+      }
+  	});
+
+	}
+
+	function getCompVotes() {
+		$.ajax({
+      url: "http://192.168.56.1:3000/webservice.php",
+      type: "post",
+      data: {action:'getCompVotes', competition_id: localStorage.getItem("current_comp")},
+      success:function(data){
+          if(data.stat == "success") {
+          	console.log(data);
+            var voteData = JSON.parse(data.voteArray);
+            for(var k in voteData) {
+            	$('#votesTable tr:last').after("<tr><td>" + k + "</td><td style='text-align: center;'>" + voteData[k] + "</td></tr>");
+            }
+              
+          } else {
+              console.log("Failed!")
+              console.log(data.code);
+              $("#error").html(data.code);
+          }
+      }, error:function(err){
+          console.log("Failed!")
+          console.log(err);
+      }
+  	});
+	}
+
+	function goHome() {
+		window.location.href = 'home.html';
+	}
+
+</script>
+</head>
+
+
+<body>
+	<div class="container">
+		<!--<div class="wrapper"> -->
+			<div class="header">
+				<button class="btn-link" onclick="myComps()" style="float: left; width: 10%; margin: 5px;"><i class="icon-arrow-left"></i>
+				</button>
+				<h4 id="result" style="display: inline-block"></h4>
+				<span id="buttonDiv" style="display: inline; float: right; width: 10%; margin: 6px">
+				</span>
+			</div>
+
+			<div class="container">
+				<div id="competitionDiv" style="margin: 10px;">
+					<i class="icon-info-sign icon-white"></i>
+					<br>
+				</div>
+
+				<div id="pickSideDiv">
+				</div>
+
+				<table id = "votesTable" border="1">
+					<tr>
+				  	<th>Contestant</th>
+				  	<th>Votes</th>
+					</tr>
+					<tr>
+					</tr>
+				</table>
+			</div>
+
+			<!--<div class="push"></div> -->
+      <div class="container">
+        <div id = "evidenceTab">
+          <div id = "addEvidenceDiv">
+          </div>
+          <div id = "previewMedia">
+          </div>
+        </div>
+      </div>
+
+    <!--</div>-->
+
+		<div class="footer">
+			<button class="btn-link btn-footer-home" onclick="goHome()">
+        <i class="icon-home icon-white"></i>
+      </button>
+	  </div>
+
+  </div> 
+</body>
+</html>

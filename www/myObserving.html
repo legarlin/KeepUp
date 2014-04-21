@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>My Observing</title>
+
+        <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+        
+        <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+
+        <script type="text/javascript">
+            var request;
+            function getObserving() {
+                request = $.ajax({
+                    url: "http://192.168.56.1:3000/webservice.php",
+                    type: "post",
+                    data: {action:'getObserving', user_id: localStorage.getItem("current_userid")},
+                    success:function(data){
+                        console.log(data);
+                        var compArray = JSON.parse(data.observing);
+                        for(var i = 0; i < compArray.length; i++) {
+                          var compName = compArray[i].title;
+                          var compExp = compArray[i].expiration;
+                          var compCreator = compArray[i].creator_username;
+                          $("#competitionsDiv").append("<div style='border-style:solid;border-width:1px' onclick=goToComp(" +compArray[i].id + ")>" + "Name: "+ compName + " Creator: " + compCreator +
+                                            "<br>" + "Expires: " + compExp + "</div>");
+                        }
+
+                    }, error:function(err){
+                        console.log("Failed!")
+                        console.log(err);
+                    }
+                });
+            }
+            
+            function goToComp(id){
+              window.location.href = 'competition.html';
+              localStorage.setItem("current_comp", id);
+            }
+            
+        </script>
+    </head>
+    <body onload = "getObserving()">
+       Observed Competitions
+       <div id = "competitionsDiv">
+        
+       </div>
+    </body>
+</html>
+
+
+
+

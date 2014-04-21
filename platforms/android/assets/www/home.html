@@ -4,17 +4,66 @@
         <title>
             Sign Up 
         </title>
+
+        <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+        <link href="css/style.css" rel="stylesheet" media="screen">
+        
         <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
         <script type="text/javascript">
-            $( document ).ready(function() {
+            $(document).ready(function() {
                 var curr_user = localStorage.getItem("current_username");
                 $("#result").append(curr_user);
+
+                var friends = [];
+                $.ajax({
+                    url: "http://192.168.56.1:3000/webservice.php",
+                    type: "post",
+                    data: {action:'getFriends', user_id: localStorage.getItem("current_userid")},
+                    success:function(data){
+                        if(data.stat=="success") {
+                            console.log(data);
+                            var friendData = JSON.parse(data.friends);
+                            for(var x = 0; x < friendData.length; x++) {
+                                friends.push(friendData[x].id);
+                            }
+                            console.log(friends);
+                            $.ajax({
+                                url: "http://192.168.56.1:3000/webservice.php",
+                                type: "post",
+                                data: {action:'getFriendComps', friends: friends},
+                                success:function(data){
+                                    console.log(data);
+                                    var compArray = JSON.parse(data.competitions);
+                                    for(var i = 0; i < compArray.length; i++) {
+                                        var compName = compArray[i].title;
+                                        var compExp = compArray[i].expiration;
+                                        $("#competitionsDiv").append("<div class='competition' onclick=goToComp(" +compArray[i].id + ")>" + "Name: "+ compName + "<br>" + "Expires: " + compExp + "</div>");
+                                    }
+
+                                }, error:function(err){
+                                    console.log("Failed!")
+                                    console.log(err);
+                                }
+                            });
+                        } else {
+                            console.log("Failed!")
+                            console.log(data.code);
+                        }
+                    }, error:function(err) {
+                        console.log("Failed!")
+                        console.log(err);
+                    }
+                });
+
+                
+        
+
             });
 
             function logOut() {
                 var curr_user = localStorage.getItem("current_username");
                 $.ajax({
-                    url: "http://localhost:8000/webService.php",
+                    url: "http://192.168.56.1:3000/webservice.php",
                     type: "post",
                     data: {action:'logOut', user: curr_user},
                     success:function(data){
@@ -30,34 +79,58 @@
 
             }
 
+            function goToFriendsPage() {
+                 window.location.href = 'friends.html';
+            }
+
             function goToNewCompetition() {
                 window.location.href = 'newCompetition.html';
+            }
+            
+            function myComps() { 
+            	window.location.href = 'myCompetitions.html';
+            }
+
+            function myObserving() { 
+                window.location.href = 'myObserving.html';
+            }
+
+            function goToComp(id){
+                window.location.href = 'competition.html';
+                localStorage.setItem("current_comp", id);
             }
         </script>
         </head>
     <body>
-        <button style = "float:right" onclick = "goToNewCompetition()">
-            New Competition
-        </button>
-        <h3 id = "result">
-            Welcome
-        </h3>
+        <div class="container page-dark">
+            <div class="wrapper">
+                <div class="header">
+                    <button class="btn-link" onclick="goToNewCompetition()" style="float: left; width: 10%; margin: 5px">
+                        <i class="icon-plus"></i>
+                    </button>
+                    <h4 id="result" style="display: inline-block"><i class="icon-home icon-white" style="margin-top: 3px;"></i> </h4>
+                    <button class="btn-link" onclick="logOut()" style="float: right; margin: 6px; width: 10%">
+                        <i class="icon-cog"></i>
+                    </button>
+                </div>
 
-        <div id = "competitions_list">
-            
+                <div class="container-overflow" id="competitionsDiv">
+                </div>
+
+                <div class="push"></div>
+            </div>
+
+            <div class="footer">
+                <button class="btn-link btn-footer-home" onclick="myComps()">
+                    <i class="icon-fire icon-white"></i>
+                </button>
+                <button class="btn-link btn-footer-home" onclick ="myObserving()">
+                    <i class="icon-eye-open icon-white"></i>
+                </button>
+                <button class="btn-link btn-footer-home" onclick="goToFriendsPage()">
+                    <i class="icon-globe icon-white"></i>
+                </button>
+            </div>
         </div>
-
-        <button>
-            My Comps
-        </button>
-        <button>
-            Observing
-        </button>
-        <button>
-            Friends
-        </button>
-        <button onclick = "logOut()">
-            Log Out
-        </button>
     </body>
 </html>

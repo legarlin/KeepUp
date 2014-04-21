@@ -4,6 +4,10 @@
         <title>
             New Competition
         </title>
+
+        <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+        <link href="css/style.css" rel="stylesheet" media="screen">
+        
         <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
         <link rel="stylesheet" href="css/token-input.css"/>
          <script type="text/javascript" src="js/jquery.tokeninput.js"></script>
@@ -12,8 +16,9 @@
 
             $(document).ready(function() {
 
-                 $.ajax({
-                    url: "http://localhost:8000/webService.php",
+                document.getElementById('comp_expiration').setAttribute("min", currentDateTime());
+                $.ajax({
+                    url: "http://192.168.56.1:3000/webservice.php",
                     type: "post",
                     data: {action:'getFriends', user_id: localStorage.getItem("current_userid")},
                     success:function(data){
@@ -34,6 +39,39 @@
 
                
             });
+            
+            function showEvidence() {
+                var dropdownVal = $("#is_first_to").val();
+                console.log(dropdownVal);
+                if(dropdownVal == 1) {
+                    $("#evidenceDiv").css("display", "block");
+                } else if (dropdownVal == 0) {
+                    $("#evidenceDiv").css("display", "none");
+                }
+            }
+            function currentDateTime() {
+                var today = new Date();
+                var dd = today.getDate();
+                if(dd<10)
+                    dd = '0' + dd;
+                var mm = today.getMonth()+1; //January is 0!
+                if(mm<10)
+                    mm = '0' + mm;
+                var yyyy = today.getFullYear();
+                var hour = today.getHours();
+                if(hour<10)
+                    hour = '0' + hour;
+                var minute = today.getMinutes();
+                if(minute<10)
+                    minute = '0' + minute;
+                var second = today.getSeconds();
+                if(second<10)
+                    second = '0' + second;
+
+
+                var full_dateTime = yyyy + "-" + mm + "-" + dd + "T" + hour + ":" + minute + ":" + second;
+                return full_dateTime;
+            }
 
             function new_comp() {
                 
@@ -42,32 +80,36 @@
                 // let's select and cache all the fields
                 var $inputs = $form.find("input, select, button, textarea");
                 // serialize the data in the form
+    
                 var postData = 
                 {
-                    'title': $form.find('input[name="title"]').val(), 
+                    'title': $form.find('input[name="title"]').val(),
+                    'creator' : localStorage.getItem("current_userid"),
+                    'creator_username' : localStorage.getItem("current_username"),
                     'description' : $form.find('textarea[name="description"]').val(),
-                    'Expiration' : $form.find('input[name="expiration"]').val(),
-                    'required_evidence' : $form.find('input[name="required_evidence"]').val()
+                    'expiration' : $form.find('input[name="expiration"]').val().slice(0, 19).replace('T', ' '),
+                    'is_first_to' : $form.find('select[name="is_first_to"]').val(),
+                    'required_evidence' : $form.find('input[name="required_evidence"]').val(),
+                    'challengers' : $form.find("input[id=challenger_input]").val()
                 }
 
                 if ($('#privacy_checkbox').prop("checked")) {
-                    postData['prv'] = 1;
-                }
-
-                /*
+                    postData['prv'] = 0;
+                } else 
+                     postData['prv'] = 1;
+                
+                console.log(postData);
                 // let's disable the inputs for the duration of the ajax request
                 // Note: we disable elements AFTER the form data has been serialized.
                 $inputs.prop("disabled", true);
                 request = $.ajax({
-                    url: "http://localhost:8000/webService.php",
+                    url: "http://192.168.56.1:3000/webservice.php",
                     type: "post",
-                    data: {action:'newComp', signUpData: JSON.stringify(postData)},
+                    data: {action:'newComp', newCompData: JSON.stringify(postData)},
                     success:function(data){
                         if(data.stat == "success") {
                             console.log(data);
-                            localStorage.setItem("current_username", data.signUp.username);
-                            localStorage.setItem("current_userid", data.signUp.id);
-                            window.location.href = 'home.html'; 
+                            window.location.href = 'myCompetitions.html'; 
                         } else {
                             console.log("Failed!")
                             console.log(data.code);
@@ -83,26 +125,98 @@
                     // reenable the inputs
                     $inputs.prop("disabled", false);
                 });
-                */
+                
                 // prevent default posting of form
                 event.preventDefault();
                
             }
+
+            function goHome() {
+                window.location.href = 'home.html';
+            }
         </script>
 
     </head>
-    <body>
-       Welcome To The New Competition Page
-        <form onsubmit="new_comp()" id="newCompForm">
-            <fieldset>
-                Title <input type="text" name="title" required><br>
-                Description <textarea name="description" required> </textarea><br>
-                Expiration: <input type="datetime-local" name="expiration" required><br>
-                Amount of Evidence Required: <input type="number" name="required_evidence" min="1" required><br>
-                Private: <input type="checkbox" name="privacy" id = "privacy_checkbox"> <br>
-                Challengers:  <input type="text" id="challenger_input" style="display: none;">
-                <input type="submit">
-            </fieldset>
-        </form>
+    <body style="overflow-x: hidden">
+        <div class="container page">
+            <div class="wrapper">
+                <div class="header">
+                    <h4>New Competition</h4>
+                </div>
+
+                <div class="container page-inner" style="margin-left: -90px;">
+                    <form class="form-horizontal" onsubmit="new_comp()" id="newCompForm">
+                        <div id = "error" style = "margin-left:180px"></div>
+                        <div class="control-group">
+                            <label class="control-label form-label" for="title">Title:</label>
+                            <div class="controls">
+                                <input class="input" style="background-color: transparent;" type="text" id="title" name="title" required>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label form-label" for="description">Description:</label>
+                            <div class="controls">
+                                <textarea class="input" id="description" style="background-color: transparent;" name="description" required></textarea>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label form-label" for="comp-expiration">Expiration:</label>
+                            <div class="controls">
+                                <input class="input" type="datetime-local" id ="comp_expiration" name="expiration" style="background-color: transparent; font-size: 12px;" required>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label form-label" for="is_first_to">Competition Type</label>
+                            <div class="controls">
+                                <select  onchange = "showEvidence()" name = "is_first_to" id = "is_first_to" style="background-color: transparent;" required>
+                                    <option value="" disabled selected>Select an option</option>
+                                    <option value="1">First to set evidence</option>
+                                    <option value="0">Most in set time</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="control-group" style = "display:none" id ="evidenceDiv">
+                            <label class="control-label form-label" for="evidence"># Evidence:</label>
+                            <div class="controls">
+                                <input class="input" type="number" style="background-color: transparent;" name="required_evidence" id="evidence" min="1" required>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label form-label" for="privacy_checkbox">Private?</label>
+                            <div class="controls">
+                                <input type="checkbox" style="background-color: transparent;" name="privacy" id="privacy_checkbox">
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label form-label" for="challenger_input">Challengers:</label>
+                            <div class="controls">
+                                <input class="input" style="width: 218px" type="text" id="challenger_input" required>
+                            </div>
+                        </div>
+
+
+                        <div class="control-group">
+                            <div class="controls">
+                                <button class="btn btn-info btn-main" type="submit">Challenge</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="push"></div>
+            </div>
+
+            <div class="footer">
+                <button class="btn-link btn-footer-home" onclick="goHome()">
+                    <i class="icon-home icon-white"></i>
+                </button>
+            </div>
+        </div>
     </body>
 </html>

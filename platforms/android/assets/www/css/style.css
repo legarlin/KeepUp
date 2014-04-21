@@ -1,0 +1,135 @@
+@font-face {
+	font-family: 'Aleo';
+	src: url('fonts/Aleo-Regular.otf') format('opentype');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'Aleo Bold';
+	src: url('fonts/Aleo-Bold.otf') format('opentype');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'Merriweather Sans';
+	src: url('fonts/MerriweatherSans-Light.otf') format('opentype');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'Vincent';
+	src: url('fonts/Vincent-Regular.otf') format('opentype');
+	font-weight: normal;
+	font-style: normal;
+}
+
+.homepage {
+	background-color: #2C2626;
+	display: table-cell;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	vertical-align: middle;
+	color: #E3E3E3;
+	font-family: Vincent;
+}
+
+.page {
+	background-color: #E3E3E3;
+	display: table-cell;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	vertical-align: middle;
+}
+
+.page-dark {
+	background-color: #423736;
+	display: table-cell;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	vertical-align: middle;
+}
+
+.page-inner {
+	margin: 30px;
+}
+
+.header {
+	font-family: Vincent;
+	background-color: #D04340;
+	text-align: center;
+	color: #FFFFFF;
+	letter-spacing: -1px;
+	padding: 0.5px;
+}
+
+.footer {
+	font-family: Vincent;
+	background-color: #2C2626;
+	text-align: center;
+	color: #FFFFFF;
+	letter-spacing: -1px;
+	padding: 0.5px;
+	height: 3em;
+}
+
+.push {
+	height: 3em;
+}
+
+.wrapper {
+	min-height: 100%;
+	height: auto !important;
+	height: 100%;
+	margin: 0 auto -3em;
+}
+
+.form-label {
+	font-family: Merriweather Sans;
+	font-size: 12px;
+	letter-spacing: -0.5px;
+	color: #276E6E;
+}
+
+.input {
+	font-family: Merriweather Sans;
+	font-size: 14px;
+	letter-spacing: -0.5px;
+}
+
+.btn-main {
+	font-family: Merriweather Sans;
+	font-size: 12px;
+	letter-spacing: -0.5px;
+}
+
+.container-overflow {
+	overflow: scroll;
+	width: 100%;
+	height: 80%;
+	position: absolute;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.competition {
+	margin: 10px;
+	height: auto;
+	padding: 2px;
+	background-color: #5bc0de;
+	color: #FFFFFF;
+	font-family: Merriweather Sans;
+	font-size: 12px;
+	letter-spacing: -0.5px;
+	border-radius: 4px;
+}
+
+.btn-footer-home {
+	width: 30%;
+	text-align: center;
+	margin-top: 7px;
