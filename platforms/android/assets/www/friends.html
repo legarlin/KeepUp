@@ -3,6 +3,9 @@
   <head>
     <title>Friends</title>
     <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <script type='text/javascript' > 
+          var phpLocation = "http://localhost:3000/webService.php"; 
+    </script>
       <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
       <link rel="stylesheet" href="css/token-input.css"/>
       <script type="text/javascript" src="js/jquery.tokeninput.js"></script>
@@ -11,7 +14,7 @@
         $(document).ready(function() {
           var curr_user = localStorage.getItem("current_userid");
           $.ajax({
-            url: "http://192.168.56.1:3000/webservice.php",
+            url: phpLocation,
             type: "post",
             data: {action:'getAllUsers', user_id: localStorage.getItem("current_userid")},
             success:function(data){
@@ -31,7 +34,7 @@
         });
 
         $.ajax({
-            url: "http://192.168.56.1:3000/webservice.php",
+            url: phpLocation,
             type: "post",
             data: {action:'getPending', user_id: localStorage.getItem("current_userid")},
             success:function(data){
@@ -57,7 +60,7 @@
         });
 
         $.ajax({
-          url: "http://192.168.56.1:3000/webservice.php",
+          url: phpLocation,
           type: "post",
           data: {action:'getFriends', user_id: localStorage.getItem("current_userid")},
           success:function(data){
@@ -85,7 +88,7 @@
       function addFriends() {
         var requests = $("#friend_search").val();
         $.ajax({
-          url: "http://192.168.56.1:3000/webservice.php",
+          url: phpLocation,
           type: "post",
           data: {action:'addFriends', requests: JSON.stringify(requests), user_id: localStorage.getItem("current_userid")},
           success:function(data){
@@ -110,7 +113,7 @@
 
       function acceptRequest(pending_id) {
         $.ajax({
-          url: "http://192.168.56.1:3000/webservice.php",
+          url: phpLocation,
           type: "post",
           data: {action:'acceptRequest', pending_id: pending_id, user_id: localStorage.getItem("current_userid")},
           success:function(data){

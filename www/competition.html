@@ -4,7 +4,9 @@
 <title>My Competitions</title>
 <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
 <link href="css/style.css" rel="stylesheet" media="screen">
-
+<script type='text/javascript' > 
+    var phpLocation = "http://localhost:3000/webService.php"; 
+</script>
 <script type="text/javascript"
 	src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
@@ -23,6 +25,82 @@
 
 	// device APIs are available
   //
+
+  function submitMessage(){
+		var $form = $('#newMessageForm');
+
+                // let's select and cache all the fields
+                var $inputs = $form.find("input, select, button, textarea");
+                // serialize the data in the form
+                var today = new Date();
+                var dd = today.getDate();
+                if(dd<10)
+                    dd = '0' + dd;
+                var mm = today.getMonth()+1; //January is 0!
+                if(mm<10)
+                    mm = '0' + mm;
+                var yyyy = today.getFullYear();
+                var hour = today.getHours();
+                if(hour<10)
+                    hour = '0' + hour;
+                var minute = today.getMinutes();
+                if(minute<10)
+                    minute = '0' + minute;
+                var second = today.getSeconds();
+                if(second<10)
+                    second = '0' + second;
+
+
+                var full_dateTime = yyyy + "-" + mm + "-" + dd + "T" + hour + ":" + minute + ":" + second;
+
+
+
+
+    			var d = full_dateTime.replace('T', ' ');
+                var postData = 
+                {
+                    'c_id': localStorage.getItem("current_comp"),
+                    'u_id' : localStorage.getItem("current_userid"),
+                    'u_name' : localStorage.getItem("current_username"),
+                    'mess' : $form.find('textarea[name="message"]').val(),
+                    'timestamp' : d,
+                    
+                }
+
+                
+                
+                console.log(postData);
+                // let's disable the inputs for the duration of the ajax request
+                // Note: we disable elements AFTER the form data has been serialized.
+                $inputs.prop("disabled", true);
+                request = $.ajax({
+                    url: phpLocation,
+                    type: "post",
+                    data: {action:'newMessage', newMessage: JSON.stringify(postData)},
+                    success:function(data){
+                        if(data.stat == "success") {
+                            console.log(data);
+                            window.location.href = 'competition.html'; 
+                        } else {
+                            console.log("Failed!")
+                            console.log(data.code);
+                        }
+                    }, error:function(err){
+                        console.log("Failed!")
+                        console.log(err);
+                    }
+                });
+                // callback handler that will be called regardless
+                // if the request failed or succeeded
+                request.always(function () {
+                    // reenable the inputs
+                    $inputs.prop("disabled", false);
+                });
+                
+                // prevent default posting of form
+                event.preventDefault();
+  }
+
   function onDeviceReady() {
       pictureSource=navigator.camera.PictureSourceType;
       destinationType=navigator.camera.DestinationType;
@@ -124,9 +202,48 @@
 		var allNames= []
 		var allIds = []
 
+
+
+		
+
+                //var $form = $('#logInForm');
+                // let's select and cache all the fields
+                //var $inputs = $form.find("input, select, button, textarea");
+                // serialize the data in the form
+                //var postData = {'user_id': localStorage.getItem("current_userid")}
+
+                // let's disable the inputs for the duration of the ajax request
+                // Note: we disable elements AFTER the form data has been serialized.
+                //$inputs.prop("disabled", true);
+               //OLD
+                // request = $.ajax({
+                //     url: phpLocation,
+                //     type: "post",
+                //     data: {action:'getThread', comp_id: localStorage.getItem("current_comp")},
+                //     success:function(data){
+                //         console.log(data);
+                //         var messArray = JSON.parse(data.messages);
+                //         for(var i = 0; i < messArray.length; i++) {
+                //             var uName = messArray[i].user_name;
+                //             var uMessage = messArray[i].message;
+                //             var uTStamp = messArray[i].tstamp;
+                //             $("#threadTab").append("<div>" +  uName + " said: " + uMessage + " at " + uTStamp + "</div>");
+                //         }
+
+                //     }, error:function(err){
+                //         console.log("Failed!")
+                //         console.log(err);
+                //     }
+                // });
+            	//OLD
+
+
+
+
+
 		request = $
 				.ajax({
-					url : "http://192.168.56.1:3000/webservice.php",
+					url : phpLocation,
 					type : "post",
 					data : {
 						action : 'getComp',
@@ -152,7 +269,7 @@
 
 						request2 = $
 								.ajax({
-									url : "http://192.168.56.1:3000/webservice.php",
+									url : phpLocation,
 									type : "post",
 									data : {
 										action : 'getUser',
@@ -165,7 +282,7 @@
 
 										request3 = $
 												.ajax({
-													url : "http://192.168.56.1:3000/webservice.php",
+													url : phpLocation,
 													type : "post",
 													data : {
 														action : 'getUsers',
@@ -203,7 +320,7 @@
 																				+ "</div>");
 
 														$.ajax({
-												      url: "http://192.168.56.1:3000/webservice.php",
+												      url: phpLocation,
 												      type: "post",
 												      data: {action:'isObserver', user_id: localStorage.getItem("current_userid"), competition_id : localStorage.getItem("current_comp")},
 												      success:function(data){
@@ -211,12 +328,42 @@
 												          	console.log(data);
 												          	if(JSON.parse(data.observer)==true || compCreator == localStorage.getItem("current_userid") || compChallenger.indexOf(localStorage.getItem("current_userid")) > -1) {
 												          		$("#buttonDiv").append("<button class='btn-link' onclick=observe() id=observeButton disabled><i class='icon-eye-open' style='opacity:0.4'></i></button>");
+												          		//NEW
+												          		request = $.ajax({
+                    											url: phpLocation,
+                    											type: "post",
+                    											data: {action:'getThread', comp_id: localStorage.getItem("current_comp")},
+                    											success:function(data){
+                        											console.log(data);
+                        											var messArray = JSON.parse(data.messages);
+                        											$("#threadTab").append("Message Board");
+                        										
+
+                        											for(var i = 0; i < messArray.length; i++) {
+                            											var uName = messArray[i].user_name;
+                           										 		var uMessage = messArray[i].message;
+                           											 	var uTStamp = messArray[i].tstamp;
+                           										 		$("#threadTab").append("<div>" +  uName + " said: " + uMessage + " at " + uTStamp + "</div>");
+                           										 		//$("#threadTab").append("<button id="messageButton" onclick = "submitMessage()"> Post </button>");
+
+                       												 }
+
+                       												 
+
+                   												 	}, error:function(err){
+                      										  		console.log("Failed!")
+                      											 	console.log(err);
+                   													 }
+               												    });
+																//NEW
+
 												          	} else {
 												          		$("#buttonDiv").append("<button class='btn-link' onclick=observe() id=observeButton><i class='icon-eye-open icon-white'></i></button>");
+												          		$("#threadTab").css("display", "none");
 												          	}
 												          	if(allIds.indexOf(localStorage.getItem("current_userid")) < 0) {
 												          		$.ajax({
-																	      url: "http://192.168.56.1:3000/webservice.php",
+																	      url: phpLocation,
 																	      type: "post",
 																	      data: {action:'hasVoted', user_id: localStorage.getItem("current_userid"), competition_id : localStorage.getItem("current_comp")},
 																	      success:function(data){
@@ -286,7 +433,7 @@
 
 	function observe() {
 		$.ajax({
-      url: "http://192.168.56.1:3000/webservice.php",
+      url: phpLocation,
       type: "post",
       data: {action:'addObserver', user_id: localStorage.getItem("current_userid"), competition_id: localStorage.getItem("current_comp")},
       success:function(data){
@@ -309,7 +456,7 @@
 		var selectedID = $("#voteDropdown").val();
 		console.log(selectedID);
 		$.ajax({
-      url: "http://192.168.56.1:3000/webservice.php",
+      url: phpLocation,
       type: "post",
       data: {action:'submitVote', user_id: localStorage.getItem("current_userid"), competition_id: localStorage.getItem("current_comp"), contestant: selectedID},
       success:function(data){
@@ -331,7 +478,7 @@
 
 	function getCompVotes() {
 		$.ajax({
-      url: "http://192.168.56.1:3000/webservice.php",
+      url: phpLocation,
       type: "post",
       data: {action:'getCompVotes', competition_id: localStorage.getItem("current_comp")},
       success:function(data){
@@ -394,12 +541,22 @@
 
 			<!--<div class="push"></div> -->
       <div class="container">
+
         <div id = "evidenceTab">
           <div id = "addEvidenceDiv">
           </div>
           <div id = "previewMedia">
           </div>
         </div>
+        <div id = "threadTab">
+        	<label class="control-label form-label" for="message">New Message:</label>
+      			    <form class="form-horizontal" onsubmit="newMessage()" id="newMessageForm">
+                    <div class="controls">
+                        <textarea class="input" id="message" style="background-color: transparent;" name="message" required></textarea>
+                    </div>
+      			<button id="messageButton" onclick = "submitMessage()"> Post </button>
+      			
+      	</div>
       </div>
 
     <!--</div>-->

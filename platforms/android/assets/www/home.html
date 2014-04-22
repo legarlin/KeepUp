@@ -7,7 +7,9 @@
 
         <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
         <link href="css/style.css" rel="stylesheet" media="screen">
-        
+        <script type='text/javascript' > 
+            var phpLocation = "http://localhost:3000/webService.php"; 
+        </script>
         <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
         <script type="text/javascript">
             $(document).ready(function() {
@@ -16,7 +18,7 @@
 
                 var friends = [];
                 $.ajax({
-                    url: "http://192.168.56.1:3000/webservice.php",
+                    url: phpLocation,
                     type: "post",
                     data: {action:'getFriends', user_id: localStorage.getItem("current_userid")},
                     success:function(data){
@@ -28,7 +30,7 @@
                             }
                             console.log(friends);
                             $.ajax({
-                                url: "http://192.168.56.1:3000/webservice.php",
+                                url: phpLocation,
                                 type: "post",
                                 data: {action:'getFriendComps', friends: friends},
                                 success:function(data){
@@ -63,7 +65,7 @@
             function logOut() {
                 var curr_user = localStorage.getItem("current_username");
                 $.ajax({
-                    url: "http://192.168.56.1:3000/webservice.php",
+                    url: phpLocation,
                     type: "post",
                     data: {action:'logOut', user: curr_user},
                     success:function(data){
@@ -88,7 +90,7 @@
             }
             
             function myComps() { 
-            	window.location.href = 'myCompetitions.html';
+                window.location.href = 'myCompetitions.html';
             }
 
             function myObserving() { 

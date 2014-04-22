@@ -7,7 +7,9 @@
 
         <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
         <link href="css/style.css" rel="stylesheet" media="screen">
-        
+        <script type='text/javascript' > 
+            var phpLocation = "http://localhost:3000/webService.php"; 
+        </script>
         <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
         <script type="text/javascript">
             function signUp() {
@@ -36,7 +38,7 @@
                 // Note: we disable elements AFTER the form data has been serialized.
                 $inputs.prop("disabled", true);
                 request = $.ajax({
-                    url: "http://192.168.56.1:3000/webservice.php",
+                    url: phpLocation,
                     type: "post",
                     data: {action:'signUp', signUpData: JSON.stringify(postData)},
                     success:function(data){
