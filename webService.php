@@ -27,6 +27,8 @@
       case 'submitVote' : submitVote();break;
       case 'hasVoted' : hasVoted();break;
       case 'getCompVotes' :getCompVotes();break;
+      case 'getThread' : getThread();break;
+      case 'newMessage' : newMessage();break;
     }
   }
 
@@ -35,7 +37,7 @@
     $user = $decoded['username'];
     $pass = $decoded['password'];
     
-    $link = mysqli_connect('keepup.cw8gzyaihfxq.us-east-1.rds.amazonaws.com', 'gldr','keepup2014', 'keepup', 3306);            
+    $link = mysqli_connect('keepup.cw8gzyaihfxq.us-east-1.rds.amazonaws.com:3306', 'gldr','keepup2014', 'keepup');            
             
     if (mysqli_connect_errno()) {
       trigger_error('Database connection failed: '  . mysqli_connect_error(), E_USER_ERROR);
@@ -378,7 +380,7 @@ function getUsers() {
 }
 
 function getFriendComps() {
-  $user = $_POST['friends'];
+  $user = json_decode($_POST['friends'],true);
   $link = mysqli_connect('keepup.cw8gzyaihfxq.us-east-1.rds.amazonaws.com:3306', 'gldr','keepup2014', 'keepup');            
           
   if (mysqli_connect_errno()) {
@@ -399,7 +401,7 @@ function getFriendComps() {
     }
   }
 
-  echo json_encode(array('stat' => 'success', 'competitions' =>json_encode($get_comp)));
+  echo json_encode(array('stat' => 'success', 'friendCompetitions' =>json_encode($get_comp)));
 }
 
 function isObserver() {
@@ -549,6 +551,55 @@ function getCompVotes() {
      die(json_encode(array('stat' => 'error', 'code' => "Error getting votes!")));
   }
 }
+
+function getThread(){
+  $comp = $_POST['comp_id'];
+    $link = mysqli_connect('keepup.cw8gzyaihfxq.us-east-1.rds.amazonaws.com:3306', 'gldr','keepup2014', 'keepup');            
+            
+    if (mysqli_connect_errno()) {
+      trigger_error('Database connection failed: '  . mysqli_connect_error(), E_USER_ERROR);
+    }
+
+    $query = "SELECT user_name, message, tstamp from thread where competition_id='$comp' order by tstamp desc";
+    $rs=$link->query($query);
+
+    $get_messages = array();
+
+    $rs->data_seek(0);
+    if(mysqli_num_rows($rs) != 0) {
+    while($row = $rs->fetch_assoc()){
+        $get_messages[] = $row;
+    }
+    }
+       echo json_encode(array('stat' => 'success', 'messages' =>json_encode($get_messages)));
+
+
+}
+
+function newMessage() {
+    
+    $decoded = json_decode($_POST['newMessage'],true);
+    $comp_id = $decoded['c_id'];
+    $user_id = $decoded['u_id'];
+    $user_name = $decoded['u_name'];
+    $message =$decoded['mess'];
+    $t = $decoded['timestamp'];
+
+    $link = mysqli_connect('keepup.cw8gzyaihfxq.us-east-1.rds.amazonaws.com:3306', 'gldr','keepup2014', 'keepup');            
+            
+    if (mysqli_connect_errno()) {
+      trigger_error('Database connection failed: '  . mysqli_connect_error(), E_USER_ERROR);
+    }
+
+    $insert = "INSERT into thread (user_id, user_name, competition_id, message, tstamp) VALUES ($user_id, '$user_name', $comp_id, '$message', '$t')";
+//here
+    $rs=$link->query($insert);
+    if($rs) {
+      echo json_encode(array('stat' => 'success', 'message' => array('message' => $message, 'id'=> mysqli_insert_id($link))));
+    } else {
+       die(json_encode(array('stat' => 'error', 'code' => "problem with message insertion")));
+    }
+  }
 
 
 ?>

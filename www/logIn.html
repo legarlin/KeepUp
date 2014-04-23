@@ -6,7 +6,9 @@
         <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
         <link href="css/style.css" rel="stylesheet" media="screen">
         <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
-
+        <script type='text/javascript' > 
+            var phpLocation = "http://daniellanger.byethost13.com/webService.php"; 
+        </script>
         <script type="text/javascript">
             var request;
             function logIn() {
@@ -21,7 +23,7 @@
                 // Note: we disable elements AFTER the form data has been serialized.
                 $inputs.prop("disabled", true);
                 request = $.ajax({
-                    url: "http://keepupserver.net76.net/index.php",
+                    url: phpLocation,
                     type: "post",
                     dataType: 'json',
                     data: {action:'logIn', logInData: JSON.stringify(postData)},
@@ -40,7 +42,7 @@
                         }
                     }, error:function(err){
                         console.log("Failed!")
-                        console.log(err);
+                        console.log(JSON.stringify(err));
                         $("error").html(err);
                     }
                 });
