@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
     <head>
-
         <title>Log In</title>
 
         <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
@@ -22,8 +21,9 @@
                 // Note: we disable elements AFTER the form data has been serialized.
                 $inputs.prop("disabled", true);
                 request = $.ajax({
-                    url: "http://192.168.56.1:3000/webservice.php",
+                    url: "http://keepupserver.net76.net/index.php",
                     type: "post",
+                    dataType: 'json',
                     data: {action:'logIn', logInData: JSON.stringify(postData)},
                     success:function(data){
                         //alert(data.items[0])

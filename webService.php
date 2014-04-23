@@ -7,7 +7,6 @@
   if(isset($_POST['action']) && !empty($_POST['action'])) {
     $action = $_POST['action'];
     switch($action) {
-      case 'test' : test();break; 
       case 'logIn' : logIn();break; 
       case 'signUp' : signUp();break;
       case 'logOut' : logOut();break;
@@ -31,32 +30,12 @@
     }
   }
 
-  function test() { 
-    $link = mysqli_connect('keepup.cw8gzyaihfxq.us-east-1.rds.amazonaws.com:3306', 'gldr','keepup2014', 'keepup');            
-            
-    if (mysqli_connect_errno()) {
-      trigger_error('Database connection failed: '  . mysqli_connect_error(), E_USER_ERROR);
-    }
-    $sql='SELECT * FROM test';
-    $rs=$link->query($sql);
-     
-    $output = array();
-
-    $rs->data_seek(0);
-    while($row = $rs->fetch_assoc()){
-        $output[] = $row['testcol'];
-    }
-
-    echo json_encode(array('stat' => 'success', 'items' => $output));
-    mysqli_close($link);
-  }
-
   function logIn() {
     $decoded = json_decode($_POST['logInData'],true);
     $user = $decoded['username'];
     $pass = $decoded['password'];
     
-    $link = mysqli_connect('keepup.cw8gzyaihfxq.us-east-1.rds.amazonaws.com:3306', 'gldr','keepup2014', 'keepup');            
+    $link = mysqli_connect('keepup.cw8gzyaihfxq.us-east-1.rds.amazonaws.com', 'gldr','keepup2014', 'keepup', 3306);            
             
     if (mysqli_connect_errno()) {
       trigger_error('Database connection failed: '  . mysqli_connect_error(), E_USER_ERROR);
@@ -80,7 +59,7 @@
         die(json_encode(array('stat' => 'error', 'code' => "incorrect username/password!")));
     } 
     else
-      die(json_encode(array('stat' => 'error', 'code' => "user does not exist!")));
+      die(json_encode(array('stat' => 'error', 'code' => "'$decoded' does not exist!")));
     mysqli_close($link);
   }
 
@@ -190,7 +169,7 @@
          echo json_encode(array('stat' => 'success', 'friends' =>json_encode($rows)));
       }
     } else {
-      echo json_encode(array('stat' => 'success', 'friends' => json_encode([])));
+      echo json_encode(array('stat' => 'success', 'friends' => ""));
     }
    
   }
@@ -262,7 +241,7 @@
          echo json_encode(array('stat' => 'success', 'pendings' =>json_encode($rows)));
       }
     } else {
-      echo json_encode(array('stat' => 'success', 'pendings' =>json_encode([])));
+      echo json_encode(array('stat' => 'success', 'pendings' =>""));
     }
   }
 

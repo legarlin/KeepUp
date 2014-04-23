@@ -19,13 +19,16 @@
   var ParsePicture = Parse.Object.extend("ParsePicture");
 	var pictureSource;   // picture source
   var destinationType; // sets the format of returned value
+
+  var devicePlatform;
 	document.addEventListener("deviceready",onDeviceReady,false);
 
 	// device APIs are available
   //
   function onDeviceReady() {
-      pictureSource=navigator.camera.PictureSourceType;
-      destinationType=navigator.camera.DestinationType;
+    devicePlatform = device.platform;
+    pictureSource=navigator.camera.PictureSourceType;
+    destinationType=navigator.camera.DestinationType;
   }
 
   function onPhotoSuccess(imageData) {
@@ -55,9 +58,14 @@
           parsePicture.set("name", "testEv");
           parsePicture.set("picture", parseFile);
           parsePicture.set("type", type);
+          parsePicture.set("competition", localStorage.getItem("current_comp"));
+          parsePicture.set("user_id", localStorage.getItem("current_userid"));
+          parsePicture.set("user_name", localStorage.getItem("current_username"));
+          parsePicture.set("approved", false);
           parsePicture.save(null, {
             success: function(ob) {
             console.log("saved!");
+            window.location.href = 'competition.html';
           }, error:function(e) {
             console.log("error!", e);
           }
@@ -94,9 +102,9 @@
       $("#previewMedia").append("<img width = '240' height = '160' src=" + imageData + "/>")
     } else if(imageData.indexOf("/video") !== -1) {
       $("#previewMedia").append("<video id = 'previewVideo' width = '240' height = '160' controls> <source src =" +imageData + " type='video/mp4'></video>")
-      document.getElementById("previewVideo").onclick = function() {
+      /*document.getElementById("previewVideo").onclick = function() {
         play(imageData);
-      }
+      } */
     }
     console.log("IMAGE DATA" + imageData); 
     $("#previewMedia").append("<button id = 'uploadMedia'> Upload </button>");
@@ -106,7 +114,8 @@
   }
 
   function play(url) {
-   cordova.plugins.videoPlayer.play(url); 
+    console.log("here!!!");
+    cordova.plugins.videoPlayer.play(url); 
   }
 
 	$(document).ready(function() {
@@ -276,9 +285,35 @@
 						console.log(err);
 					}
 				});
-
 		getCompVotes();	
+    loadEvidence();
+
+
 	});
+
+  function loadEvidence() {
+    var query = new Parse.Query(ParsePicture);
+    query.equalTo("competition", localStorage.getItem("current_comp"));
+    query.find({
+      success: function(results) {
+        console.log("Got " + results.length + " competitions");
+        for(var i = 0; i < results.length; i++) {
+          var ev = results[i];
+          if (ev.get("type") =="image") {
+            var url = ev.get("picture").url();
+            $("#evidenceThread").append("<img width = '240' height = '160' src='" + url + "'/><br><br>");
+          } else {
+            var url = ev.get("picture").url();
+            var video = $("<video class = 'videoEvidence' width = '240' height = '160' controls> <source src =" + url + " type='video/mp4'></video><br><br>");
+            //video.attr("onclick", "play(" + url + ")");
+            $("#evidenceThread").append(video);
+          }
+        }
+      }, error: function(error) {
+        console.log("Error: " + error.code + " " + error.message);
+      }
+    });
+  }
 
 	function myComps() {
 		window.location.href = 'myCompetitions.html';
@@ -398,6 +433,9 @@
           <div id = "addEvidenceDiv">
           </div>
           <div id = "previewMedia">
+          </div>
+          <div id = "evidenceThread">
+            <h5>Evidence Thread:</h5>
           </div>
         </div>
       </div>
