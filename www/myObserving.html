@@ -4,6 +4,8 @@
         <title>My Observing</title>
 
         <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+        <link href="css/style.css" rel="stylesheet" media="screen">
+
         <script type='text/javascript' > 
             var phpLocation = "http://daniellanger.byethost13.com/webService.php"; 
         </script>
@@ -23,7 +25,7 @@
                           var compName = compArray[i].title;
                           var compExp = compArray[i].expiration;
                           var compCreator = compArray[i].creator_username;
-                          $("#competitionsDiv").append("<div style='border-style:solid;border-width:1px' onclick=goToComp(" +compArray[i].id + ")>" + "Name: "+ compName + " Creator: " + compCreator +
+                          $("#competitionsDiv").append("<div class='competition' onclick=goToComp(" +compArray[i].id + ")>" + "<div class='sub-header-white'>" + compName + "</div> Creator: " + compCreator +
                                             "<br>" + "Expires: " + compExp + "</div>");
                         }
 
@@ -38,14 +40,31 @@
               window.location.href = 'competition.html';
               localStorage.setItem("current_comp", id);
             }
+
+            function goHome() {
+                window.location.href = 'home.html';
+            }
             
         </script>
     </head>
-    <body onload = "getObserving()">
-       Observed Competitions
-       <div id = "competitionsDiv">
-        
-       </div>
+    <body onload="getObserving()">
+      <div class="container page-dark">
+        <div class="wrapper">
+          <div class="header">
+            <h4>Watching</h4>
+          </div>
+          <div class="container-overflow" id="competitionsDiv">
+          </div>
+
+          <div class="push"></div>
+        </div>
+
+        <div class="footer">
+          <button class="btn-link btn-footer-home" onclick="goHome()">
+            <i class="icon-home icon-white"></i>
+          </button>
+        </div>
+      </div>
     </body>
 </html>
 

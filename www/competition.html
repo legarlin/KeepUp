@@ -279,7 +279,7 @@
 																				+ compDes
 																				+ "<br><br>"
 																				+ "Expires "
-																				+ compExp
+																				+ "<div style='color:#333333; display: inline'>" + compExp + "</div>"
 																				+ "<br><br>"
 																				+ "Creator: "
 																				+ creatorName
@@ -305,9 +305,7 @@
                     											success:function(data){
                         											console.log(data);
                         											var messArray = JSON.parse(data.messages);
-                        											$("#threadTab").append("Message Board");
-                        										
-
+                        									   
                         											for(var i = 0; i < messArray.length; i++) {
                             											var uName = messArray[i].user_name;
                            										 		var uMessage = messArray[i].message;
@@ -344,7 +342,7 @@
 																							for(var x  = 0; x <allNames.length; x++) {
 																							    $('<option />', {value: allIds[x], text: allNames[x]}).appendTo(s);
 																							}
-																							$('#pickSideDiv').append("Choose a side!");
+																							$('#pickSideDiv').append("<div class='sub-header'>Choose a side!</div>");
 																							$('#pickSideDiv').append(s);
 																							$('#pickSideDiv').append("<button onclick=submitVote()>Submit</button>");
 																          	} else {
@@ -355,8 +353,9 @@
 																							    $('<option />', {value: allIds[x], text: allNames[x]}).appendTo(s);
 																							}
 																							s.val(JSON.parse(data.contestant));
-																							$('#pickSideDiv').append("Choose a side!");
-																							$('#pickSideDiv').append(s);
+																							$('#pickSideDiv').append("<div class='sub-header'>Choose a side!</div>");
+                                              $('#pickSideDiv').append(s);
+                                              $('#pickSideDiv').append("<br><br>");
 																          	}
 																          }  else {
 																            console.log("Failed!")
@@ -366,8 +365,7 @@
 																	  });
 													        } else {
 													        	console.log(pictureSource);
-													        	$("#addEvidenceDiv").append("<h4>Add Evidence </h4>");
-													        	$("#addEvidenceDiv").append("<button onclick=getEvidence(" + pictureSource.PHOTOLIBRARY + ")>Upload Evidence</button>");
+													        	$("#addEvidenceDiv").append("<button class='btn-link' style='float: right; width: 10%; margin: -2px' onclick=getEvidence(" + pictureSource.PHOTOLIBRARY + ")><i class='icon-plus icon-white'></i></button>");
 													        }
 													      }
 													    }
@@ -426,23 +424,27 @@
 
           if (ev.get("type") =="image") {
             var url = ev.get("picture").url();
-            $("#evidenceThread").append("<img width = '240' height = '160' src='" + url + "'/><br>");
+
+            $("#media").append("<div>");
+            $("#media").append("<img width = '240' height = '160' src='" + url + "'/><br>");
             if (notuploader != 0 && canApprove != -1 && !isApproved){
-            	$("#evidenceThread").append("<button onclick = \"approve("+ evidence_id + ")\">Approve</button><br>");
+            	$("#media").append("<button onclick = \"approve("+ evidence_id + ")\">Approve</button></div><br>");
             }
             else if(isApproved){
-            	$("#evidenceThread").append("<h1>Approved</h1><br>");
+            	$("#media").append("<div class='stamp'><h1>Approved</h1></div></div>");
             }
           } else {
             var url = ev.get("picture").url();
-            var video = $("<video class = 'videoEvidence' width = '240' height = '160' controls> <source src =" + url + " type='video/mp4'></video><br>");
+            var video = $("<video class='videoEvidence' width = '240' height = '160' controls> <source src =" + url + " type='video/mp4'></video><br>");
             //video.attr("onclick", "play(" + url + ")");
-            $("#evidenceThread").append(video);
+
+            $("#media").append("<div>")
+            $("#media").append(video);
             if (notuploader != 0 && canApprove != -1 && !isApproved){
-            	$("#evidenceThread").append("<button onclick = \"approve("+ evidence_id + ")\">Approve</button><br>");
+            	$("#media").append("<button onclick = \"approve("+ evidence_id + ")\">Approve</button></div><br>");
             }
             else if(isApproved){
-            	$("#evidenceThread").append("<h1>Approved</h1><br>");
+            	$("#media").append("<div class='stamp'><h1>Approved</h1></div></div><br>");
             }
           }
         }
@@ -595,24 +597,25 @@
         </div>
 
         <div id="evidenceTab" class="competition">
-          <div id = "addEvidenceDiv">
-          </div>
-          <div id = "previewMedia">
-          </div>
-
           <div id = "evidenceThread">
-            <div class="sub-header">Evidence Thread</div>
+            <div class="sub-header" style="display: inline; width: 80%">Evidence Thread</div>
+            <div id="addEvidenceDiv" style="display: inline"></div>
+            <div id = "previewMedia" style="width:100%;"></div>
+            <br>
+            <div id="media" style='text-align: center; width: 100%;'></div>
           </div>
         </div>
-        <div id="threadTab">
-          <h5> Message Board </h5>
-          <label class="control-label form-label" for="message">New Message:</label>
-          
+
+        <div id="threadTab" class="competition">
+          <div class="sub-header">Message Board</div>
+
           <form onsubmit="newMessage()" id="newMessageForm">
-          <div class="controls">
-              <textarea class="input" id="message" style="background-color: transparent; resize: none;" name="message" required></textarea>
-          </div>
-          <button id="messageButton" onclick = "submitMessage()"> Post </button>
+            <div style="text-align: center; width: 92%; margin-left: 5px; margin-right: 5px; margin-top: 15px;">
+                <textarea class="input" id="message" style="background-color: transparent; width: 100%; resize: none;" name="message" required></textarea>
+                <button class='btn-main btn' id="messageButton" onclick = "submitMessage()" style='float: right; margin-top: -3px; margin-right: -13px;'>Post</button>
+            </div>
+          </form>
+          <br>
         </div>
       </div>
 
