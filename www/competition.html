@@ -196,10 +196,12 @@
     cordova.plugins.videoPlayer.play(url); 
   }
 
+  var compCreator;
+  var compChallenger = [];
+
 	$(document).ready(function() {
 
-		var compCreator;
-		var compChallenger = [];
+		
 		var isObserver;
 		var compName;
 		var compExp;
@@ -386,6 +388,9 @@
 									}
 								});
 
+					
+				    loadEvidence();
+
 					},
 					error : function(err) {
 						console.log("Failed!")
@@ -393,12 +398,19 @@
 					}
 				});
 		getCompVotes();	
-    loadEvidence();
+    //loadEvidence(compCreator,compChallenger);
 
 
 	});
 
   function loadEvidence() {
+  	console.log("comp creator " + compCreator);
+  	var allInvolved = [compCreator];
+  	for(var i = 0; i < compChallenger.length; i++){
+  		allInvolved[i+1]=(compChallenger[i])
+  	}
+  	console.log("all involved: " + allInvolved[0] + " " + allInvolved[1] + " " + allInvolved[2])
+  	//$.inArray(value, array)
     var query = new Parse.Query(ParsePicture);
     query.equalTo("competition", localStorage.getItem("current_comp"));
     query.find({
@@ -406,14 +418,34 @@
         console.log("Got " + results.length + " competitions");
         for(var i = 0; i < results.length; i++) {
           var ev = results[i];
+   		  var uploader = ev.get("user_id");
+   		  var notuploader = uploader - localStorage.getItem("current_userid");
+   		  var canApprove = allInvolved.indexOf(localStorage.getItem("current_userid"));
+   		  var isApproved = ev.get("approved");
+   		  var evidence_id = ev.get("evidence_id")
+   		  console.log("notuploader " + notuploader);
+   		  console.log("canApprove " + canApprove);
+
           if (ev.get("type") =="image") {
             var url = ev.get("picture").url();
-            $("#evidenceThread").append("<img width = '240' height = '160' src='" + url + "'/><br><br>");
+            $("#evidenceThread").append("<img width = '240' height = '160' src='" + url + "'/><br>");
+            if (notuploader != 0 && canApprove != -1 && !isApproved){
+            	$("#evidenceThread").append("<button onclick = \"approve("+ evidence_id + ")\">Approve</button><br>");
+            }
+            else if(isApproved){
+            	$("#evidenceThread").append("<h1>Approved</h1><br>");
+            }
           } else {
             var url = ev.get("picture").url();
-            var video = $("<video class = 'videoEvidence' width = '240' height = '160' controls> <source src =" + url + " type='video/mp4'></video><br><br>");
+            var video = $("<video class = 'videoEvidence' width = '240' height = '160' controls> <source src =" + url + " type='video/mp4'></video><br>");
             //video.attr("onclick", "play(" + url + ")");
             $("#evidenceThread").append(video);
+            if (notuploader != 0 && canApprove != -1 && !isApproved){
+            	$("#evidenceThread").append("<button onclick = \"approve("+ evidence_id + ")\">Approve</button><br>");
+            }
+            else if(isApproved){
+            	$("#evidenceThread").append("<h1>Approved</h1><br>");
+            }
           }
         }
       }, error: function(error) {
@@ -498,6 +530,37 @@
 
 	function goHome() {
 		window.location.href = 'home.html';
+	}
+
+	function approve(evidence_id){
+		console.log("HERREEEEE")
+		var query = new Parse.Query(ParsePicture);
+    	query.equalTo("competition", localStorage.getItem("current_comp"));
+
+    	query.equalTo("evidence_id", evidence_id);
+    			console.log("HERREEEEE")
+
+    	query.first({
+    		
+    		success: function (results){
+    		    console.log("yo " + results);
+	            results.set("approved", true);
+	            results.save(null, {  
+	            	success: function (results) { 
+	            	window.location.href = 'competition.html';
+	            	},
+	            	error: function(err){
+
+	            		console.log("Failure!!");
+	            	}
+
+	            });
+    		},
+    		error:function(err) {
+    			console.log("Failed!!");
+    		}
+    	});
+    
 	}
 
 </script>
