@@ -4,6 +4,7 @@
 <title>My Competitions</title>
 <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
 <link href="css/style.css" rel="stylesheet" media="screen">
+
 <script type='text/javascript' > 
     var phpLocation = "http://daniellanger.byethost13.com/webService.php"; 
 </script>
@@ -272,13 +273,10 @@
 														}
 
 														$("#competitionDiv")
-																.append("<div> Title: "
-                                        + compName
-                                        + "<br><br>"
-                                        + "Description: " 
+																.append("<div><i class='icon-info-sign'></i> <div class='sub-header' style='display: inline; margin-top: 3px;'>Information</div><br> "
 																				+ compDes
 																				+ "<br><br>"
-																				+ "Expires: "
+																				+ "Expires "
 																				+ compExp
 																				+ "<br><br>"
 																				+ "Creator: "
@@ -344,7 +342,7 @@
 																							for(var x  = 0; x <allNames.length; x++) {
 																							    $('<option />', {value: allIds[x], text: allNames[x]}).appendTo(s);
 																							}
-																							$('#pickSideDiv').append("Pick Who You Think Will Win!");
+																							$('#pickSideDiv').append("Choose a side!");
 																							$('#pickSideDiv').append(s);
 																							$('#pickSideDiv').append("<button onclick=submitVote()>Submit</button>");
 																          	} else {
@@ -355,7 +353,7 @@
 																							    $('<option />', {value: allIds[x], text: allNames[x]}).appendTo(s);
 																							}
 																							s.val(JSON.parse(data.contestant));
-																							$('#pickSideDiv').append("Pick Who You Think Will Win!");
+																							$('#pickSideDiv').append("Choose a side!");
 																							$('#pickSideDiv').append(s);
 																          	}
 																          }  else {
@@ -504,9 +502,9 @@
 </head>
 
 
-<body>
-	<div class="container">
-		<!--<div class="wrapper"> -->
+<body style="overflow-x: hidden;">
+	<div class="container page-dark">
+		<div class="wrapper">
 			<div class="header">
 				<button class="btn-link" onclick="myComps()" style="float: left; width: 10%; margin: 5px;"><i class="icon-arrow-left"></i>
 				</button>
@@ -515,51 +513,49 @@
 				</span>
 			</div>
 
-			<div class="container">
-				<div id="competitionDiv" style="margin: 10px;">
-					<i class="icon-info-sign icon-white"></i>
-					<br>
+			<div class="container-overflow">
+				<div id="competitionDiv" class="competition">
 				</div>
 
-				<div id="pickSideDiv">
-				</div>
+        <div class="competition">
+  				<div id="pickSideDiv">
+  				</div>
 
-				<table id = "votesTable" border="1">
-					<tr>
-				  	<th>Contestant</th>
-				  	<th>Votes</th>
-					</tr>
-					<tr>
-					</tr>
-				</table>
-			</div>
+  				<table id="votesTable" border="1">
+  					<tr>
+  				  	<th>Contestant</th>
+  				  	<th>Votes</th>
+  					</tr>
+  					<tr>
+  					</tr>
+  				</table>
+        </div>
 
-			<!--<div class="push"></div> -->
-      <div class="container">
-
-        <div id = "evidenceTab">
+        <div id="evidenceTab" class="competition">
           <div id = "addEvidenceDiv">
           </div>
           <div id = "previewMedia">
           </div>
 
           <div id = "evidenceThread">
-            <h5>Evidence Thread:</h5>
+            <div class="sub-header">Evidence Thread</div>
           </div>
         </div>
-        <div id = "threadTab">
+        <div id="threadTab">
           <h5> Message Board </h5>
-        	<label class="control-label form-label" for="message">New Message:</label>
-      			    <form class="form-horizontal" onsubmit="newMessage()" id="newMessageForm">
-                    <div class="controls">
-                        <textarea class="input" id="message" style="background-color: transparent;" name="message" required></textarea>
-                    </div>
-      			<button id="messageButton" onclick = "submitMessage()"> Post </button>
-      			
-      	</div>
+          <label class="control-label form-label" for="message">New Message:</label>
+          
+          <form onsubmit="newMessage()" id="newMessageForm">
+          <div class="controls">
+              <textarea class="input" id="message" style="background-color: transparent; resize: none;" name="message" required></textarea>
+          </div>
+          <button id="messageButton" onclick = "submitMessage()"> Post </button>
+        </div>
       </div>
 
-    <!--</div>-->
+			<div class="push"></div>
+
+    </div>
 
 		<div class="footer">
 			<button class="btn-link btn-footer-home" onclick="goHome()">

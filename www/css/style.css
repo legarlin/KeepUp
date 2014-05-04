@@ -68,6 +68,14 @@
 	padding: 0.5px;
 }
 
+.sub-header {
+	font-family: Vincent;
+	font-size:18px;
+	color: #333333;
+	letter-spacing: -0.5px;
+	padding: 0.5px;
+}
+
 .footer {
 	font-family: Vincent;
 	background-color: #2C2626;
@@ -117,6 +125,15 @@
 	margin-bottom: 10px;
 }
 
+.container-overflow-flowover {
+	overflow: scroll;
+	position: absolute;
+	width: 125%;
+	height: 80%;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
 .competition {
 	margin: 10px;
 	height: auto;
@@ -133,3 +150,12 @@
 	width: 30%;
 	text-align: center;
 	margin-top: 7px;
+}
+
+table {
+	border: 1px solid #222222;
+	border-radius: 4px;
+	width: 100%;
+}
+
+

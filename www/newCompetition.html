@@ -139,14 +139,14 @@
         </script>
 
     </head>
-    <body style="overflow-x: hidden">
+    <body>
         <div class="container page">
             <div class="wrapper">
                 <div class="header">
                     <h4>New Competition</h4>
                 </div>
 
-                <div class="container page-inner" style="margin-left: -90px;">
+                <div class="container-overflow-flowover page-inner" style="overflow-x: hidden; margin-left: -90px;">
                     <form class="form-horizontal" onsubmit="new_comp()" id="newCompForm">
                         <div id = "error" style = "margin-left:180px"></div>
                         <div class="control-group">
@@ -171,12 +171,12 @@
                         </div>
 
                         <div class="control-group">
-                            <label class="control-label form-label" for="is_first_to">Competition Type</label>
+                            <label class="control-label form-label" for="is_first_to">Type:</label>
                             <div class="controls">
-                                <select  onchange = "showEvidence()" name = "is_first_to" id = "is_first_to" style="background-color: transparent;" required>
-                                    <option value="" disabled selected>Select an option</option>
-                                    <option value="1">First to set evidence</option>
-                                    <option value="0">Most in set time</option>
+                                <select class ="input" onchange = "showEvidence()" name = "is_first_to" id = "is_first_to" style="background-color: transparent; font-size: 12px;" required>
+                                    <option value="" disabled selected>The winner...</option>
+                                    <option value="1">Sends in evidence first</option>
+                                    <option value="0">Has highest # when time's up</option>
                                 </select>
                             </div>
                         </div>
