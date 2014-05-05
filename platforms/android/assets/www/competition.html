@@ -131,6 +131,13 @@
             output[i] = byteArray[i];
             i++;
         }
+
+		var query = new Parse.Query(ParsePicture);
+    	query.equalTo("competition", localStorage.getItem("current_comp"));
+    	query.find({
+    		success: function(results) {
+    			var nextevid = results.length+1;
+
         var parseFile = new Parse.File("testEv",output);
         parseFile.save().then(function(){
           var parsePicture = new ParsePicture();
@@ -141,6 +148,7 @@
           parsePicture.set("user_id", localStorage.getItem("current_userid"));
           parsePicture.set("user_name", localStorage.getItem("current_username"));
           parsePicture.set("approved", false);
+          parsePicture.set("evidence_id", nextevid);
           parsePicture.save(null, {
             success: function(ob) {
             console.log("saved!");
@@ -150,7 +158,12 @@
           }
           }); 
         }); 
+      }, error: function(err){
+      	console.log("error uploading picture")
       }
+  	});
+},
+
       reader.onerror = function(evt) {
         console.log('read error');
         console.log(JSON.stringify(evt));
@@ -160,8 +173,9 @@
       }, function(e) {
           console.log('ee');
       });
-    });
-  }
+    
+  });
+}
 
   function onFail() {
     console.log("FAILED!");
