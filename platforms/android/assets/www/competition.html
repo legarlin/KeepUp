@@ -289,7 +289,7 @@
 														}
 
 														$("#competitionDiv")
-																.append("<div><i class='icon-info-sign'></i> <div class='sub-header' style='display: inline; margin-top: 3px;'>Information</div><br> "
+																.append("<div><i class='icon-info-sign'></i> <div class='sub-header' style='display: inline; margin-top: 3px; width: 80%'>Information</div><br> "
 																				+ compDes
 																				+ "<br><br>"
 																				+ "Expires "
@@ -310,7 +310,9 @@
 												          if(data.stat == "success") {
 												          	console.log(data);
 												          	if(JSON.parse(data.observer)==true || compCreator == localStorage.getItem("current_userid") || compChallenger.indexOf(localStorage.getItem("current_userid")) > -1) {
-												          		$("#buttonDiv").append("<button class='btn-link' onclick=observe() id=observeButton disabled><i class='icon-eye-open' style='opacity:0.4'></i></button>");
+                                       if (JSON.parse(data.observer)==true) {
+                                        $("#buttonDiv").append("<button class='btn-link' onclick=observe() id=observeButton disabled><i class='icon-eye-open' style='opacity:0.4'></i></button>");
+                                       }
 												          		//NEW
 												          		request = $.ajax({
                     											url: phpLocation,
@@ -439,10 +441,10 @@
           if (ev.get("type") =="image") {
             var url = ev.get("picture").url();
 
-            $("#media").append("<div>");
+            $("#media").append("<div style='margin:10px; border: 1px solid #444444;'>");
             $("#media").append("<img width = '240' height = '160' src='" + url + "'/><br>");
             if (notuploader != 0 && canApprove != -1 && !isApproved){
-            	$("#media").append("<button onclick = \"approve("+ evidence_id + ")\">Approve</button></div><br>");
+            	$("#media").append("<button class='btn btn-main' style='margin:10px' onclick = \"approve("+ evidence_id + ")\"><i class='icon-thumbs-up'></i></button></div><br>");
             }
             else if(isApproved){
             	$("#media").append("<div class='stamp'><h1>Approved</h1></div></div>");
@@ -458,7 +460,7 @@
             	$("#media").append("<button onclick = \"approve("+ evidence_id + ")\">Approve</button></div><br>");
             }
             else if(isApproved){
-            	$("#media").append("<div class='stamp'><h1>Approved</h1></div></div><br>");
+            	$("#media").append("<div class='stamp'><h1>Approved</h1></div></div>");
             }
           }
         }
@@ -542,10 +544,6 @@
   	});
 	}
 
-	function goHome() {
-		window.location.href = 'home.html';
-	}
-
 	function approve(evidence_id){
 		console.log("HERREEEEE")
 		var query = new Parse.Query(ParsePicture);
@@ -577,6 +575,25 @@
     
 	}
 
+  function goHome() {
+    window.location.href = 'home.html';
+  }
+  function myComps() { 
+    window.location.href = 'myCompetitions.html';
+  }
+
+  function myObserving() { 
+    window.location.href = 'myObserving.html';
+  }
+
+  function goToFriendsPage() {
+    window.location.href = 'friends.html';
+  }
+
+  function goToNewCompetition() {
+    window.location.href = 'newCompetition.html';
+  }
+
 </script>
 </head>
 
@@ -585,8 +602,9 @@
 	<div class="container page-dark">
 		<div class="wrapper">
 			<div class="header">
-				<button class="btn-link" onclick="myComps()" style="float: left; width: 10%; margin: 5px;"><i class="icon-arrow-left"></i>
-				</button>
+        <span style="float: left; width: 15%; margin: 5px;"></span>
+				<!--<button class="btn-link" onclick="myComps()" style="float: left; width: 10%; margin: 5px;"><i class="icon-arrow-left"></i>
+				</button>-->
 				<h4 id="result" style="display: inline-block"></h4>
 				<span id="buttonDiv" style="display: inline; float: right; width: 10%; margin: 6px">
 				</span>
@@ -638,9 +656,18 @@
     </div>
 
 		<div class="footer">
-			<button class="btn-link btn-footer-home" onclick="goHome()">
-        <i class="icon-home icon-white"></i>
-      </button>
+			<button class="btn-link btn-footer" onclick="goHome()">
+            <i class="icon-home icon-white"></i>
+          </button>
+          <button class="btn-link btn-footer" onclick="myComps()">
+            <i class="icon-fire icon-white"></i>
+          </button>
+          <button class="btn-link btn-footer" onclick ="myObserving()">
+            <i class="icon-eye-open icon-white"></i>
+          </button>
+          <button class="btn-link btn-footer" onclick="goToFriendsPage()">
+            <i class="icon-user icon-white"></i>
+          </button>
 	  </div>
 
   </div> 
