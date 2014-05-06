@@ -31,9 +31,9 @@
                         console.log(data);
                         var udata = JSON.parse(data.user);
                         console.log(udata);
-                        var wins = udata.wins;
-                        var losses = udata.losses;
-                        var points = udata.points;
+                        var wins = udata[0].wins;
+                        var losses = udata[0].losses;
+                        var points = udata[0].points;
                         $("#wins").append(wins);
                         $("#losses").append(losses);
                         $("#points").append(points);
@@ -97,24 +97,43 @@
         </script>
     </head>
     <body onload = "getComps()">
-        <div class="container page-dark">
+        <div class="container page-dark" style="overflow-x: hidden">
             <div class="wrapper">
                 <div class="header">
                     <button class="btn-link" onclick="goToNewCompetition()" style="float: left; width: 10%; margin: 5px">
                         <i class="icon-plus"></i>
                     </button>
-                    <h4 style="display: inline-block">My Page</h4>
+                    <h4 style="display: inline-block">Me</h4>
                     <span style="display: inline; float: right; width: 10%; margin: 6px"></span>
                 </div>
-                <div id = "statsDiv">
-                    <h4> Statitstics</h4>
-                    <span> <h5 id = "wins">Wins: </h5> <h5 id = "losses"> Losses: </h5> <h5 id = "points"> Points: </h5> </span>
-                </div> 
-                <div id = "currCompetitionsDiv">
-                    <h4> Current Competitions </div>
-                <div>
-                <div id = "pastCompetitionsDiv">
-                    <h4> Past Competitions </div>
+
+                <div class="container-middle">
+                    <div class="stat" id="statsDiv" style="height: 5%; padding-left: 20px; padding-right: 20px; text-align: center; border: 1px solid #276E6E; border-radius: 4px; margin-left: 8px; margin-right: 8px;">
+                        <div style="width: 25%; text-align: left; display: inline; float: left;">
+                            <div id="wins" style="display: inline"></div>
+                            <div style="display: inline"> wins</div>
+                        </div>
+                        <div style="width: 25%; text-align: center; display: inline;">
+                            <div id="losses" style="display: inline"></div>
+                            <div style="display: inline"> losses</div>
+                        </div>
+                        <div style="width: 25%; text-align: right; display: inline; float: right;">
+                            <div id="points" style="display: inline"></div>
+                            <div style="display: inline"> points</div>
+                        </div>
+                    </div> 
+
+                    <div class="sub-header-white" style="height: 45%; margin: 0px;">
+                        <h4 style="margin-left: 10px">Ongoing</h4>
+                        <div id="currCompetitionsDiv" class="container-overflow" style="height: 40%; margin-top: 0px; margin-bottom:0px;">
+                        </div>
+                    </div>
+
+                    <div class="sub-header-white" style="height: 45%; margin-bottom: 0px; padding: 0px;">
+                        <h4 style="margin-left: 10px">Expired</h4>
+                        <div id="pastCompetitionsDiv" class="container-overflow" style="height: 40%; margin-top: 0px; margin-bottom:0px;">
+                        </div>
+                    </div>
                 </div>
 
                 <div class="push"></div>
