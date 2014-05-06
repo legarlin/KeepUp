@@ -156,8 +156,8 @@
 	border-radius: 4px;
 }
 
-.btn-footer-home {
-	width: 30%;
+.btn-footer {
+	width: 24%;
 	text-align: center;
 	margin-top: 7px;
 }
@@ -171,6 +171,10 @@
 	margin-bottom: 3px;
 	margin-top: 0px;
 	text-align: center;
+}
+
+.icon-current {
+	opacity: 0.4;
 }
 
 table {
