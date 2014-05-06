@@ -22,7 +22,14 @@
                 "<uses-permission android:name=\"android.permission.MODIFY_AUDIO_SETTINGS\" />": 1,
                 "<uses-permission android:name=\"android.permission.READ_PHONE_STATE\" />": 1,
                 "<uses-permission android:name=\"android.permission.RECORD_VIDEO\" />": 1
-            }
+            },
+            "application": {}
+        },
+        "config.xml": {
+            "/*": {}
+        },
+        "res/values/facebookconnect.xml": {
+            "/*": {}
         }
     },
     "installed_plugins": {

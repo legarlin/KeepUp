@@ -117,6 +117,8 @@
     $is_first_to = $decoded['is_first_to'];
     $required_evidence = $decoded['required_evidence'];
     $challengers = explode(",", $decoded['challengers']);
+    $points = $decoded['points'];
+    $created_at = $decoded['created_at'];
     $prv = $decoded['prv'];
 
     $link = mysqli_connect('keepup.cw8gzyaihfxq.us-east-1.rds.amazonaws.com:3306', 'gldr','keepup2014', 'keepup');            
@@ -125,7 +127,7 @@
       trigger_error('Database connection failed: '  . mysqli_connect_error(), E_USER_ERROR);
     }
 
-    $insert = "INSERT into competition (title, description, creator, expiration, public, is_first_to, required_evidence, creator_username) VALUES ('$title', '$description', '$creator', '$expiration', $prv, $is_first_to, '$required_evidence', '$creator_username')";
+    $insert = "INSERT into competition (title, description, creator, expiration, points, public, is_first_to, required_evidence, creator_username, created_at) VALUES ('$title', '$description', '$creator', '$expiration', '$points', $prv, $is_first_to, '$required_evidence', '$creator_username', '$created_at')";
 
     $rs=$link->query($insert);
     $comp_id = mysqli_insert_id($link);

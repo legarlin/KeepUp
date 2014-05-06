@@ -49,6 +49,10 @@
                     $("#evidenceDiv").css("display", "block");
                 } else if (dropdownVal == 0) {
                     $("#evidenceDiv").css("display", "none");
+                    console.log("div " + $("#comp_expiration").val()); 
+                    var points = getPoints(0, $("#comp_expiration").val());
+                    $("#points").val(points);
+                    console.log(points + " POINTS");
                 }
             }
             function currentDateTime() {
@@ -75,6 +79,22 @@
                 return full_dateTime;
             }
 
+            function showPoints() {
+                $("#points").val(getPoints(1, "blank"));
+            }
+            function getPoints(firstTo, dateString) {
+                if(firstTo== 1) {
+                    points = $("#evidence").val();
+                } else {
+                    var date1 = new Date();
+                    var date2 = Date.parse(dateString);
+                    var timeDiff = Math.abs(date2 - date1.getTime());
+                    var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+                    points = diffDays; 
+                }
+                return points;
+            }
+
             function new_comp() {
                 
                 var $form = $('#newCompForm');
@@ -82,6 +102,10 @@
                 // let's select and cache all the fields
                 var $inputs = $form.find("input, select, button, textarea");
                 // serialize the data in the form
+                var points = 0;
+                points = getPoints($form.find('select[name="is_first_to"]').val(), $form.find('input[name="expiration"]').val());
+                
+                console.log(points);
     
                 var postData = 
                 {
@@ -91,14 +115,19 @@
                     'description' : $form.find('textarea[name="description"]').val(),
                     'expiration' : $form.find('input[name="expiration"]').val().slice(0, 19).replace('T', ' '),
                     'is_first_to' : $form.find('select[name="is_first_to"]').val(),
-                    'required_evidence' : $form.find('input[name="required_evidence"]').val(),
-                    'challengers' : $form.find("input[id=challenger_input]").val()
+                    'challengers' : $form.find("input[id=challenger_input]").val(),
+                    'created_at' : currentDateTime(),
+                    'points' : points
                 }
 
                 if ($('#privacy_checkbox').prop("checked")) {
                     postData['prv'] = 0;
                 } else 
                      postData['prv'] = 1;
+                if($form.find('select[name="is_first_to"]').val() == 1) {
+
+                    postData['required_evidence'] = $form.find('input[name="required_evidence"]').val();
+                }
                 
                 console.log(postData);
                 // let's disable the inputs for the duration of the ajax request
@@ -150,14 +179,14 @@
         </script>
 
     </head>
-    <body style="overflow-x: hidden">
+    <body style="overflow-x: hidden;">
         <div class="container page">
             <div class="wrapper">
                 <div class="header">
                     <h4>New Competition</h4>
                 </div>
 
-                <div class="container page-inner" style="margin-left: -90px;">
+                <div class="container-overflow-flowover" style="margin-left: -90px; overflow-x: hidden;">
                     <form class="form-horizontal" onsubmit="new_comp()" id="newCompForm">
                         <div id = "error" style = "margin-left:180px"></div>
                         <div class="control-group">
@@ -195,7 +224,14 @@
                         <div class="control-group" style = "display:none" id ="evidenceDiv">
                             <label class="control-label form-label" for="evidence"># Evidence:</label>
                             <div class="controls">
-                                <input class="input" type="number" style="background-color: transparent;" name="required_evidence" id="evidence" min="1" required>
+                                <input class="input" type="number" style="background-color: transparent;" name="required_evidence" id="evidence" min="1" onchange = "showPoints()">
+                            </div>
+                        </div>
+
+                        <div class="control-group" id ="pointsDiv">
+                            <label class="control-label form-label" for="points">Points:</label>
+                            <div class="controls">
+                                <input class="input" type="number" style="background-color: transparent;" name="points" id="points" disabled>
                             </div>
                         </div>
 
@@ -213,12 +249,14 @@
                             </div>
                         </div>
 
+                        <BR>
 
                         <div class="control-group">
                             <div class="controls">
                                 <button class="btn btn-info btn-main" type="submit">Challenge</button>
                             </div>
                         </div>
+
                     </form>
                 </div>
 

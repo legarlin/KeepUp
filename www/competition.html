@@ -6,7 +6,7 @@
 <link href="css/style.css" rel="stylesheet" media="screen">
 
 <script type='text/javascript' > 
-    var phpLocation = "http://daniellanger.byethost13.com/webService.php"; 
+    var phpLocation = "http://localhost:3000"; 
 </script>
 <script type="text/javascript"
 	src="http://code.jquery.com/jquery-latest.min.js"></script>
@@ -263,7 +263,7 @@
 									},
 									success : function(data) {
 										console.log(data);
-										var compArray2 = JSON.parse(data.competitions);
+										var compArray2 = JSON.parse(data.user);
 										creatorName = compArray2[0].username;
 
 										request3 = $
