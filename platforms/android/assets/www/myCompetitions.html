@@ -51,6 +51,21 @@
             function goHome() {
                 window.location.href = 'home.html';
             }
+            function myComps() { 
+                window.location.href = 'myCompetitions.html';
+            }
+
+            function myObserving() { 
+                window.location.href = 'myObserving.html';
+            }
+
+            function goToFriendsPage() {
+                 window.location.href = 'friends.html';
+            }
+
+            function goToNewCompetition() {
+                window.location.href = 'newCompetition.html';
+            }
             
         </script>
     </head>
@@ -58,7 +73,11 @@
         <div class="container page-dark">
             <div class="wrapper">
                 <div class="header">
-                    <h4>My competitions</h4>
+                    <button class="btn-link" onclick="goToNewCompetition()" style="float: left; width: 10%; margin: 5px">
+                        <i class="icon-plus"></i>
+                    </button>
+                    <h4 style="display: inline-block">My Competitions</h4>
+                    <span style="display: inline; float: right; width: 10%; margin: 6px"></span>
                 </div>
                 <div class="container-overflow" id="competitionsDiv">
                 </div>
@@ -67,8 +86,17 @@
             </div>
 
             <div class="footer">
-                <button class="btn-link btn-footer-home" onclick="goHome()">
+                <button class="btn-link btn-footer" onclick="goHome()">
                     <i class="icon-home icon-white"></i>
+                </button>
+                <button class="btn-link btn-footer" onclick="myComps()">
+                    <i class="icon-fire icon-white icon-current"></i>
+                </button>
+                <button class="btn-link btn-footer" onclick ="myObserving()">
+                    <i class="icon-eye-open icon-white"></i>
+                </button>
+                <button class="btn-link btn-footer" onclick="goToFriendsPage()">
+                    <i class="icon-user icon-white"></i>
                 </button>
             </div>
         </div>
