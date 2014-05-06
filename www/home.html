@@ -36,10 +36,15 @@
                                 success:function(data){
                                     console.log(data);
                                     var compArray = JSON.parse(data.friendCompetitions);
+                                    var checkArray = [];
                                     for(var i = 0; i < compArray.length; i++) {
                                         var compName = compArray[i].title;
+
                                         var compExp = compArray[i].expiration;
+                                        if ($.inArray(compName, checkArray) == -1){
                                         $("#competitionsDiv").append("<div class='competition' onclick=goToComp(" +compArray[i].id + ")>" + "<div class='sub-header-white'>" + compName + "</div>" + "Expires: " + compExp + "</div>");
+                                        checkArray.push(compName);
+                                        }   
                                     }
 
                                 }, error:function(err){
