@@ -31,9 +31,9 @@
                         console.log(data);
                         var udata = JSON.parse(data.user);
                         console.log(udata);
-                        var wins = udata.wins;
-                        var losses = udata.losses;
-                        var points = udata.points;
+                        var wins = udata[0].wins;
+                        var losses = udata[0].losses;
+                        var points = udata[0].points;
                         $("#wins").append(wins);
                         $("#losses").append(losses);
                         $("#points").append(points);

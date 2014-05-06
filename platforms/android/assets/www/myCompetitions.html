@@ -6,7 +6,7 @@
         <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
         <link href="css/style.css" rel="stylesheet" media="screen">
         <script type='text/javascript' > 
-            var phpLocation = "http://daniellanger.byethost13.com/webService.php"; 
+            var phpLocation = "http://localhost:3000"; 
         </script>
         <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
 
@@ -23,6 +23,27 @@
                 // let's disable the inputs for the duration of the ajax request
                 // Note: we disable elements AFTER the form data has been serialized.
                 //$inputs.prop("disabled", true);
+                $.ajax({
+                    url: phpLocation,
+                    type: "post",
+                    data: {action:'getUser', user_id: localStorage.getItem("current_userid")},
+                    success:function(data){
+                        console.log(data);
+                        var udata = JSON.parse(data.user);
+                        console.log(udata);
+                        var wins = udata[0].wins;
+                        var losses = udata[0].losses;
+                        var points = udata[0].points;
+                        $("#wins").append(wins);
+                        $("#losses").append(losses);
+                        $("#points").append(points);
+
+                    }, error: function(err) {
+                        console.log("Failed!")
+                        console.log(err);
+                    }
+                });
+
                 request = $.ajax({
                     url: phpLocation,
                     type: "post",
@@ -33,7 +54,13 @@
                         for(var i = 0; i < compArray.length; i++) {
                             var compName = compArray[i].title;
                             var compExp = compArray[i].expiration;
-                            $("#competitionsDiv").append("<div class='competition' onclick=goToComp(" +compArray[i].id + ")>" + "<div class='sub-header-white'>" + compName + "</div>" + "<i class='icon-calendar icon-white'></i> " + compExp + "</div>");
+                            var compCompleted = compArray[i].completed;
+                            if (compCompleted == 0){
+                            $("#currCompetitionsDiv").append("<div class='competition' onclick=goToComp(" +compArray[i].id + ")>" + "<div class='sub-header-white'>" + compName + "</div>" + "<i class='icon-calendar icon-white'></i> " + compExp + "</div>");
+                            }
+                            else {
+                                $("#pastCompetitionsDiv").append("<div class='competition' onclick=goToComp(" +compArray[i].id + ")>" + "<div class='sub-header-white'>" + compName + "</div>" + "<i class='icon-calendar icon-white'></i> " + compExp + "</div>");
+                            }
                         }
 
                     }, error:function(err){
@@ -81,15 +108,13 @@
                 </div>
                 <div id = "statsDiv">
                     <h4> Statitstics</h4>
-                    <span> <h5>Wins: </h5> <h5> Losses: </h5> <h5> Points: </h5> </span>
+                    <span> <h5 id = "wins">Wins: </h5> <h5 id = "losses"> Losses: </h5> <h5 id = "points"> Points: </h5> </span>
                 </div> 
-                <div class="container-overflow" id="competitionsDiv">
-                    <div id = "currCompetitionsDiv">
-                        <h4> Current Competitions </div>
-                    <div>
-                    <div id = "pastCompetitionsDiv">
-                        <h4> Past Competitions </div>
-                    </div>
+                <div id = "currCompetitionsDiv">
+                    <h4> Current Competitions </div>
+                <div>
+                <div id = "pastCompetitionsDiv">
+                    <h4> Past Competitions </div>
                 </div>
 
                 <div class="push"></div>
