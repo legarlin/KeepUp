@@ -71,6 +71,7 @@
     $ln = $decoded['lastname'];
     $un = $decoded['username'];
     $pw = $decoded['password'];
+    $pn = $decoded['phonenumber'];
 
     $link = mysqli_connect('keepup.cw8gzyaihfxq.us-east-1.rds.amazonaws.com:3306', 'gldr','keepup2014', 'keepup');            
             
@@ -78,7 +79,7 @@
       trigger_error('Database connection failed: '  . mysqli_connect_error(), E_USER_ERROR);
     }
     
-    $query = "INSERT into user (username,password,loggedin,firstname,lastname) values ('$un', '$pw', 1, '$fn', '$ln')";
+    $query = "INSERT into user (username,password,loggedin,firstname,lastname, phonenumber) values ('$un', '$pw', 1, '$fn', '$ln', '$pn')";
     $rs=$link->query($query);
     if($rs) {
       echo json_encode(array('stat' => 'success', 'signUp' => array('username' => $un, 'id'=> mysqli_insert_id($link))));
@@ -116,6 +117,8 @@
     $is_first_to = $decoded['is_first_to'];
     $required_evidence = $decoded['required_evidence'];
     $challengers = explode(",", $decoded['challengers']);
+    $points = $decoded['points'];
+    $created_at = $decoded['created_at'];
     $prv = $decoded['prv'];
 
     $link = mysqli_connect('keepup.cw8gzyaihfxq.us-east-1.rds.amazonaws.com:3306', 'gldr','keepup2014', 'keepup');            
@@ -124,7 +127,7 @@
       trigger_error('Database connection failed: '  . mysqli_connect_error(), E_USER_ERROR);
     }
 
-    $insert = "INSERT into competition (title, description, creator, expiration, public, is_first_to, required_evidence, creator_username) VALUES ('$title', '$description', '$creator', '$expiration', $prv, $is_first_to, '$required_evidence', '$creator_username')";
+    $insert = "INSERT into competition (title, description, creator, expiration, points, public, is_first_to, required_evidence, creator_username, created_at) VALUES ('$title', '$description', '$creator', '$expiration', '$points', $prv, $is_first_to, '$required_evidence', '$creator_username', '$created_at')";
 
     $rs=$link->query($insert);
     $comp_id = mysqli_insert_id($link);
@@ -356,7 +359,7 @@ function getUser() {
   $rs->data_seek(0);
   $get_user[0] = $rs->fetch_assoc();
 
-  echo json_encode(array('stat' => 'success', 'competitions' =>json_encode($get_user)));
+  echo json_encode(array('stat' => 'success', 'user' =>json_encode($get_user)));
 }
   
 function getUsers() {
