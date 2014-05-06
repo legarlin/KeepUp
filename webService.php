@@ -297,7 +297,7 @@ function getComps() {
       trigger_error('Database connection failed: '  . mysqli_connect_error(), E_USER_ERROR);
     }
 
-    $query = "select id, title, expiration from competition where (id in (select competition_id from challenger where user_id= '$user' ) or id in (select id from competition where creator = '$user' )) order by expiration";
+    $query = "select id, title, expiration, completed from competition where (id in (select competition_id from challenger where user_id= '$user' ) or id in (select id from competition where creator = '$user' )) order by expiration";
     $rs=$link->query($query);
 
     $get_comp = array();
@@ -357,7 +357,7 @@ function getUser() {
   $rs->data_seek(0);
   $get_user[0] = $rs->fetch_assoc();
 
-  echo json_encode(array('stat' => 'success', 'competitions' =>json_encode($get_user)));
+  echo json_encode(array('stat' => 'success', 'user' =>json_encode($get_user)));
 }
   
 function getUsers() {
