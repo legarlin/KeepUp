@@ -33,7 +33,7 @@
                         for(var i = 0; i < compArray.length; i++) {
                             var compName = compArray[i].title;
                             var compExp = compArray[i].expiration;
-                            $("#competitionsDiv").append("<div class='competition' onclick=goToComp(" +compArray[i].id + ")>" + "<div class='sub-header-white'>" + compName + "</div>" + "Expires: " + compExp + "</div>");
+                            $("#competitionsDiv").append("<div class='competition' onclick=goToComp(" +compArray[i].id + ")>" + "<div class='sub-header-white'>" + compName + "</div>" + "<i class='icon-calendar icon-white'></i> " + compExp + "</div>");
                         }
 
                     }, error:function(err){

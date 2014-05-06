@@ -290,16 +290,16 @@
 
 														$("#competitionDiv")
 																.append("<div><i class='icon-info-sign'></i> <div class='sub-header' style='display: inline; margin-top: 3px; width: 80%'>Information</div><br> "
-																				+ compDes
-																				+ "<br><br>"
-																				+ "Expires "
+																				+ "<div style='padding-left: 18px;'>"
+                                        + compDes
+																				+ "</div><br>"
+                                        + "<i class='icon-fire'></i> Challengers <div style='color:#333333; display: inline'>"
+                                        + creatorName
+                                        + " <i class='icon-arrow-right'></i> "
+                                        + challengedName
+                                        + "</div><br>"
+																				+ "<i class='icon-calendar'></i> Expires "
 																				+ "<div style='color:#333333; display: inline'>" + compExp + "</div>"
-																				+ "<br><br>"
-																				+ "Creator: "
-																				+ creatorName
-																				+ "<br>"
-																				+ "Challengers: "
-																				+ challengedName
 																				+ "</div>");
 
 														$.ajax({

@@ -25,8 +25,8 @@
                           var compName = compArray[i].title;
                           var compExp = compArray[i].expiration;
                           var compCreator = compArray[i].creator_username;
-                          $("#competitionsDiv").append("<div class='competition' onclick=goToComp(" +compArray[i].id + ")>" + "<div class='sub-header-white'>" + compName + "</div> Creator: " + compCreator +
-                                            "<br>" + "Expires: " + compExp + "</div>");
+
+                          $("#competitionsDiv").append("<div class='competition' onclick=goToComp(" +compArray[i].id + ")>" + "<div class='sub-header-white'>" + compName + "</div>" + "<i class='icon-bullhorn icon-white'></i> " + compCreator + "<br><i class='icon-calendar icon-white'></i> " + compExp + "</div>");
                         }
 
                     }, error:function(err){
