@@ -8,7 +8,7 @@
         <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
         <link href="css/style.css" rel="stylesheet" media="screen">
         <script type='text/javascript' > 
-            var phpLocation = "http://localhost:3000"; 
+            var phpLocation = "http://daniellanger.byethost13.com/webService.php"; 
         </script>
         <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
         <script type="text/javascript">
@@ -41,15 +41,13 @@
                                         var compName = compArray[i].title;
 
                                         var compExp = compArray[i].expiration;
-<<<<<<< HEAD
-                                        if ($.inArray(compName, checkArray) == -1){
-                                        $("#competitionsDiv").append("<div class='competition' onclick=goToComp(" +compArray[i].id + ")>" + "<div class='sub-header-white'>" + compName + "</div>" + "Expires: " + compExp + "</div>");
-                                        checkArray.push(compName);
-                                        }   
-=======
                                         var compCreator = compArray[i].creator_username;
-                                        $("#competitionsDiv").append("<div class='competition' onclick=goToComp(" +compArray[i].id + ")>" + "<div class='sub-header-white'>" + compName + "</div>" + "<i class='icon-bullhorn icon-white'></i> " + compCreator + "<br><i class='icon-calendar icon-white'></i> " + compExp + "</div>");
->>>>>>> 2c8d7942748dc1b0770605b157477cd9e58a5eac
+                                        
+                                        if ($.inArray(compName, checkArray) == -1){
+                                            $("#competitionsDiv").append("<div class='competition' onclick=goToComp(" +compArray[i].id + ")>" + "<div class='sub-header-white'>" + compName + "</div>" + "<i class='icon-bullhorn icon-white'></i> " + compCreator + "<br><i class='icon-calendar icon-white'></i> " + compExp + "</div>");
+                                            checkArray.push(compName);
+                                        }   
+                                        
                                     }
 
                                 }, error:function(err){

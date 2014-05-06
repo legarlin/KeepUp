@@ -8,7 +8,7 @@
         <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
         <link href="css/style.css" rel="stylesheet" media="screen">
         <script type='text/javascript' > 
-            var phpLocation = "http://daniellanger.byethost13.com/webService.php"; 
+            var phpLocation = "http://localhost:3000"; 
         </script>
         <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
         <script type="text/javascript">
@@ -31,7 +31,8 @@
                     'firstname': $form.find('input[name="firstname"]').val(), 
                     'lastname' : $form.find('input[name="lastname"]').val(),
                     'username' : $form.find('input[name="username"]').val(),
-                    'password' : $form.find('input[name="password"]').val()
+                    'password' : $form.find('input[name="password"]').val(),
+                    'phonenumber' : $form.find('input[name="phone_number"]').val()
                 }
 
                 // let's disable the inputs for the duration of the ajax request
@@ -109,6 +110,13 @@
                         <label class="control-label form-label" for="confirmpassword" style="line-height: 12px; margin-top: -3px;">Confirm <br>Password:</label>
                         <div class="controls">
                             <input type="password" style="background-color: transparent;" id="confirmpassword" name="confirmpassword" required>
+                        </div>
+                    </div>
+
+                     <div class="control-group">
+                        <label class="control-label form-label" for="phone_number" style="line-height: 12px; margin-top: -3px;">Phone Number:</label>
+                        <div class="controls">
+                            <input type="tel" style="background-color: transparent;" id="phone_number" name="phone_number" pattern="[0-9]{10}" placeholder = "Enter 10 digits with no punctuation" required>
                         </div>
                     </div>
 

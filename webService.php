@@ -71,6 +71,7 @@
     $ln = $decoded['lastname'];
     $un = $decoded['username'];
     $pw = $decoded['password'];
+    $pn = $decoded['phonenumber'];
 
     $link = mysqli_connect('keepup.cw8gzyaihfxq.us-east-1.rds.amazonaws.com:3306', 'gldr','keepup2014', 'keepup');            
             
@@ -78,7 +79,7 @@
       trigger_error('Database connection failed: '  . mysqli_connect_error(), E_USER_ERROR);
     }
     
-    $query = "INSERT into user (username,password,loggedin,firstname,lastname) values ('$un', '$pw', 1, '$fn', '$ln')";
+    $query = "INSERT into user (username,password,loggedin,firstname,lastname, phonenumber) values ('$un', '$pw', 1, '$fn', '$ln', '$pn')";
     $rs=$link->query($query);
     if($rs) {
       echo json_encode(array('stat' => 'success', 'signUp' => array('username' => $un, 'id'=> mysqli_insert_id($link))));
