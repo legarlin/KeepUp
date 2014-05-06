@@ -305,7 +305,7 @@ function getComps() {
     $get_comp = array();
 
     $rs->data_seek(0);
-    if(mysqli_num_rows($rs) != 0) {
+    if(mysqli_num_rows($rs) != 0){
     while($row = $rs->fetch_assoc()){
         $get_comp[] = $row;
     }
