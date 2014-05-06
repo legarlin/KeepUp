@@ -1,78 +1,78 @@
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/classes.dex : \
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/classes/com/phonegap/helloworld/BuildConfig.class \
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/classes/com/phonegap/helloworld/HelloWorld.class \
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/classes/com/phonegap/helloworld/R$attr.class \
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/classes/com/phonegap/helloworld/R$drawable.class \
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/classes/com/phonegap/helloworld/R$string.class \
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/classes/com/phonegap/helloworld/R$xml.class \
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/classes/com/phonegap/helloworld/R.class \
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/classes/com/phonegap/plugins/videoplayer/VideoPlayer.class \
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/camera/CameraLauncher.class \
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/camera/ExifHelper.class \
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/camera/FileHelper.class \
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/device/Device.class \
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/ContentFilesystem.class \
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/DirectoryManager.class \
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/EncodingException.class \
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/FileExistsException.class \
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/FileHelper.class \
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/Filesystem$1.class \
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/Filesystem$LimitedInputStream.class \
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/Filesystem$ReadFileCallback.class \
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/Filesystem.class \
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/FileUtils$1.class \
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/FileUtils$10.class \
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/FileUtils$11.class \
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/FileUtils$12.class \
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/FileUtils$13.class \
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/FileUtils$14.class \
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/FileUtils$15.class \
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/FileUtils$16.class \
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/FileUtils$17.class \
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/FileUtils$18.class \
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/FileUtils$19.class \
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/FileUtils$2.class \
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/FileUtils$20.class \
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/FileUtils$21.class \
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/FileUtils$22.class \
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/FileUtils$23.class \
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/FileUtils$24.class \
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/FileUtils$3.class \
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/FileUtils$4.class \
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/FileUtils$5.class \
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/FileUtils$6.class \
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/FileUtils$7.class \
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/FileUtils$8.class \
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/FileUtils$9.class \
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/FileUtils$FileOp.class \
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/FileUtils.class \
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/InvalidModificationException.class \
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/LocalFilesystem.class \
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/LocalFilesystemURL.class \
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/NoModificationAllowedException.class \
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/TypeMismatchException.class \
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/filetransfer/FileProgressResult.class \
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/filetransfer/FileTransfer$1.class \
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/filetransfer/FileTransfer$2.class \
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/filetransfer/FileTransfer$3.class \
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/filetransfer/FileTransfer$4.class \
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/filetransfer/FileTransfer$5.class \
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/filetransfer/FileTransfer$ExposedGZIPInputStream.class \
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/filetransfer/FileTransfer$RequestContext.class \
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/filetransfer/FileTransfer$SimpleTrackingInputStream.class \
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/filetransfer/FileTransfer$TrackingGZIPInputStream.class \
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/filetransfer/FileTransfer$TrackingInputStream.class \
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/filetransfer/FileTransfer.class \
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/filetransfer/FileUploadResult.class \
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/media/AudioHandler.class \
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/media/AudioPlayer$1.class \
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/media/AudioPlayer$MODE.class \
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/media/AudioPlayer$STATE.class \
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/media/AudioPlayer.class \
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/media/FileHelper.class \
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/mediacapture/Capture$1.class \
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/mediacapture/Capture$2.class \
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/mediacapture/Capture$3.class \
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/mediacapture/Capture.class \
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/mediacapture/FileHelper.class \
-/Users/royweiss/documents/workspace/KeepUp/platforms/android/ant-build/dexedLibs/classes-04e6d03ac23f5fb278ec2f7528e2e4a4.jar \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/classes.dex : \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/classes/com/phonegap/helloworld/BuildConfig.class \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/classes/com/phonegap/helloworld/HelloWorld.class \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/classes/com/phonegap/helloworld/R$attr.class \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/classes/com/phonegap/helloworld/R$drawable.class \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/classes/com/phonegap/helloworld/R$string.class \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/classes/com/phonegap/helloworld/R$xml.class \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/classes/com/phonegap/helloworld/R.class \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/classes/com/phonegap/plugins/videoplayer/VideoPlayer.class \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/camera/CameraLauncher.class \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/camera/ExifHelper.class \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/camera/FileHelper.class \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/device/Device.class \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/ContentFilesystem.class \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/DirectoryManager.class \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/EncodingException.class \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/FileExistsException.class \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/FileHelper.class \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/Filesystem$1.class \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/Filesystem$LimitedInputStream.class \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/Filesystem$ReadFileCallback.class \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/Filesystem.class \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/FileUtils$1.class \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/FileUtils$10.class \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/FileUtils$11.class \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/FileUtils$12.class \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/FileUtils$13.class \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/FileUtils$14.class \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/FileUtils$15.class \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/FileUtils$16.class \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/FileUtils$17.class \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/FileUtils$18.class \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/FileUtils$19.class \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/FileUtils$2.class \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/FileUtils$20.class \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/FileUtils$21.class \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/FileUtils$22.class \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/FileUtils$23.class \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/FileUtils$24.class \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/FileUtils$3.class \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/FileUtils$4.class \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/FileUtils$5.class \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/FileUtils$6.class \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/FileUtils$7.class \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/FileUtils$8.class \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/FileUtils$9.class \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/FileUtils$FileOp.class \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/FileUtils.class \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/InvalidModificationException.class \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/LocalFilesystem.class \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/LocalFilesystemURL.class \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/NoModificationAllowedException.class \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/file/TypeMismatchException.class \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/filetransfer/FileProgressResult.class \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/filetransfer/FileTransfer$1.class \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/filetransfer/FileTransfer$2.class \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/filetransfer/FileTransfer$3.class \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/filetransfer/FileTransfer$4.class \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/filetransfer/FileTransfer$5.class \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/filetransfer/FileTransfer$ExposedGZIPInputStream.class \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/filetransfer/FileTransfer$RequestContext.class \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/filetransfer/FileTransfer$SimpleTrackingInputStream.class \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/filetransfer/FileTransfer$TrackingGZIPInputStream.class \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/filetransfer/FileTransfer$TrackingInputStream.class \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/filetransfer/FileTransfer.class \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/filetransfer/FileUploadResult.class \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/media/AudioHandler.class \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/media/AudioPlayer$1.class \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/media/AudioPlayer$MODE.class \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/media/AudioPlayer$STATE.class \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/media/AudioPlayer.class \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/media/FileHelper.class \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/mediacapture/Capture$1.class \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/mediacapture/Capture$2.class \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/mediacapture/Capture$3.class \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/mediacapture/Capture.class \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/classes/org/apache/cordova/mediacapture/FileHelper.class \
+/Users/Geoffrey/CIS330 workspace/KeepUp/platforms/android/ant-build/dexedLibs/classes-c81ff5cd4606239ecbadc85e03d1dd19.jar \
