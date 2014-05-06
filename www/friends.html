@@ -7,7 +7,10 @@
           var phpLocation = "http://daniellanger.byethost13.com/webService.php"; 
     </script>
       <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+      
       <link rel="stylesheet" href="css/token-input.css"/>
+      <link rel="stylesheet" href="css/style.css"/>
+
       <script type="text/javascript" src="js/jquery.tokeninput.js"></script>
 
       <script type="text/javascript">
@@ -39,9 +42,15 @@
             data: {action:'getPending', user_id: localStorage.getItem("current_userid")},
             success:function(data){
                 console.log(data);
+
                 if(data.stat == "success") {
                   var pendings = JSON.parse(data.pendings);
                   var arrayLength = pendings.length;
+
+                  if(arrayLength > 0) {
+                    $("#pendingDiv").attr('class', 'competition');
+                    $("#pendingDiv").append("<div class='sub-header'>Pending Friend Requests</div>");
+                  }
                   for (var i = 0; i < arrayLength; i++) {
                     var pendingName = pendings[i].name;
                     var pendingId = pendings[i].id;
@@ -135,27 +144,59 @@
         
       }
 
+      function goHome() {
+        window.location.href = 'home.html';
+      }
+
       </script>
 
   </head>
+
   <body>
-    <h4> Add Friends </h4>
-    <div id = "error" style = "margin-left:90px"></div>
-    <input type="text" id="friend_search" style="display: none;">
-    <button onclick = "addFriends()"> Submit </button>
+    <div class="container page-dark">
+      <div class="wrapper">
+        <div class="header">
+          <h4> Add Friends</h4>
+        </div>
 
-    <h4>Pending Friend Requests </h4>
-    <div id = "pendingDiv">
-      <ul id = "pendingList">
 
-      </ul>
+        <div class="container-overflow" id="competitionsDiv">
+
+          <div class="competition">
+            <div id = "error" style = "margin-left:90px"></div>
+            <div class="sub-header">Search</div>
+            <div style="width: 100%; margin: 5px;">
+              <div class="controls">
+                <input type="text" id="friend_search"></input>
+              </div>
+            </div>
+            <button class="btn btn-main" onclick="addFriends()" style="float: right; padding: 4px; margin-right: 3px;">Request</button>
+            <br><br>
+          </div>
+
+          <div id="pendingDiv">
+            <ul id="pendingList">
+
+            </ul>
+          </div>
+
+          <div id="friendDiv" class="competition">
+            <div class="sub-header">Friends</div>
+            <ul id = "friendList">
+            </ul>
+          </div>
+
+        </div>
+
+        <div class="push"></div>
+
+      </div>
+
+      <div class="footer">
+        <button class="btn-link btn-footer-home" onclick="goHome()">
+          <i class="icon-home icon-white"></i>
+        </button>
     </div>
-    <h4> Friends</h4>
-    <div id = "friendDiv">
-      <ul id = "friendList">
-
-      </ul>
     </div>
-
   </body>
 </html>

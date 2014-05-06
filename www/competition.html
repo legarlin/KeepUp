@@ -4,6 +4,7 @@
 <title>My Competitions</title>
 <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
 <link href="css/style.css" rel="stylesheet" media="screen">
+
 <script type='text/javascript' > 
     var phpLocation = "http://daniellanger.byethost13.com/webService.php"; 
 </script>
@@ -130,6 +131,13 @@
             output[i] = byteArray[i];
             i++;
         }
+
+		var query = new Parse.Query(ParsePicture);
+    	query.equalTo("competition", localStorage.getItem("current_comp"));
+    	query.find({
+    		success: function(results) {
+    			var nextevid = results.length+1;
+
         var parseFile = new Parse.File("testEv",output);
         parseFile.save().then(function(){
           var parsePicture = new ParsePicture();
@@ -140,6 +148,7 @@
           parsePicture.set("user_id", localStorage.getItem("current_userid"));
           parsePicture.set("user_name", localStorage.getItem("current_username"));
           parsePicture.set("approved", false);
+          parsePicture.set("evidence_id", nextevid);
           parsePicture.save(null, {
             success: function(ob) {
             console.log("saved!");
@@ -149,7 +158,12 @@
           }
           }); 
         }); 
+      }, error: function(err){
+      	console.log("error uploading picture")
       }
+  	});
+},
+
       reader.onerror = function(evt) {
         console.log('read error');
         console.log(JSON.stringify(evt));
@@ -159,8 +173,9 @@
       }, function(e) {
           console.log('ee');
       });
-    });
-  }
+    
+  });
+}
 
   function onFail() {
     console.log("FAILED!");
@@ -196,10 +211,12 @@
     cordova.plugins.videoPlayer.play(url); 
   }
 
+  var compCreator;
+  var compChallenger = [];
+
 	$(document).ready(function() {
 
-		var compCreator;
-		var compChallenger = [];
+		
 		var isObserver;
 		var compName;
 		var compExp;
@@ -272,14 +289,11 @@
 														}
 
 														$("#competitionDiv")
-																.append("<div> Title: "
-                                        + compName
-                                        + "<br><br>"
-                                        + "Description: " 
+																.append("<div><i class='icon-info-sign'></i> <div class='sub-header' style='display: inline; margin-top: 3px;'>Information</div><br> "
 																				+ compDes
 																				+ "<br><br>"
-																				+ "Expires: "
-																				+ compExp
+																				+ "Expires "
+																				+ "<div style='color:#333333; display: inline'>" + compExp + "</div>"
 																				+ "<br><br>"
 																				+ "Creator: "
 																				+ creatorName
@@ -305,9 +319,7 @@
                     											success:function(data){
                         											console.log(data);
                         											var messArray = JSON.parse(data.messages);
-                        											$("#threadTab").append("Message Board");
-                        										
-
+                        									   
                         											for(var i = 0; i < messArray.length; i++) {
                             											var uName = messArray[i].user_name;
                            										 		var uMessage = messArray[i].message;
@@ -344,7 +356,7 @@
 																							for(var x  = 0; x <allNames.length; x++) {
 																							    $('<option />', {value: allIds[x], text: allNames[x]}).appendTo(s);
 																							}
-																							$('#pickSideDiv').append("Pick Who You Think Will Win!");
+																							$('#pickSideDiv').append("<div class='sub-header'>Choose a side!</div>");
 																							$('#pickSideDiv').append(s);
 																							$('#pickSideDiv').append("<button onclick=submitVote()>Submit</button>");
 																          	} else {
@@ -355,8 +367,9 @@
 																							    $('<option />', {value: allIds[x], text: allNames[x]}).appendTo(s);
 																							}
 																							s.val(JSON.parse(data.contestant));
-																							$('#pickSideDiv').append("Pick Who You Think Will Win!");
-																							$('#pickSideDiv').append(s);
+																							$('#pickSideDiv').append("<div class='sub-header'>Choose a side!</div>");
+                                              $('#pickSideDiv').append(s);
+                                              $('#pickSideDiv').append("<br><br>");
 																          	}
 																          }  else {
 																            console.log("Failed!")
@@ -366,8 +379,7 @@
 																	  });
 													        } else {
 													        	console.log(pictureSource);
-													        	$("#addEvidenceDiv").append("<h4>Add Evidence </h4>");
-													        	$("#addEvidenceDiv").append("<button onclick=getEvidence(" + pictureSource.PHOTOLIBRARY + ")>Upload Evidence</button>");
+													        	$("#addEvidenceDiv").append("<button class='btn-link' style='float: right; width: 10%; margin: -2px' onclick=getEvidence(" + pictureSource.PHOTOLIBRARY + ")><i class='icon-plus icon-white'></i></button>");
 													        }
 													      }
 													    }
@@ -386,6 +398,9 @@
 									}
 								});
 
+					
+				    loadEvidence();
+
 					},
 					error : function(err) {
 						console.log("Failed!")
@@ -393,12 +408,19 @@
 					}
 				});
 		getCompVotes();	
-    loadEvidence();
+    //loadEvidence(compCreator,compChallenger);
 
 
 	});
 
   function loadEvidence() {
+  	console.log("comp creator " + compCreator);
+  	var allInvolved = [compCreator];
+  	for(var i = 0; i < compChallenger.length; i++){
+  		allInvolved[i+1]=(compChallenger[i])
+  	}
+  	console.log("all involved: " + allInvolved[0] + " " + allInvolved[1] + " " + allInvolved[2])
+  	//$.inArray(value, array)
     var query = new Parse.Query(ParsePicture);
     query.equalTo("competition", localStorage.getItem("current_comp"));
     query.find({
@@ -406,14 +428,38 @@
         console.log("Got " + results.length + " competitions");
         for(var i = 0; i < results.length; i++) {
           var ev = results[i];
+   		  var uploader = ev.get("user_id");
+   		  var notuploader = uploader - localStorage.getItem("current_userid");
+   		  var canApprove = allInvolved.indexOf(localStorage.getItem("current_userid"));
+   		  var isApproved = ev.get("approved");
+   		  var evidence_id = ev.get("evidence_id")
+   		  console.log("notuploader " + notuploader);
+   		  console.log("canApprove " + canApprove);
+
           if (ev.get("type") =="image") {
             var url = ev.get("picture").url();
-            $("#evidenceThread").append("<img width = '240' height = '160' src='" + url + "'/><br><br>");
+
+            $("#media").append("<div>");
+            $("#media").append("<img width = '240' height = '160' src='" + url + "'/><br>");
+            if (notuploader != 0 && canApprove != -1 && !isApproved){
+            	$("#media").append("<button onclick = \"approve("+ evidence_id + ")\">Approve</button></div><br>");
+            }
+            else if(isApproved){
+            	$("#media").append("<div class='stamp'><h1>Approved</h1></div></div>");
+            }
           } else {
             var url = ev.get("picture").url();
-            var video = $("<video class = 'videoEvidence' width = '240' height = '160' controls> <source src =" + url + " type='video/mp4'></video><br><br>");
+            var video = $("<video class='videoEvidence' width = '240' height = '160' controls> <source src =" + url + " type='video/mp4'></video><br>");
             //video.attr("onclick", "play(" + url + ")");
-            $("#evidenceThread").append(video);
+
+            $("#media").append("<div>")
+            $("#media").append(video);
+            if (notuploader != 0 && canApprove != -1 && !isApproved){
+            	$("#media").append("<button onclick = \"approve("+ evidence_id + ")\">Approve</button></div><br>");
+            }
+            else if(isApproved){
+            	$("#media").append("<div class='stamp'><h1>Approved</h1></div></div><br>");
+            }
           }
         }
       }, error: function(error) {
@@ -500,13 +546,44 @@
 		window.location.href = 'home.html';
 	}
 
+	function approve(evidence_id){
+		console.log("HERREEEEE")
+		var query = new Parse.Query(ParsePicture);
+    	query.equalTo("competition", localStorage.getItem("current_comp"));
+
+    	query.equalTo("evidence_id", evidence_id);
+    			console.log("HERREEEEE")
+
+    	query.first({
+    		
+    		success: function (results){
+    		    console.log("yo " + results);
+	            results.set("approved", true);
+	            results.save(null, {  
+	            	success: function (results) { 
+	            	window.location.href = 'competition.html';
+	            	},
+	            	error: function(err){
+
+	            		console.log("Failure!!");
+	            	}
+
+	            });
+    		},
+    		error:function(err) {
+    			console.log("Failed!!");
+    		}
+    	});
+    
+	}
+
 </script>
 </head>
 
 
-<body>
-	<div class="container">
-		<!--<div class="wrapper"> -->
+<body style="overflow-x: hidden;">
+	<div class="container page-dark">
+		<div class="wrapper">
 			<div class="header">
 				<button class="btn-link" onclick="myComps()" style="float: left; width: 10%; margin: 5px;"><i class="icon-arrow-left"></i>
 				</button>
@@ -515,51 +592,50 @@
 				</span>
 			</div>
 
-			<div class="container">
-				<div id="competitionDiv" style="margin: 10px;">
-					<i class="icon-info-sign icon-white"></i>
-					<br>
+			<div class="container-overflow">
+				<div id="competitionDiv" class="competition">
 				</div>
 
-				<div id="pickSideDiv">
-				</div>
+        <div class="competition">
+  				<div id="pickSideDiv">
+  				</div>
 
-				<table id = "votesTable" border="1">
-					<tr>
-				  	<th>Contestant</th>
-				  	<th>Votes</th>
-					</tr>
-					<tr>
-					</tr>
-				</table>
-			</div>
+  				<table id="votesTable" border="1">
+  					<tr>
+  				  	<th>Contestant</th>
+  				  	<th>Votes</th>
+  					</tr>
+  					<tr>
+  					</tr>
+  				</table>
+        </div>
 
-			<!--<div class="push"></div> -->
-      <div class="container">
-
-        <div id = "evidenceTab">
-          <div id = "addEvidenceDiv">
-          </div>
-          <div id = "previewMedia">
-          </div>
-
+        <div id="evidenceTab" class="competition">
           <div id = "evidenceThread">
-            <h5>Evidence Thread:</h5>
+            <div class="sub-header" style="display: inline; width: 80%">Evidence Thread</div>
+            <div id="addEvidenceDiv" style="display: inline"></div>
+            <div id = "previewMedia" style="width:100%;"></div>
+            <br>
+            <div id="media" style='text-align: center; width: 100%;'></div>
           </div>
         </div>
-        <div id = "threadTab">
-          <h5> Message Board </h5>
-        	<label class="control-label form-label" for="message">New Message:</label>
-      			    <form class="form-horizontal" onsubmit="newMessage()" id="newMessageForm">
-                    <div class="controls">
-                        <textarea class="input" id="message" style="background-color: transparent;" name="message" required></textarea>
-                    </div>
-      			<button id="messageButton" onclick = "submitMessage()"> Post </button>
-      			
-      	</div>
+
+        <div id="threadTab" class="competition">
+          <div class="sub-header">Message Board</div>
+
+          <form onsubmit="newMessage()" id="newMessageForm">
+            <div style="text-align: center; width: 92%; margin-left: 5px; margin-right: 5px; margin-top: 15px;">
+                <textarea class="input" id="message" style="background-color: transparent; width: 100%; resize: none;" name="message" required></textarea>
+                <button class='btn-main btn' id="messageButton" onclick = "submitMessage()" style='float: right; margin-top: -3px; margin-right: -13px;'>Post</button>
+            </div>
+          </form>
+          <br>
+        </div>
       </div>
 
-    <!--</div>-->
+			<div class="push"></div>
+
+    </div>
 
 		<div class="footer">
 			<button class="btn-link btn-footer-home" onclick="goHome()">
