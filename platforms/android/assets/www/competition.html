@@ -290,16 +290,16 @@
 
 														$("#competitionDiv")
 																.append("<div><i class='icon-info-sign'></i> <div class='sub-header' style='display: inline; margin-top: 3px; width: 80%'>Information</div><br> "
-																				+ compDes
-																				+ "<br><br>"
-																				+ "Expires "
+																				+ "<div style='padding-left: 18px;'>"
+                                        + compDes
+																				+ "</div><br>"
+                                        + "<i class='icon-fire'></i> Challengers <div style='color:#333333; display: inline'>"
+                                        + creatorName
+                                        + " <i class='icon-arrow-right'></i> "
+                                        + challengedName
+                                        + "</div><br>"
+																				+ "<i class='icon-calendar'></i> Expires "
 																				+ "<div style='color:#333333; display: inline'>" + compExp + "</div>"
-																				+ "<br><br>"
-																				+ "Creator: "
-																				+ creatorName
-																				+ "<br>"
-																				+ "Challengers: "
-																				+ challengedName
 																				+ "</div>");
 
 														$.ajax({
@@ -590,10 +590,6 @@
     window.location.href = 'friends.html';
   }
 
-  function goToNewCompetition() {
-    window.location.href = 'newCompetition.html';
-  }
-
 </script>
 </head>
 
@@ -657,17 +653,17 @@
 
 		<div class="footer">
 			<button class="btn-link btn-footer" onclick="goHome()">
-            <i class="icon-home icon-white"></i>
-          </button>
-          <button class="btn-link btn-footer" onclick="myComps()">
-            <i class="icon-fire icon-white"></i>
-          </button>
-          <button class="btn-link btn-footer" onclick ="myObserving()">
-            <i class="icon-eye-open icon-white"></i>
-          </button>
-          <button class="btn-link btn-footer" onclick="goToFriendsPage()">
-            <i class="icon-user icon-white"></i>
-          </button>
+        <i class="icon-home icon-white"></i>
+      </button>
+      <button class="btn-link btn-footer" onclick="myComps()">
+        <i class="icon-fire icon-white"></i>
+      </button>
+      <button class="btn-link btn-footer" onclick ="myObserving()">
+        <i class="icon-eye-open icon-white"></i>
+      </button>
+      <button class="btn-link btn-footer" onclick="goToFriendsPage()">
+        <i class="icon-user icon-white"></i>
+      </button>
 	  </div>
 
   </div> 

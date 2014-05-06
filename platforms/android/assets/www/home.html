@@ -36,10 +36,18 @@
                                 success:function(data){
                                     console.log(data);
                                     var compArray = JSON.parse(data.friendCompetitions);
+                                    var checkArray = [];
                                     for(var i = 0; i < compArray.length; i++) {
                                         var compName = compArray[i].title;
+
                                         var compExp = compArray[i].expiration;
-                                        $("#competitionsDiv").append("<div class='competition' onclick=goToComp(" +compArray[i].id + ")>" + "<div class='sub-header-white'>" + compName + "</div>" + "Expires: " + compExp + "</div>");
+                                        var compCreator = compArray[i].creator_username;
+                                        
+                                        if ($.inArray(compName, checkArray) == -1){
+                                            $("#competitionsDiv").append("<div class='competition' onclick=goToComp(" +compArray[i].id + ")>" + "<div class='sub-header-white'>" + compName + "</div>" + "<i class='icon-bullhorn icon-white'></i> " + compCreator + "<br><i class='icon-calendar icon-white'></i> " + compExp + "</div>");
+                                            checkArray.push(compName);
+                                        }   
+                                        
                                     }
 
                                 }, error:function(err){
