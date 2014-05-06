@@ -71,6 +71,7 @@
     $ln = $decoded['lastname'];
     $un = $decoded['username'];
     $pw = $decoded['password'];
+    $pn = $decoded['phonenumber'];
 
     $link = mysqli_connect('keepup.cw8gzyaihfxq.us-east-1.rds.amazonaws.com:3306', 'gldr','keepup2014', 'keepup');            
             
@@ -78,7 +79,7 @@
       trigger_error('Database connection failed: '  . mysqli_connect_error(), E_USER_ERROR);
     }
     
-    $query = "INSERT into user (username,password,loggedin,firstname,lastname) values ('$un', '$pw', 1, '$fn', '$ln')";
+    $query = "INSERT into user (username,password,loggedin,firstname,lastname, phonenumber) values ('$un', '$pw', 1, '$fn', '$ln', '$pn')";
     $rs=$link->query($query);
     if($rs) {
       echo json_encode(array('stat' => 'success', 'signUp' => array('username' => $un, 'id'=> mysqli_insert_id($link))));
@@ -298,7 +299,7 @@ function getComps() {
       trigger_error('Database connection failed: '  . mysqli_connect_error(), E_USER_ERROR);
     }
 
-    $query = "select id, title, expiration from competition where id in (select competition_id from challenger where user_id= '$user' ) or id in (select id from competition where creator = '$user' )";
+    $query = "select id, title, expiration from competition where (id in (select competition_id from challenger where user_id= '$user' ) or id in (select id from competition where creator = '$user' )) order by expiration";
     $rs=$link->query($query);
 
     $get_comp = array();
@@ -358,7 +359,7 @@ function getUser() {
   $rs->data_seek(0);
   $get_user[0] = $rs->fetch_assoc();
 
-  echo json_encode(array('stat' => 'success', 'competitions' =>json_encode($get_user)));
+  echo json_encode(array('stat' => 'success', 'user' =>json_encode($get_user)));
 }
   
 function getUsers() {
@@ -379,6 +380,10 @@ function getUsers() {
   }
  
   echo json_encode(array('stat' => 'success', 'challengers' =>json_encode($get_user)));
+}
+
+function rowSort( $a, $b ) {
+    return $a['expiration'] == $b['expiration'] ? 0 : ( $a['expiration'] > $b['expiration'] ) ? 1 : -1;
 }
 
 function getFriendComps() {
@@ -402,7 +407,7 @@ function getFriendComps() {
       }
     }
   }
-
+  usort( $get_comp, 'rowSort' );
   echo json_encode(array('stat' => 'success', 'friendCompetitions' =>json_encode($get_comp)));
 }
 

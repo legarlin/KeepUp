@@ -8,7 +8,7 @@
         <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
         <link href="css/style.css" rel="stylesheet" media="screen">
         <script type='text/javascript' > 
-            var phpLocation = "http://localhost:3000/webService.php"; 
+            var phpLocation = "http://daniellanger.byethost13.com/webService.php"; 
         </script>
         <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
         <link rel="stylesheet" href="css/token-input.css"/>
@@ -165,6 +165,17 @@
             function goHome() {
                 window.location.href = 'home.html';
             }
+            function myComps() { 
+                window.location.href = 'myCompetitions.html';
+            }
+
+            function myObserving() { 
+                window.location.href = 'myObserving.html';
+            }
+
+            function goToFriendsPage() {
+                window.location.href = 'friends.html';
+            }
         </script>
 
     </head>
@@ -200,10 +211,10 @@
                         </div>
 
                         <div class="control-group">
-                            <label class="control-label form-label" for="is_first_to">Competition Type</label>
+                            <label class="control-label form-label" for="is_first_to">Type:</label>
                             <div class="controls">
                                 <select  onchange = "showEvidence()" name = "is_first_to" id = "is_first_to" style="background-color: transparent;" required>
-                                    <option value="" disabled selected>Select an option</option>
+                                    <option value="" disabled selected>Select an end condition</option>
                                     <option value="1">First to set evidence</option>
                                     <option value="0">Most in set time</option>
                                 </select>
@@ -251,8 +262,17 @@
             </div>
 
             <div class="footer">
-                <button class="btn-link btn-footer-home" onclick="goHome()">
+                <button class="btn-link btn-footer" onclick="goHome()">
                     <i class="icon-home icon-white"></i>
+                </button>
+                <button class="btn-link btn-footer" onclick="myComps()">
+                    <i class="icon-fire icon-white"></i>
+                </button>
+                <button class="btn-link btn-footer" onclick ="myObserving()">
+                    <i class="icon-eye-open icon-white"></i>
+                </button>
+                <button class="btn-link btn-footer" onclick="goToFriendsPage()">
+                    <i class="icon-user icon-white"></i>
                 </button>
             </div>
         </div>

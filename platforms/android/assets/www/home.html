@@ -36,10 +36,18 @@
                                 success:function(data){
                                     console.log(data);
                                     var compArray = JSON.parse(data.friendCompetitions);
+                                    var checkArray = [];
                                     for(var i = 0; i < compArray.length; i++) {
                                         var compName = compArray[i].title;
+
                                         var compExp = compArray[i].expiration;
-                                        $("#competitionsDiv").append("<div class='competition' onclick=goToComp(" +compArray[i].id + ")>" + "<div class='sub-header-white'>" + compName + "</div>" + "Expires: " + compExp + "</div>");
+                                        var compCreator = compArray[i].creator_username;
+                                        
+                                        if ($.inArray(compName, checkArray) == -1){
+                                            $("#competitionsDiv").append("<div class='competition' onclick=goToComp(" +compArray[i].id + ")>" + "<div class='sub-header-white'>" + compName + "</div>" + "<i class='icon-bullhorn icon-white'></i> " + compCreator + "<br><i class='icon-calendar icon-white'></i> " + compExp + "</div>");
+                                            checkArray.push(compName);
+                                        }   
+                                        
                                     }
 
                                 }, error:function(err){
@@ -97,9 +105,13 @@
                 window.location.href = 'myObserving.html';
             }
 
-            function goToComp(id){
+            function goToComp(id) {
                 window.location.href = 'competition.html';
                 localStorage.setItem("current_comp", id);
+            }
+
+            function goHome(id) {
+                window.location.href = 'home.html';
             }
         </script>
         </head>
@@ -112,7 +124,7 @@
                     </button>
                     <h4 id="result" style="display: inline-block"><i class="icon-home icon-white" style="margin-top: 3px;"></i> </h4>
                     <button class="btn-link" onclick="logOut()" style="float: right; margin: 6px; width: 10%">
-                        <i class="icon-cog"></i>
+                        <i class="icon-off"></i>
                     </button>
                 </div>
 
@@ -123,14 +135,17 @@
             </div>
 
             <div class="footer">
-                <button class="btn-link btn-footer-home" onclick="myComps()">
+                <button class="btn-link btn-footer" onclick="goHome()">
+                    <i class="icon-home icon-white icon-current"></i>
+                </button>
+                <button class="btn-link btn-footer" onclick="myComps()">
                     <i class="icon-fire icon-white"></i>
                 </button>
-                <button class="btn-link btn-footer-home" onclick ="myObserving()">
+                <button class="btn-link btn-footer" onclick ="myObserving()">
                     <i class="icon-eye-open icon-white"></i>
                 </button>
-                <button class="btn-link btn-footer-home" onclick="goToFriendsPage()">
-                    <i class="icon-globe icon-white"></i>
+                <button class="btn-link btn-footer" onclick="goToFriendsPage()">
+                    <i class="icon-user icon-white"></i>
                 </button>
             </div>
         </div>

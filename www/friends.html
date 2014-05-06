@@ -144,8 +144,20 @@
         
       }
 
+      
       function goHome() {
-        window.location.href = 'home.html';
+          window.location.href = 'home.html';
+      }
+      function myComps() { 
+          window.location.href = 'myCompetitions.html';
+      }
+
+      function myObserving() { 
+          window.location.href = 'myObserving.html';
+      }
+
+      function goToFriendsPage() {
+           window.location.href = 'friends.html';
       }
 
       </script>
@@ -156,7 +168,7 @@
     <div class="container page-dark">
       <div class="wrapper">
         <div class="header">
-          <h4> Add Friends</h4>
+          <h4>Add Friends</h4>
         </div>
 
 
@@ -193,8 +205,17 @@
       </div>
 
       <div class="footer">
-        <button class="btn-link btn-footer-home" onclick="goHome()">
+        <button class="btn-link btn-footer" onclick="goHome()">
           <i class="icon-home icon-white"></i>
+        </button>
+        <button class="btn-link btn-footer" onclick="myComps()">
+          <i class="icon-fire icon-white"></i>
+        </button>
+        <button class="btn-link btn-footer" onclick ="myObserving()">
+          <i class="icon-eye-open icon-white"></i>
+        </button>
+        <button class="btn-link btn-footer" onclick="goToFriendsPage()">
+          <i class="icon-user icon-white icon-current"></i>
         </button>
     </div>
     </div>

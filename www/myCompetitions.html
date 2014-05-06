@@ -33,7 +33,7 @@
                         for(var i = 0; i < compArray.length; i++) {
                             var compName = compArray[i].title;
                             var compExp = compArray[i].expiration;
-                            $("#competitionsDiv").append("<div class='competition' onclick=goToComp(" +compArray[i].id + ")>" + "<div class='sub-header-white'>" + compName + "</div>" + "Expires: " + compExp + "</div>");
+                            $("#competitionsDiv").append("<div class='competition' onclick=goToComp(" +compArray[i].id + ")>" + "<div class='sub-header-white'>" + compName + "</div>" + "<i class='icon-calendar icon-white'></i> " + compExp + "</div>");
                         }
 
                     }, error:function(err){
@@ -51,6 +51,21 @@
             function goHome() {
                 window.location.href = 'home.html';
             }
+            function myComps() { 
+                window.location.href = 'myCompetitions.html';
+            }
+
+            function myObserving() { 
+                window.location.href = 'myObserving.html';
+            }
+
+            function goToFriendsPage() {
+                 window.location.href = 'friends.html';
+            }
+
+            function goToNewCompetition() {
+                window.location.href = 'newCompetition.html';
+            }
             
         </script>
     </head>
@@ -58,17 +73,40 @@
         <div class="container page-dark">
             <div class="wrapper">
                 <div class="header">
-                    <h4>My competitions</h4>
+                    <button class="btn-link" onclick="goToNewCompetition()" style="float: left; width: 10%; margin: 5px">
+                        <i class="icon-plus"></i>
+                    </button>
+                    <h4 style="display: inline-block">My Page</h4>
+                    <span style="display: inline; float: right; width: 10%; margin: 6px"></span>
                 </div>
+                <div id = "statsDiv">
+                    <h4> Statitstics</h4>
+                    <span> <h5 id = "wins">Wins: </h5> <h5 id = "losses"> Losses: </h5> <h5 id = "points"> Points: </h5> </span>
+                </div> 
                 <div class="container-overflow" id="competitionsDiv">
+                    <div id = "currCompetitionsDiv">
+                        <h4> Current Competitions </div>
+                    <div>
+                    <div id = "pastCompetitionsDiv">
+                        <h4> Past Competitions </div>
+                    </div>
                 </div>
 
                 <div class="push"></div>
             </div>
 
             <div class="footer">
-                <button class="btn-link btn-footer-home" onclick="goHome()">
+                <button class="btn-link btn-footer" onclick="goHome()">
                     <i class="icon-home icon-white"></i>
+                </button>
+                <button class="btn-link btn-footer" onclick="myComps()">
+                    <i class="icon-fire icon-white icon-current"></i>
+                </button>
+                <button class="btn-link btn-footer" onclick ="myObserving()">
+                    <i class="icon-eye-open icon-white"></i>
+                </button>
+                <button class="btn-link btn-footer" onclick="goToFriendsPage()">
+                    <i class="icon-user icon-white"></i>
                 </button>
             </div>
         </div>
