@@ -6,7 +6,7 @@
         <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
         <link href="css/style.css" rel="stylesheet" media="screen">
         <script type='text/javascript' > 
-            var phpLocation = "http://daniellanger.byethost13.com/webService.php"; 
+            var phpLocation = "http://localhost:3000"; 
         </script>
         <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
 
@@ -30,15 +30,19 @@
                     success:function(data){
                         console.log(data);
                         var udata = JSON.parse(data.user);
+                        console.log(udata);
                         var wins = udata.wins;
                         var losses = udata.losses;
                         var points = udata.points;
-                        $("#wins").append.(wins);
-                        $("#losses").append.(losses);
-                        $("#points").append.(points);
+                        $("#wins").append(wins);
+                        $("#losses").append(losses);
+                        $("#points").append(points);
 
+                    }, error: function(err) {
+                        console.log("Failed!")
+                        console.log(err);
                     }
-                })
+                });
 
                 request = $.ajax({
                     url: phpLocation,
@@ -106,13 +110,11 @@
                     <h4> Statitstics</h4>
                     <span> <h5 id = "wins">Wins: </h5> <h5 id = "losses"> Losses: </h5> <h5 id = "points"> Points: </h5> </span>
                 </div> 
-                <div class="container-overflow" id="competitionsDiv">
-                    <div id = "currCompetitionsDiv">
-                        <h4> Current Competitions </div>
-                    <div>
-                    <div id = "pastCompetitionsDiv">
-                        <h4> Past Competitions </div>
-                    </div>
+                <div id = "currCompetitionsDiv">
+                    <h4> Current Competitions </div>
+                <div>
+                <div id = "pastCompetitionsDiv">
+                    <h4> Past Competitions </div>
                 </div>
 
                 <div class="push"></div>
