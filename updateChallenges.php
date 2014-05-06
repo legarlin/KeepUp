@@ -18,7 +18,7 @@ $client = new Services_Twilio($AccountSid, $AuthToken);
       trigger_error('Database connection failed: '  . mysqli_connect_error(), E_USER_ERROR);
     }
 
-    $query = "select id,title from competition where expiration< Curdate() and completed !=1";
+    $query = "select id,title from competition where expiration< now()-interval 4 hour  and completed !=1";
     $rs=$link->query($query);
     if($rs) {
       $rs->data_seek(0);
@@ -30,9 +30,13 @@ $client = new Services_Twilio($AccountSid, $AuthToken);
 	  if(mysqli_num_rows($rs2) !=0) {
 	    $rs2->data_seek(0);
 	    while($row2 = $rs2->fetch_assoc()){
-	      echo($row2['phonenumber']);
-	      $message = $client->account->messages->create("630-473-6728", $row2['phonenumber'], "The competition '$currcomp' has ended!");
-	      echo "Sent message {$message->sid}";
+	      $ph = ($row2['phonenumber']);
+	      try {
+          $message = $client->account->sms_messages->create("630-473-6728", $row2['phonenumber'], "The competition '$currcomp' has ended!");
+	       echo "Sent message to '$ph'";
+       } catch(Exception $e) {
+          echo 'Error: ' . $e->getMessage();
+       }
 	    }
 	  }
         }
@@ -40,7 +44,7 @@ $client = new Services_Twilio($AccountSid, $AuthToken);
       
 
     mysqli_query($link,"UPDATE competition SET completed=1
-      WHERE expiration < Curdate() and completed !=1");
+      WHERE expiration < now()-interval 4 hour and completed !=1");
      
    mysqli_close($link);
  

@@ -299,7 +299,7 @@ function getComps() {
       trigger_error('Database connection failed: '  . mysqli_connect_error(), E_USER_ERROR);
     }
 
-    $query = "select id, title, expiration from competition where (id in (select competition_id from challenger where user_id= '$user' ) or id in (select id from competition where creator = '$user' )) order by expiration";
+    $query = "select id, title, expiration, completed from competition where (id in (select competition_id from challenger where user_id= '$user' ) or id in (select id from competition where creator = '$user' )) order by expiration";
     $rs=$link->query($query);
 
     $get_comp = array();
