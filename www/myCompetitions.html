@@ -23,6 +23,23 @@
                 // let's disable the inputs for the duration of the ajax request
                 // Note: we disable elements AFTER the form data has been serialized.
                 //$inputs.prop("disabled", true);
+                $.ajax({
+                    url: phpLocation,
+                    type: "post",
+                    data: {action:'getUser', user_id: localStorage.getItem("current_userid")},
+                    success:function(data){
+                        console.log(data);
+                        var udata = JSON.parse(data.user);
+                        var wins = udata.wins;
+                        var losses = udata.losses;
+                        var points = udata.points;
+                        $("#wins").append.(wins);
+                        $("#losses").append.(losses);
+                        $("#points").append.(points);
+
+                    }
+                })
+
                 request = $.ajax({
                     url: phpLocation,
                     type: "post",
@@ -33,7 +50,13 @@
                         for(var i = 0; i < compArray.length; i++) {
                             var compName = compArray[i].title;
                             var compExp = compArray[i].expiration;
-                            $("#competitionsDiv").append("<div class='competition' onclick=goToComp(" +compArray[i].id + ")>" + "<div class='sub-header-white'>" + compName + "</div>" + "<i class='icon-calendar icon-white'></i> " + compExp + "</div>");
+                            var compCompleted = compArray[i].completed;
+                            if (compCompleted == 0){
+                            $("#currCompetitionsDiv").append("<div class='competition' onclick=goToComp(" +compArray[i].id + ")>" + "<div class='sub-header-white'>" + compName + "</div>" + "<i class='icon-calendar icon-white'></i> " + compExp + "</div>");
+                            }
+                            else {
+                                $("#pastCompetitionsDiv").append("<div class='competition' onclick=goToComp(" +compArray[i].id + ")>" + "<div class='sub-header-white'>" + compName + "</div>" + "<i class='icon-calendar icon-white'></i> " + compExp + "</div>");
+                            }
                         }
 
                     }, error:function(err){
