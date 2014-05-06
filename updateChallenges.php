@@ -58,13 +58,12 @@ function updateComp() {
 
 ?>
 <html>
-      <head>
-         <meta http-equiv="refresh" content="10">
-      </head>
-      <body>
-                          <?php
-                                  echo "Watch the page reload itself in 10
-                                  second!";
-                                      ?>
+  <head>
+    <meta http-equiv="refresh" content="10">
+  </head>
+  <body>
+    <?php
+      echo "Watch the page reload itself in 10 seconds!";
+    ?>
     </body>
 </html>
