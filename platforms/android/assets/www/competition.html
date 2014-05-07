@@ -322,7 +322,7 @@
 																				+ "<div style='color:#333333; display: inline'>" + compExp + "</div>"
 																				+ "</div>");
                             if(completed == 1) {
-                              $("#infoBar").append("<div style = 'text-align:center'>" + winnerName + " Won This Competition!! </div>");
+                              $("#infoBar").append("<div class='sub-header-white border' style='text-align:center'>" + winnerName + " Won This Competition!! </div>");
                             }
 														$.ajax({
 												      url: phpLocation,
@@ -470,7 +470,7 @@
           $("#media").append("<div style='margin:10px; border: 1px solid #444444;'>");
           console.log("DATE " + String(ev.createdAt));
 
-          $("#media").append("<h5> Uploaded By: " + ev.get("user_name") + "<br> On " + String(ev.createdAt).substring(0,String(ev.createdAt).indexOf("GMT")) + "</h5>" );
+          $("#media").append("<div class='text'> Uploaded by: " + ev.get("user_name") + "<br> On " + String(ev.createdAt).substring(0,String(ev.createdAt).indexOf("GMT")) + "</div>" );
 
           if (ev.get("type") =="image") {
             var url = ev.get("picture").url();
