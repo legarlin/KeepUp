@@ -1,4 +1,6 @@
 <?php
+  
+  require("Services/Twilio.php");
 
   header('Access-Control-Allow-Origin: *');
   header('Content-Type: application/json');
@@ -29,6 +31,7 @@
       case 'getCompVotes' :getCompVotes();break;
       case 'getThread' : getThread();break;
       case 'newMessage' : newMessage();break;
+      case 'setWinner' : setWinner();
     }
   }
 
@@ -139,6 +142,28 @@
       echo json_encode(array('stat' => 'success', 'newComp' => $comp_id));
     } else {
        die(json_encode(array('stat' => 'error', 'code' => "error on comp creation")));
+    }
+
+    $AccountSid = "AC2ec969262047c83326a2cfa6f1c5bbdc";
+    $AuthToken = "ce41f865554bbb3fc9eeaefc85179714";
+    
+    $client = new Services_Twilio($AccountSid, $AuthToken);
+    $ids = join(',',$challengers); 
+    $query = "select phonenumber from user where id = '$creator' or id in ($ids)";
+    $rs2=$link->query($query);
+    if($rs2) {
+      $rs2->data_seek(0);
+      if(mysqli_num_rows($rs2) !=0) {
+        while($row = $rs2->fetch_assoc()){
+          try {
+            $message = $client->account->sms_messages->create("630-473-6728", $row['phonenumber'], "You have been challenged to a competition by '$creator_username' called '$title'!");
+         } catch(Exception $e) {
+            //echo 'Error: ' . $e->getMessage();
+         }
+        }
+      } 
+    } else {
+      //echo "failed";
     }
   }
 
@@ -398,7 +423,7 @@ function getFriendComps() {
   $i = 0;
   $get_comp = array();
   foreach ($user as $u) {
-    $query = "select id, title, creator, creator_username, expiration from competition where id in (select competition_id from challenger where user_id= '$u' ) or id in (select id from competition where creator = '$u' )";
+    $query = "select id, title, creator, creator_username, expiration from competition where (id in (select competition_id from challenger where user_id= '$u' ) or id in (select id from competition where creator = '$u' )) and completed = 0";
     $rs=$link->query($query);
     $rs->data_seek(0);
     if(mysqli_num_rows($rs) != 0) {
@@ -584,7 +609,6 @@ function getThread(){
 }
 
 function newMessage() {
-    
     $decoded = json_decode($_POST['newMessage'],true);
     $comp_id = $decoded['c_id'];
     $user_id = $decoded['u_id'];
@@ -606,7 +630,53 @@ function newMessage() {
     } else {
        die(json_encode(array('stat' => 'error', 'code' => "problem with message insertion")));
     }
+}
+
+function setWinner() {
+  $decoded = json_decode($_POST['setWinner'],true);
+  $comp_id = $decoded['comp'];
+  $user_id = $decoded['user'];
+  $points = $decoded['points'];
+  $losers = $decoded['losers'];
+  $username = $decoded['username'];
+  $compname = $decoded['compname'];
+  
+  $link = mysqli_connect('keepup.cw8gzyaihfxq.us-east-1.rds.amazonaws.com:3306', 'gldr','keepup2014', 'keepup');            
+          
+  if (mysqli_connect_errno()) {
+    trigger_error('Database connection failed: '  . mysqli_connect_error(), E_USER_ERROR);
   }
+
+  mysqli_query($link,"UPDATE competition SET completed=1, winner ='$user_id', winner_username = '$username' where id = '$comp_id'");
+  mysqli_query($link,"UPDATE user SET points = points + '$points', wins = wins+1 where id = '$user_id'");
+  foreach ($losers as $l) {
+    mysqli_query($link,"UPDATE user SET losses = losses+1 where id = '$l'");
+  }
+  
+
+  $AccountSid = "AC2ec969262047c83326a2cfa6f1c5bbdc";
+  $AuthToken = "ce41f865554bbb3fc9eeaefc85179714";
+  
+  $client = new Services_Twilio($AccountSid, $AuthToken);
+  $ids = join(',',$losers); 
+  $query = "select phonenumber from user where id = '$user_id' or id in ($ids)";
+  $rs=$link->query($query);
+  if($rs) {
+    $rs->data_seek(0);
+    if(mysqli_num_rows($rs) !=0) {
+      while($row = $rs->fetch_assoc()){
+        try {
+          $message = $client->account->sms_messages->create("630-473-6728", $row['phonenumber'], "The competition '$compname' has ended! The winner was '$username'");
+       } catch(Exception $e) {
+       }
+      }
+    } 
+  } 
+
+  echo json_encode(array('stat' => 'success', 'setWinner' =>$user_id));
+
+
+}
 
 
 ?>

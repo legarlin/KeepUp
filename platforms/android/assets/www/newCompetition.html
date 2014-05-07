@@ -8,7 +8,7 @@
         <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
         <link href="css/style.css" rel="stylesheet" media="screen">
         <script type='text/javascript' > 
-            var phpLocation = "http://daniellanger.byethost13.com/webService.php"; 
+            var phpLocation = "http://localhost:3000"; 
         </script>
         <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
         <link rel="stylesheet" href="css/token-input.css"/>
@@ -127,6 +127,8 @@
                 if($form.find('select[name="is_first_to"]').val() == 1) {
 
                     postData['required_evidence'] = $form.find('input[name="required_evidence"]').val();
+                } else {
+                    postData['required_evidence'] = 0;
                 }
                 
                 console.log(postData);

@@ -216,11 +216,15 @@
   var compChallenger = [];
   var completed;
   var winner;
-	$(document).ready(function() {
+  var winnerName;
+  var numNeeded;
+  var points;
+  var compName;
+  var allIds = []
 
+	$(document).ready(function() {
 		
 		var isObserver;
-		var compName;
 		var compExp;
 		var compDes;
 		var compEv;
@@ -228,7 +232,7 @@
 		var creatorName;
 		var challengedName = "";
 		var allNames= []
-		var allIds = []
+
 		request = $
 				.ajax({
 					url : phpLocation,
@@ -252,6 +256,9 @@
 						compID = compArray[0].id;
             completed = compArray[0].completed;
             winner = compArray[0].winner;
+            winnerName = compArray[0].winner_username;
+            points = compArray[0].points;
+            numNeeded = compEv;
             if (completed == 1){
               $("#messageButton").attr("disabled", true);
               $("#message").attr("disabled",true);
@@ -296,12 +303,15 @@
 															}
 															allNames.push(compArray3[i].username);
 														}
-
+                            var typeDisplay = numNeeded == 0 ? "Most until Expiration" : "First to Required Evidence: " + numNeeded;
 														$("#competitionDiv")
 																.append("<div><i class='icon-info-sign'></i> <div class='sub-header' style='display: inline; margin-top: 3px; width: 80%' id ='infoBar'>Information</div><br> "
-																				+ "<div style='padding-left: 18px;'>"
-                                        + compDes
-																				+ "</div><br>"
+																				+ "<div style='padding-left: 18px;'> Description "
+                                        + "<div style='color:#333333; display: inline'>" + compDes + "</div>"
+																				+ "</div>"
+                                        + "<div style='padding-left: 18px;'>"
+                                        + "Type <div style='color:#333333; display: inline'>" + typeDisplay + "</div>"
+                                        + "</div>"
                                         + "<i class='icon-fire'></i> Challengers <div style='color:#333333; display: inline'>"
                                         + creatorName
                                         + " <i class='icon-arrow-right'></i> "
@@ -311,7 +321,7 @@
 																				+ "<div style='color:#333333; display: inline'>" + compExp + "</div>"
 																				+ "</div>");
                             if(completed == 1) {
-                              $("#infoBar").append("<h6>" + winner + " Won This Competition!! </h6>");
+                              $("#infoBar").append("<div style = 'text-align:center'>" + winnerName + " Won This Competition!! </div>");
                             }
 														$.ajax({
 												      url: phpLocation,
@@ -464,7 +474,7 @@
           if (ev.get("type") =="image") {
             var url = ev.get("picture").url();
 
-            $("#media").append("<img width = '240' height = '160' src='" + url + "'/><br>");
+            $("#media").append("<img id= evidence" + evidence_id + " data-uploader=" + uploader + " width = '240' height = '160' src='" + url + "'/><br>");
             if (notuploader != 0 && canApprove != -1 && !isApproved){
               var butt = $("<button class='btn btn-main' style='margin:10px' onclick = \"approve("+ evidence_id + ")\"><i class='icon-thumbs-up'></i></button></div><br>");
               if(completed == 1) {
@@ -477,7 +487,7 @@
             }
           } else {
             var url = ev.get("picture").url();
-            var video = $("<video class='videoEvidence' width = '240' height = '160' controls> <source src =" + url + " type='video/mp4'></video><br>");
+            var video = $("<video class='videoEvidence'  id = evidence" + evidence_id + " data-uploader=" + uploader + " width = '240' height = '160' controls> <source src =" + url + " type='video/mp4'></video><br>");
             //video.attr("onclick", "play(" + url + ")");
 
             $("#media").append("<div>")
@@ -575,24 +585,65 @@
 	}
 
 	function approve(evidence_id){
-		console.log("HERREEEEE")
 		var query = new Parse.Query(ParsePicture);
     	query.equalTo("competition", localStorage.getItem("current_comp"));
 
     	query.equalTo("evidence_id", evidence_id);
-    			console.log("HERREEEEE")
 
     	query.first({
-    		
     		success: function (results){
     		    console.log("yo " + results);
 	            results.set("approved", true);
 	            results.save(null, {  
 	            	success: function (results) { 
-	            	window.location.href = 'competition.html';
+                  var query2 = new Parse.Query(ParsePicture);
+                  var userId = document.getElementById("evidence" + evidence_id).getAttribute("data-uploader");
+                    query2.equalTo("competition", localStorage.getItem("current_comp"));
+                    query2.equalTo("user_id", userId);
+                    query2.equalTo("approved", true);
+                    query2.find({
+                      success: function(results) {
+                        console.log(results + " RESULTS");
+                        var num_approved = results.length;
+                        console.log("NEEDED!" + numNeeded);
+                        console.log("HAS" + num_approved);
+                        if(numNeeded > 0 && num_approved >= numNeeded) {
+                          var losers = []
+                          for(var i in allIds) {
+                            if (i != userId) 
+                              losers.push(i);
+                          }
+                          var postData = {
+                            'comp': localStorage.getItem("current_comp"),
+                            'user' : userId,
+                            'points' : points,
+                            'losers' : losers,
+                            'username' : results[0].get("user_name"),
+                            'compname' : compName
+                          }
+                          console.log("setting winner");
+                          $.ajax({
+                            url: phpLocation,
+                            type: "post",
+                            data: {action:'setWinner', setWinner: JSON.stringify(postData)},
+                            success:function(data){
+                                if(data.stat == "success") {
+                                  console.log("WINNER SET!");
+                                  window.location.href = 'competition.html';
+                                } else {
+                                  console.log("some error");
+                                }
+                            }, error: function(e) {
+                              console.log(e);
+                            }
+                          });
+                        }
+                      }
+                    });
+
+	            	  window.location.href = 'competition.html';
 	            	},
 	            	error: function(err){
-
 	            		console.log("Failure!!");
 	            	}
 
