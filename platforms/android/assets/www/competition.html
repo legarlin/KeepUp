@@ -6,7 +6,7 @@
 <link href="css/style.css" rel="stylesheet" media="screen">
 <!--http://daniellanger.byethost13.com/webService.php -->
 <script type='text/javascript' > 
-    var phpLocation = "http://localhost:3000"; 
+    var phpLocation = "http://daniellanger.byethost13.com/webService.php"; 
 </script>
 <script type="text/javascript"
 	src="http://code.jquery.com/jquery-latest.min.js"></script>
@@ -203,6 +203,7 @@
     console.log("IMAGE DATA" + imageData); 
     $("#previewMedia").append("<button id = 'uploadMedia'> Upload </button>");
     document.getElementById("uploadMedia").onclick = function() {
+      $("#uploadMedia").attr("disabled",true);
       onPhotoSuccess(imageData);
     }
   }
@@ -568,6 +569,7 @@
           if(data.stat == "success") {
           	console.log(data);
             var voteData = JSON.parse(data.voteArray);
+
             for(var k in voteData) {
             	$('#votesTable tr:last').after("<tr><td>" + k + "</td><td style='text-align: center;'>" + voteData[k] + "</td></tr>");
             }
