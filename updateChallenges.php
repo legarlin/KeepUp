@@ -19,7 +19,7 @@ $client = new Services_Twilio($AccountSid, $AuthToken);
       trigger_error('Database connection failed: '  . mysqli_connect_error(), E_USER_ERROR);
     }
 
-    $query = "select id,title,is_first_to,required_evidence from competition where expiration< now()-interval 4 hour  and completed !=1";
+    $query = "select id,title,is_first_to,required_evidence,points from competition where expiration< now()-interval 4 hour  and completed !=1";
     $rs=$link->query($query);
     if($rs) {
       $rs->data_seek(0);
@@ -28,6 +28,7 @@ $client = new Services_Twilio($AccountSid, $AuthToken);
 	  $currcomp = $row['title'];
 	  $currisfirst = $row['is_first_to'];
           $currrequired = $row['required_evidence'];
+	  $currpoints = $row['points'];
 
 
 
@@ -122,7 +123,7 @@ echo($cusername);
 		  $message = $client->account->sms_messages->create("630-473-6728", $row2['phonenumber'], "The competition '$currcomp' has ended! There was a tie!'");
 		}
 		else{
-		  $message = $client->account->sms_messages->create("630-473-6728", $row2['phonenumber'], "The competition '$currcomp' has ended! The winner was '$cusername'!");
+	       	  $message = $client->account->sms_messages->create("630-473-6728", $row2['phonenumber'], "The competition '$currcomp' has ended! The winner was '$cusername'!");
 		}
 	       echo "Sent message to '$ph'";
        } catch(Exception $e) {
@@ -130,13 +131,38 @@ echo($cusername);
        }
 	    }
 	  }
-        }
+        
+      if(($currisfirst==1 && $count>=$currrequired) || $samecount==0){
+	echo("here");
+	$winner=$cuser;
+	}
+      else{
       
+	$winner = "0";
+      }      
 
-     
-    //mysqli_close($link);
+      $query3 = "select id from user where id in (select creator from competition where id = '$currid') or id in (select user_id from challenger where competition_id='$currid')";
+      $loser = array();
+      $rs3=$link->query($query3);
+      if($rs3) {
+	$rs3->data_seek(0);
+	while($row3 = $rs3->fetch_assoc()){
+	  if($row3['id'] != $winner){
+	    $loser[] = $row3['id'];
+	  }
+	}
+      
+	foreach($loser as $l){
+	      mysqli_query($link,"UPDATE user SET losses=losses+1
+      WHERE id='$l'");
+	}
+	if($winner!="0"){
+	  mysqli_query($link,"UPDATE user SET wins=wins+1, points=points+ '$currpoints'
+      WHERE id='$winner'");
+	}
+      }
 
-
+    }
 }
 
 
